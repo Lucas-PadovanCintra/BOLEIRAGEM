@@ -1,0 +1,38 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-gray-800">My Teams</h1>
+    <%= link_to "Create New Team", new_team_path, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" %>
+  </div>
+
+  <% if @teams.any? %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% @teams.each do |team| %>
+        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+          <h2 class="text-xl font-semibold text-gray-800 mb-3"><%= team.name %></h2>
+          <div class="text-sm text-gray-600 mb-4">
+            <p>Players: <%= team.players.count %></p>
+            <p>Created: <%= team.created_at.strftime("%B %d, %Y") %></p>
+          </div>
+          <div class="flex space-x-2">
+            <%= link_to "View", team, class: "bg-green-500 hover:bg-green-600 text-white text-sm py-1 px-3 rounded" %>
+            <%= link_to "Edit", edit_team_path(team), class: "bg-yellow-500 hover:bg-yellow-600 text-white text-sm py-1 px-3 rounded" %>
+            <%= link_to "Delete", team, method: :delete, 
+                confirm: "Are you sure you want to delete #{team.name}?", 
+                class: "bg-red-500 hover:bg-red-600 text-white text-sm py-1 px-3 rounded" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center py-12">
+      <div class="text-gray-500 mb-4">
+        <svg class="mx-auto h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+        </svg>
+      </div>
+      <h3 class="text-lg font-medium text-gray-900 mb-2">No teams yet</h3>
+      <p class="text-gray-500 mb-6">Get started by creating your first fantasy team!</p>
+      <%= link_to "Create Your First Team", new_team_path, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" %>
+    </div>
+  <% end %>
+</div>
