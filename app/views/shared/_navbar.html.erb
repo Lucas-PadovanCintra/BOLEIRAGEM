@@ -1,43 +1,38 @@
-<nav class="bg-white border-b border-gray-200 px-4 py-3" data-controller="mobile-menu">
-  <div class="flex justify-between items-center max-w-7xl mx-auto">
-    <%= link_to "#", class: "flex items-center" do %>
-      <%= image_tag "https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/logo.png", class: "h-10 w-auto" %>
+<div class="navbar navbar-expand-sm navbar-light navbar-lewagon">
+  <div class="container-fluid">
+    <%= link_to "#", class: "navbar-brand" do %>
+      <%= image_tag "https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/logo.png" %>
     <% end %>
 
-    <button class="lg:hidden flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-900 hover:border-gray-900" data-action="click->mobile-menu#toggle">
-      <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-        <title>Menu</title>
-        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
-      </svg>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="hidden lg:flex lg:items-center lg:space-x-4" id="navbar-menu">
-      <% if user_signed_in? %>
-        <%= link_to "Home", "#", class: "text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" %>
-        
-        <div class="relative" data-controller="dropdown">
-          <button data-action="click->dropdown#toggle" class="flex items-center">
-            <%= image_tag "https://kitt.lewagon.com/placeholder/users/ssaunier", class: "h-10 w-10 rounded-full border-2 border-gray-300 hover:border-gray-400", alt: "User avatar" %>
-          </button>
-          <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-            <%= link_to "Action", "#", class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-            <%= link_to "Another action", "#", class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-            <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-          </div>
-        </div>
-      <% else %>
-        <%= link_to "Login", new_user_session_path, class: "bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700" %>
-      <% end %>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto">
+        <% if user_signed_in? %>
+          <li class="nav-item active">
+            <%= link_to "Home", "#", class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Messages", "#", class: "nav-link" %>
+          </li>
+          <li class="nav-item dropdown">
+          <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <%= image_tag "https://kitt.lewagon.com/placeholder/users/ssaunier", class: "avatar", alt: "dropdown menu" %>
+          </a>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <%= link_to "Action", "#", class: "dropdown-item" %>
+              <%= link_to "Another action", "#", class: "dropdown-item" %>
+              <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
+            </div>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to "Login", new_user_session_path, class: "nav-link" %>
+          </li>
+        <% end %>
+      </ul>
     </div>
   </div>
-
-  <!-- Mobile menu -->
-  <div class="lg:hidden hidden mt-3" data-mobile-menu-target="menu">
-    <% if user_signed_in? %>
-      <%= link_to "Home", "#", class: "block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" %>
-      <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" %>
-    <% else %>
-      <%= link_to "Login", new_user_session_path, class: "block bg-blue-600 text-white px-4 py-2 rounded-md text-base font-medium hover:bg-blue-700" %>
-    <% end %>
-  </div>
-</nav>
+</div>
