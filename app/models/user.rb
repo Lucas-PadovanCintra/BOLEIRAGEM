@@ -5,5 +5,18 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :teams, dependent: :destroy
-  has_one :wallet, dependent: :destroy
+  has_many :wallets, dependent: :destroy
+  after_create :create_wallet
+
+  def amount
+    wallets.sum(:balance)
+  end
+
+  private
+
+  def create_wallet
+    wallet = Wallet.new(user: self)
+    wallet.save!
+  end
+
 end
