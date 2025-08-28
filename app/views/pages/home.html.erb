@@ -1,2 +1,185 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<!-- Hero Section -->
+<div class="bg-primary text-white py-5 mb-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center">
+        <h1 class="display-4 fw-bold">⚽ BOLEIRAGEM</h1>
+        <p class="lead">Sua Plataforma Definitiva de Gerenciamento de Futebol Fantasy</p>
+        <p class="mb-4">Monte seu time dos sonhos, gerencie contratos e dispute partidas!</p>
+        <% if user_signed_in? %>
+          <p class="h5">Bem-vindo de volta, <span class="fw-bold"><%= current_user.email.split('@').first.capitalize %></span>!</p>
+        <% else %>
+          <div class="mt-4">
+            <%= link_to "Começar Agora", new_user_registration_path, class: "btn btn-light btn-lg me-3" %>
+            <%= link_to "Entrar", new_user_session_path, class: "btn btn-outline-light btn-lg" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <% if user_signed_in? %>
+    <!-- Quick Stats -->
+    <div class="row mb-5">
+      <div class="col-md-3 mb-3">
+        <div class="card bg-success text-white h-100">
+          <div class="card-body text-center">
+            <h3 class="display-5 fw-bold"><%= current_user.teams.count %></h3>
+            <p class="card-text">Seus Times</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="card bg-info text-white h-100">
+          <div class="card-body text-center">
+            <h3 class="display-5 fw-bold"><%= PlayerContract.joins(:team).where(teams: { user: current_user }).where(is_expired: false).count %></h3>
+            <p class="card-text">Contratos Ativos</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="card bg-warning text-white h-100">
+          <div class="card-body text-center">
+            <h3 class="display-5 fw-bold"><%= Match.joins(:teams).where(teams: { user: current_user }).count %></h3>
+            <p class="card-text">Total de Partidas</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="card bg-danger text-white h-100">
+          <div class="card-body text-center">
+            <h3 class="display-5 fw-bold">
+              <%= current_user.wallet&.balance&.round(0) || 0 %>
+            </h3>
+            <p class="card-text">Saldo Total</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Navigation Cards -->
+  <div class="row mb-5">
+    <div class="col-12 mb-4">
+      <h2 class="text-center fw-bold text-dark">Explore a Plataforma</h2>
+    </div>
+    
+    <div class="col-md-6 col-lg-3 mb-4">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body text-center p-4">
+          <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+            <i class="fas fa-users fs-4"></i>
+          </div>
+          <h5 class="card-title fw-bold">Times</h5>
+          <p class="card-text text-muted">Gerencie seus times, veja detalhes do elenco e acompanhe o desempenho</p>
+          <%= link_to "Ver Times", teams_path, class: "btn btn-primary btn-sm" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3 mb-4">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body text-center p-4">
+          <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+            <i class="fas fa-running fs-4"></i>
+          </div>
+          <h5 class="card-title fw-bold">Jogadores</h5>
+          <p class="card-text text-muted">Navegue pelos jogadores disponíveis, confira avaliações e monte seu elenco</p>
+          <%= link_to "Ver Jogadores", players_path, class: "btn btn-success btn-sm" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3 mb-4">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body text-center p-4">
+          <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+            <i class="fas fa-trophy fs-4"></i>
+          </div>
+          <h5 class="card-title fw-bold">Partidas</h5>
+          <p class="card-text text-muted">Veja resultados das partidas, agende novos jogos e acompanhe seu histórico</p>
+          <%= link_to "Ver Partidas", matches_path, class: "btn btn-warning btn-sm" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3 mb-4">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body text-center p-4">
+          <div class="bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+            <i class="fas fa-file-contract fs-4"></i>
+          </div>
+          <h5 class="card-title fw-bold">Contratos</h5>
+          <p class="card-text text-muted">Gerencie contratos de jogadores, acompanhe datas de vencimento e renovações</p>
+          <%= link_to "Ver Contratos", player_contracts_path, class: "btn btn-info btn-sm" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="row mb-5">
+    <div class="col-12 mb-4">
+      <h2 class="text-center fw-bold text-dark">Recursos da Plataforma</h2>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="d-flex">
+        <div class="flex-shrink-0">
+          <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+            <i class="fas fa-chart-line"></i>
+          </div>
+        </div>
+        <div class="ms-3">
+          <h5 class="fw-bold">Análises de Jogadores</h5>
+          <p class="text-muted mb-0">Acompanhe o desempenho dos jogadores, avaliações e estatísticas para tomar decisões informadas</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="d-flex">
+        <div class="flex-shrink-0">
+          <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+            <i class="fas fa-handshake"></i>
+          </div>
+        </div>
+        <div class="ms-3">
+          <h5 class="fw-bold">Gestão de Contratos</h5>
+          <p class="text-muted mb-0">Gerencie contratos de jogadores com rastreamento automático de vencimento e alertas de renovação</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="d-flex">
+        <div class="flex-shrink-0">
+          <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+            <i class="fas fa-wallet"></i>
+          </div>
+        </div>
+        <div class="ms-3">
+          <h5 class="fw-bold">Gestão Financeira</h5>
+          <p class="text-muted mb-0">Gerencie o orçamento do seu time, acompanhe os gastos e otimize sua estratégia financeira</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% unless user_signed_in? %>
+    <!-- Call to Action -->
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center">
+        <div class="card bg-light border-0 p-4">
+          <div class="card-body">
+            <h3 class="fw-bold mb-3">Pronto para Começar sua Jornada no Futebol Fantasy?</h3>
+            <p class="mb-4">Junte-se a milhares de técnicos construindo seus times dos sonhos e competindo pela glória!</p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+              <%= link_to "Criar Conta", new_user_registration_path, class: "btn btn-primary btn-lg" %>
+              <%= link_to "Entrar", new_user_session_path, class: "btn btn-outline-primary btn-lg" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
