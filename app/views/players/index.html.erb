@@ -1,10 +1,12 @@
+
+<!--
 <div class="container mx-auto px-4 py-8">
   <div class="flex justify-between items-center mb-6">
     <h1 class="text-3xl font-bold text-gray-800">Player Market</h1>
     <%= link_to "Add New Player", new_player_path, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" %>
   </div>
 
-  <!-- Market Filter -->
+
   <div class="mb-6 flex space-x-4">
     <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded text-sm">All Players</button>
     <button class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded text-sm">Available</button>
@@ -94,3 +96,62 @@
     </div>
   <% end %>
 </div>
+-->
+
+<h1>Jogadores Disponíveis no Mercado</h1>
+
+<!-- Form de Filtros com Simple Form -->
+<%= simple_form_for @q, url: players_path, method: :get do |f| %>
+  <div class="field">
+    <%= f.input :name_cont, label: "Nome" %>
+  </div>
+
+  <div class="field">
+    <%= f.input :rating_gteq, label: "Rating Mínimo" %>
+    <%= f.input :rating_lteq, label: "Rating Máximo" %>
+  </div>
+
+  <div class="field">
+    <%= f.input :price_gteq, label: "Preço Mínimo" %>
+    <%= f.input :price_lteq, label: "Preço Máximo" %>
+  </div>
+
+  <%= f.button :submit, "Filtrar" %>
+<% end %>
+
+<!-- Lista de Jogadores -->
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Imagem</th>
+      <th>Nome</th>
+      <th>Time Real</th>
+      <th>Rating</th>
+      <th>Preço</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @players.each do |player| %>
+      <tr>
+        <td>
+          <%= image_tag "https://media.api-sports.io/football/players/#{player.api_id}.png", alt: player.name, class: "img-thumbnail", style: "width: 50px; height: 50px;" %>
+        </td>
+        <td><%= player.name %></td>
+        <td><%= player.real_team_name %></td>
+        <td><%= player.rating %></td>
+        <td><%= player.price %></td>
+        <td>
+          <%= link_to 'Ver', player, class: "btn btn-sm btn-primary" %>
+          <%# Adicione link para contratar, ex: link_to 'Contratar', new_player_contract_path(player_id: player.id), class: "btn btn-sm btn-success" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% if @players.empty? %>
+  <p>Nenhum jogador disponível encontrado.</p>
+<% end %>
+
+<%= paginate @players %>

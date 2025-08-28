@@ -51,6 +51,9 @@ gem "bootstrap", "~> 5.2"
 gem "autoprefixer-rails"
 gem "font-awesome-sass", "~> 6.1"
 gem "sassc-rails"
+gem 'httparty'
+gem 'ransack'
+gem 'kaminari'
 
 group :development, :test do
   gem "dotenv-rails"

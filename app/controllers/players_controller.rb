@@ -3,7 +3,8 @@ class PlayersController < ApplicationController
   before_action :set_player, only: [:show, :edit, :update, :destroy]
 
   def index
-    @players = Player.all
+    @q = Player.where(is_on_market: true).ransack(params[:q])  # Filtra apenas disponíveis
+    @players = @q.result(distinct: true).order(name: :asc).page(params[:page]).per(20)
   end
 
   def show
@@ -15,7 +16,7 @@ class PlayersController < ApplicationController
 
   def create
     @player = Player.new(player_params)
-    
+
     if @player.save
       redirect_to @player, notice: 'Player was successfully created.'
     else
