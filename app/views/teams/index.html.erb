@@ -1,38 +1,224 @@
-<div class="container mx-auto px-4 py-8">
-  <div class="flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-bold text-gray-800">My Teams</h1>
-    <%= link_to "Create New Team", new_team_path, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" %>
+<div class="container py-4">
+  <!-- Header with Stats -->
+  <div class="row align-items-center mb-4">
+    <div class="col">
+      <h1 class="h2 fw-bold text-dark mb-1">
+        <i class="fas fa-users me-2 text-primary"></i>Meus Times
+      </h1>
+      <p class="text-muted mb-0">Gerencie seus times, jogadores e partidas</p>
+    </div>
+    <div class="col-auto">
+      <%= link_to new_team_path, class: "btn btn-primary btn-lg" do %>
+        <i class="fas fa-plus me-2"></i>Criar Novo Time
+      <% end %>
+    </div>
   </div>
 
+  <!-- Overview Stats -->
   <% if @teams.any? %>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <% @teams.each do |team| %>
-        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-          <h2 class="text-xl font-semibold text-gray-800 mb-3"><%= team.name %></h2>
-          <div class="text-sm text-gray-600 mb-4">
-            <p>Players: <%= team.players.count %></p>
-            <p>Created: <%= team.created_at.strftime("%B %d, %Y") %></p>
+    <div class="row mb-4">
+      <div class="col-md-3">
+        <div class="card bg-primary text-white">
+          <div class="card-body text-center">
+            <i class="fas fa-users fa-2x mb-2"></i>
+            <h3 class="fw-bold"><%= @teams.count %></h3>
+            <small>Times Ativos</small>
           </div>
-          <div class="flex space-x-2">
-            <%= link_to "View", team, class: "bg-green-500 hover:bg-green-600 text-white text-sm py-1 px-3 rounded" %>
-            <%= link_to "Edit", edit_team_path(team), class: "bg-yellow-500 hover:bg-yellow-600 text-white text-sm py-1 px-3 rounded" %>
-            <%= link_to "Delete", team, method: :delete, 
-                confirm: "Are you sure you want to delete #{team.name}?", 
-                class: "bg-red-500 hover:bg-red-600 text-white text-sm py-1 px-3 rounded" %>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-success text-white">
+          <div class="card-body text-center">
+            <i class="fas fa-running fa-2x mb-2"></i>
+            <h3 class="fw-bold"><%= @teams.joins(:player_contracts).where(player_contracts: { is_expired: false }).count %></h3>
+            <small>Jogadores Ativos</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-warning text-white">
+          <div class="card-body text-center">
+            <i class="fas fa-futbol fa-2x mb-2"></i>
+            <h3 class="fw-bold"><%= @teams.joins(:matches).count %></h3>
+            <small>Partidas Disputadas</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-info text-white">
+          <div class="card-body text-center">
+            <i class="fas fa-wallet fa-2x mb-2"></i>
+            <h3 class="fw-bold"><%= current_user.wallet&.balance&.round(0) || 0 %></h3>
+            <small>Saldo Disponível</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Teams Management Cards -->
+    <div class="row g-4">
+      <% @teams.each do |team| %>
+        <div class="col-lg-6 col-xl-4">
+          <div class="card h-100 shadow-sm border-0 team-card" data-team-id="<%= team.id %>">
+            <!-- Team Header -->
+            <div class="card-header bg-gradient bg-primary text-white border-0">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h5 class="card-title mb-1 fw-bold"><%= team.name %></h5>
+                  <small class="opacity-75">
+                    <i class="fas fa-calendar-alt me-1"></i>
+                    Criado <%= time_ago_in_words(team.created_at) %> atrás
+                  </small>
+                </div>
+                <div class="dropdown">
+                  <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <i class="fas fa-cog"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li><%= link_to edit_team_path(team), class: "dropdown-item" do %>
+                      <i class="fas fa-edit me-2"></i>Editar Time
+                    <% end %></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><%= link_to team, 
+                        data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir #{team.name}? Esta ação não pode ser desfeita." }, 
+                        class: "dropdown-item text-danger" do %>
+                      <i class="fas fa-trash me-2"></i>Excluir Time
+                    <% end %></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Team Stats -->
+            <div class="card-body">
+              <div class="row text-center mb-3">
+                <div class="col-4">
+                  <div class="border-end">
+                    <h4 class="mb-0 text-primary fw-bold"><%= team.player_contracts.where(is_expired: false).count %></h4>
+                    <small class="text-muted">Jogadores</small>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="border-end">
+                    <h4 class="mb-0 text-success fw-bold"><%= team.matches.count %></h4>
+                    <small class="text-muted">Partidas</small>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <% wins = team.matches.where(result: 'Vitória').count %>
+                  <h4 class="mb-0 text-warning fw-bold"><%= wins %></h4>
+                  <small class="text-muted">Vitórias</small>
+                </div>
+              </div>
+
+              <!-- Quick Status -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <small class="text-muted fw-medium">Status do Elenco</small>
+                  <% if team.player_contracts.where(is_expired: false).any? %>
+                    <span class="badge bg-success">Ativo</span>
+                  <% else %>
+                    <span class="badge bg-warning">Sem Jogadores</span>
+                  <% end %>
+                </div>
+                
+                <% active_contracts = team.player_contracts.where(is_expired: false).count %>
+                <% if active_contracts > 0 %>
+                  <div class="progress" style="height: 6px;">
+                    <div class="progress-bar bg-success" style="width: <%= [active_contracts * 10, 100].min %>%"></div>
+                  </div>
+                  <small class="text-muted">
+                    <%= active_contracts %> jogador<%= 'es' if active_contracts != 1 %> ativo<%= 's' if active_contracts != 1 %>
+                  </small>
+                <% else %>
+                  <div class="progress" style="height: 6px;">
+                    <div class="progress-bar bg-danger" style="width: 100%"></div>
+                  </div>
+                  <small class="text-danger">Nenhum jogador contratado</small>
+                <% end %>
+              </div>
+
+              <!-- Recent Activity -->
+              <% if team.matches.any? %>
+                <div class="mb-3">
+                  <small class="text-muted fw-medium d-block mb-2">Última Partida</small>
+                  <% last_match = team.matches.order(created_at: :desc).first %>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="small">Match #<%= last_match.id %></span>
+                    <% if last_match.result.present? %>
+                      <span class="badge bg-primary"><%= last_match.result %></span>
+                    <% else %>
+                      <span class="badge bg-secondary">Pendente</span>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="card-footer bg-light border-0">
+              <div class="row g-2">
+                <div class="col-6">
+                  <%= link_to team, class: "btn btn-primary w-100 btn-sm" do %>
+                    <i class="fas fa-eye me-1"></i>Ver Detalhes
+                  <% end %>
+                </div>
+                <div class="col-6">
+                  <%= link_to new_player_contract_path, class: "btn btn-success w-100 btn-sm" do %>
+                    <i class="fas fa-user-plus me-1"></i>Contratar
+                  <% end %>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       <% end %>
     </div>
+
+
   <% else %>
-    <div class="text-center py-12">
-      <div class="text-gray-500 mb-4">
-        <svg class="mx-auto h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-        </svg>
+    <!-- Empty State -->
+    <div class="text-center py-5">
+      <div class="mb-4">
+        <i class="fas fa-users text-muted" style="font-size: 5rem; opacity: 0.3;"></i>
       </div>
-      <h3 class="text-lg font-medium text-gray-900 mb-2">No teams yet</h3>
-      <p class="text-gray-500 mb-6">Get started by creating your first fantasy team!</p>
-      <%= link_to "Create Your First Team", new_team_path, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" %>
+      <h3 class="h4 fw-medium text-dark mb-2">Nenhum time ainda</h3>
+      <p class="text-muted mb-4 lead">Comece sua jornada no futebol fantasy criando seu primeiro time!</p>
+      
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card border-primary">
+            <div class="card-body">
+              <h5 class="card-title">
+                <i class="fas fa-rocket me-2 text-primary"></i>Como começar?
+              </h5>
+              <ol class="text-start">
+                <li class="mb-2">Crie seu primeiro time</li>
+                <li class="mb-2">Contrate jogadores do mercado</li>
+                <li class="mb-2">Organize partidas</li>
+                <li>Gerencie seus contratos</li>
+              </ol>
+              <%= link_to "Criar Meu Primeiro Time", new_team_path, class: "btn btn-primary btn-lg w-100 mt-3" %>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   <% end %>
 </div>
+
+<style>
+  .team-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+  }
+  
+  .bg-gradient {
+    background: linear-gradient(135deg, #0d6efd 0%, #0056b3 100%) !important;
+  }
+</style>

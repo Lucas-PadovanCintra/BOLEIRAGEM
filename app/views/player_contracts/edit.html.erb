@@ -1,4 +1,235 @@
-<div>
-  <h1 class="font-bold text-4xl">PlayerContracts#edit</h1>
-  <p>Find me in app/views/player_contracts/edit.html.erb</p>
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 fw-bold text-dark">Editar Contrato</h1>
+        <div class="btn-group">
+          <%= link_to "Ver Contrato", @player_contract, class: "btn btn-outline-primary" %>
+          <%= link_to "Voltar aos Contratos", player_contracts_path, class: "btn btn-secondary" %>
+        </div>
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <%= form_with(model: @player_contract, local: true, class: "needs-validation", novalidate: true) do |form| %>
+            <% if @player_contract.errors.any? %>
+              <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">
+                  <i class="fas fa-exclamation-triangle me-2"></i>
+                  <%= pluralize(@player_contract.errors.count, "erro impediu", "erros impediram") %> que este contrato fosse salvo:
+                </h4>
+                <ul class="mb-0">
+                  <% @player_contract.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <div class="row g-3">
+              <!-- Contract Information Section -->
+              <div class="col-12">
+                <h5 class="fw-bold text-dark mb-3 border-bottom pb-2">
+                  <i class="fas fa-file-contract me-2"></i>Informações do Contrato
+                </h5>
+              </div>
+
+              <!-- Player Info (Read-only) -->
+              <div class="col-md-6">
+                <label class="form-label fw-medium">Jogador</label>
+                <div class="card bg-light">
+                  <div class="card-body py-2">
+                    <strong><%= @player_contract.player.name %></strong>
+                    <br>
+                    <small class="text-muted">Rating: <%= @player_contract.player.rating %> | API ID: <%= @player_contract.player.api_id %></small>
+                  </div>
+                </div>
+                <small class="form-text text-muted">Jogador vinculado ao contrato</small>
+              </div>
+
+              <!-- Team Info (Read-only) -->
+              <div class="col-md-6">
+                <label class="form-label fw-medium">Time</label>
+                <div class="card bg-light">
+                  <div class="card-body py-2">
+                    <strong><%= @player_contract.team.name %></strong>
+                    <br>
+                    <small class="text-muted">Valor do Time: <%= @player_contract.team.team_value %></small>
+                  </div>
+                </div>
+                <small class="form-text text-muted">Time contratante</small>
+              </div>
+
+              <!-- Contract Details Section -->
+              <div class="col-12">
+                <h5 class="fw-bold text-dark mb-3 border-bottom pb-2 mt-4">
+                  <i class="fas fa-edit me-2"></i>Detalhes do Contrato
+                </h5>
+              </div>
+
+              <!-- Matches Played -->
+              <div class="col-md-6">
+                <%= form.label :matches_played, "Partidas Jogadas", class: "form-label fw-medium required" %>
+                <%= form.number_field :matches_played, 
+                    class: "form-control #{'is-invalid' if @player_contract.errors[:matches_played].any?}",
+                    placeholder: "0",
+                    required: true,
+                    min: 0,
+                    max: 999
+                %>
+                <% if @player_contract.errors[:matches_played].any? %>
+                  <div class="invalid-feedback">
+                    <%= @player_contract.errors[:matches_played].first %>
+                  </div>
+                <% else %>
+                  <small class="form-text text-muted">Número de partidas já jogadas pelo jogador</small>
+                <% end %>
+              </div>
+
+              <!-- Contract Length -->
+              <div class="col-md-6">
+                <%= form.label :contract_length, "Duração do Contrato", class: "form-label fw-medium required" %>
+                <%= form.number_field :contract_length, 
+                    class: "form-control #{'is-invalid' if @player_contract.errors[:contract_length].any?}",
+                    placeholder: "5",
+                    required: true,
+                    min: 1,
+                    max: 100
+                %>
+                <% if @player_contract.errors[:contract_length].any? %>
+                  <div class="invalid-feedback">
+                    <%= @player_contract.errors[:contract_length].first %>
+                  </div>
+                <% else %>
+                  <small class="form-text text-muted">Total de partidas previstas no contrato</small>
+                <% end %>
+              </div>
+
+              <!-- Contract Progress -->
+              <div class="col-12">
+                <label class="form-label fw-medium">Progresso do Contrato</label>
+                <div class="progress mb-2" style="height: 25px;">
+                  <% progress = (@player_contract.matches_played.to_f / [@player_contract.contract_length, 1].max * 100).round(1) %>
+                  <div class="progress-bar <%= progress >= 100 ? 'bg-danger' : 'bg-success' %>" 
+                       role="progressbar" 
+                       style="width: <%= [progress, 100].min %>%"
+                       aria-valuenow="<%= progress %>" 
+                       aria-valuemin="0" 
+                       aria-valuemax="100">
+                    <%= progress %>%
+                  </div>
+                </div>
+                <small class="form-text text-muted">
+                  <%= @player_contract.matches_played %>/<%= @player_contract.contract_length %> partidas
+                  <% if progress >= 100 %>
+                    <span class="text-danger fw-bold">- Contrato Vencido!</span>
+                  <% end %>
+                </small>
+              </div>
+
+              <!-- Contract Status Section -->
+              <div class="col-12">
+                <h5 class="fw-bold text-dark mb-3 border-bottom pb-2 mt-4">
+                  <i class="fas fa-toggle-on me-2"></i>Status do Contrato
+                </h5>
+              </div>
+
+              <div class="col-12">
+                <div class="form-check form-switch">
+                  <%= form.check_box :is_expired, 
+                      class: "form-check-input #{'is-invalid' if @player_contract.errors[:is_expired].any?}",
+                      id: "is_expired_switch"
+                  %>
+                  <%= form.label :is_expired, "Contrato expirado", class: "form-check-label fw-medium" %>
+                </div>
+                <% if @player_contract.errors[:is_expired].any? %>
+                  <div class="text-danger small mt-1">
+                    <%= @player_contract.errors[:is_expired].first %>
+                  </div>
+                <% else %>
+                  <small class="form-text text-muted">
+                    Se marcado, o contrato será considerado inválido e o jogador poderá ser contratado por outros times.
+                  </small>
+                <% end %>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="col-12 mt-4">
+                <div class="d-flex gap-2 justify-content-end flex-wrap">
+                  <%= form.submit "Salvar Alterações", class: "btn btn-success" %>
+                  <%= link_to "Cancelar", player_contract_path(@player_contract), class: "btn btn-outline-secondary" %>
+                  <%= link_to "Excluir Contrato", @player_contract, 
+                      data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir este contrato? Esta ação não pode ser desfeita e liberará o jogador para outros times." },
+                      class: "btn btn-outline-danger" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Help Section -->
+      <div class="card mt-4 border-info">
+        <div class="card-body">
+          <h6 class="card-title fw-bold text-info">
+            <i class="fas fa-question-circle me-2"></i>Dicas de Edição
+          </h6>
+          <div class="row g-3 small">
+            <div class="col-md-6">
+              <ul class="mb-0">
+                <li><strong>Partidas Jogadas:</strong> Deve ser menor ou igual à duração do contrato</li>
+                <li><strong>Duração:</strong> Total de partidas acordadas no contrato</li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="mb-0">
+                <li><strong>Status Expirado:</strong> Libera o jogador automaticamente</li>
+                <li><strong>Progresso 100%:</strong> Contrato vencido por partidas completas</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<script>
+  // Form validation
+  (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+      var forms = document.getElementsByClassName('needs-validation');
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+
+  // Auto-check expired status when matches >= contract length
+  document.addEventListener('DOMContentLoaded', function() {
+    const matchesField = document.querySelector('input[name="player_contract[matches_played]"]');
+    const lengthField = document.querySelector('input[name="player_contract[contract_length]"]');
+    const expiredCheckbox = document.querySelector('input[name="player_contract[is_expired]"]');
+
+    function checkExpiration() {
+      const matches = parseInt(matchesField.value) || 0;
+      const length = parseInt(lengthField.value) || 0;
+      
+      if (matches >= length && length > 0) {
+        expiredCheckbox.checked = true;
+      }
+    }
+
+    if (matchesField && lengthField && expiredCheckbox) {
+      matchesField.addEventListener('input', checkExpiration);
+      lengthField.addEventListener('input', checkExpiration);
+    }
+  });
+</script>

@@ -1,4 +1,157 @@
-<div>
-  <h1 class="font-bold text-4xl">Players#show</h1>
-  <p>Find me in app/views/players/show.html.erb</p>
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2 fw-bold text-dark"><%= @player.name %></h1>
+    <div class="btn-group">
+      <%= link_to "Editar Jogador", edit_player_path(@player), class: "btn btn-warning" %>
+      <%= link_to "Voltar ao Mercado", players_path, class: "btn btn-secondary" %>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Player Info -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title h5 fw-bold text-dark mb-3">Player Details</h2>
+          <div class="row g-2">
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Name:</span>
+                <span class="fw-medium"><%= @player.name %></span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">API ID:</span>
+                <span class="fw-medium"><%= @player.api_id %></span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="text-muted">Rating:</span>
+                <div class="d-flex align-items-center">
+                  <span class="fs-5 fw-bold text-primary me-2"><%= @player.rating %></span>
+                  <div class="d-flex">
+                    <% (1..5).each do |i| %>
+                      <% if i <= (@player.rating / 20.0).ceil %>
+                        <i class="fas fa-star text-warning"></i>
+                      <% else %>
+                        <i class="far fa-star text-muted"></i>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Price:</span>
+                <span class="fs-5 fw-bold text-success">💰<%= number_with_delimiter(@player.price) %></span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Market Status:</span>
+                <% if @player.is_on_market %>
+                  <span class="badge bg-success">Available</span>
+                <% else %>
+                  <span class="badge bg-danger">Contracted</span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% if @player.is_on_market %>
+          <div class="card-footer">
+            <%= link_to "Sign Player", new_player_contract_path(player_id: @player.id), class: "btn btn-success w-100" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Contract History -->
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title h5 fw-bold text-dark mb-3">Contract History</h2>
+          <% if @player.player_contracts.any? %>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col" class="fw-bold text-muted small text-uppercase">Team</th>
+                    <th scope="col" class="fw-bold text-muted small text-uppercase">Contract Length</th>
+                    <th scope="col" class="fw-bold text-muted small text-uppercase">Matches Played</th>
+                    <th scope="col" class="fw-bold text-muted small text-uppercase">Status</th>
+                    <th scope="col" class="fw-bold text-muted small text-uppercase">Created</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @player.player_contracts.includes(:team).order(created_at: :desc).each do |contract| %>
+                    <tr>
+                      <td class="fw-medium"><%= contract.team.name %></td>
+                      <td><%= contract.contract_length %> matches</td>
+                      <td><%= contract.matches_played %></td>
+                      <td>
+                        <% if contract.is_expired %>
+                          <span class="badge bg-secondary">Expired</span>
+                        <% else %>
+                          <span class="badge bg-success">Active</span>
+                        <% end %>
+                      </td>
+                      <td class="text-muted"><%= contract.created_at.strftime("%B %d, %Y") %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <div class="text-center py-4">
+              <p class="text-muted mb-0">No contract history available.</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Current Contract Details -->
+  <% current_contract = @player.player_contracts.where(is_expired: false).first %>
+  <% if current_contract %>
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card shadow-sm border-primary">
+          <div class="card-body">
+            <h2 class="card-title h5 fw-bold text-primary mb-3">
+              <i class="fas fa-file-contract me-2"></i>Current Contract
+            </h2>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="d-flex justify-content-between">
+                  <span class="text-muted">Team:</span>
+                  <span class="fw-medium"><%= current_contract.team.name %></span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex justify-content-between">
+                  <span class="text-muted">Progress:</span>
+                  <span><%= current_contract.matches_played %> / <%= current_contract.contract_length %> matches</span>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="progress" style="height: 10px;">
+                  <div class="progress-bar bg-primary" role="progressbar" 
+                       style="width: <%= (current_contract.matches_played.to_f / current_contract.contract_length * 100).round(1) %>%" 
+                       aria-valuenow="<%= (current_contract.matches_played.to_f / current_contract.contract_length * 100).round(1) %>" 
+                       aria-valuemin="0" aria-valuemax="100">
+                  </div>
+                </div>
+                <small class="text-muted"><%= (current_contract.matches_played.to_f / current_contract.contract_length * 100).round(1) %>% completed</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>
