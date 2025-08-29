@@ -54,6 +54,7 @@ gem "sassc-rails"
 gem 'httparty'
 gem 'ransack'
 gem 'kaminari'
+gem 'will_paginate'
 
 group :development, :test do
   gem "dotenv-rails"

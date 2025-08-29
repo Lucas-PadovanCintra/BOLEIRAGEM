@@ -100,58 +100,106 @@
 
 <h1>Jogadores Disponíveis no Mercado</h1>
 
-<!-- Form de Filtros com Simple Form -->
-<%= simple_form_for @q, url: players_path, method: :get do |f| %>
-  <div class="field">
-    <%= f.input :name_cont, label: "Nome" %>
+<%= search_form_for @q, url: players_path, method: :get do |f| %>
+  <div class="mb-3">
+    <%= f.label :name_cont, "Nome" %>
+    <%= f.search_field :name_cont, class: "form-control" %>
   </div>
-
-  <div class="field">
-    <%= f.input :rating_gteq, label: "Rating Mínimo" %>
-    <%= f.input :rating_lteq, label: "Rating Máximo" %>
+  <div class="mb-3">
+    <%= f.label :real_team_name_cont, "Time Real" %>
+    <%= f.search_field :real_team_name_cont, class: "form-control" %>
   </div>
-
-  <div class="field">
-    <%= f.input :price_gteq, label: "Preço Mínimo" %>
-    <%= f.input :price_lteq, label: "Preço Máximo" %>
+  <div class="mb-3">
+    <%= f.label :rating_gteq, "Rating (mínimo)" %>
+    <%= f.number_field :rating_gteq, class: "form-control" %>
   </div>
-
-  <%= f.button :submit, "Filtrar" %>
+  <div class="mb-3">
+    <%= f.label :price_gteq, "Preço (mínimo)" %>
+    <%= f.number_field :price_gteq, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :goals_gteq, "Gols (mínimo)" %>
+    <%= f.number_field :goals_gteq, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :assists_gteq, "Assistências (mínimo)" %>
+    <%= f.number_field :assists_gteq, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :successful_dribbles_gteq, "Dribles Bem Sucedidos (mínimo)" %>
+    <%= f.number_field :successful_dribbles_gteq, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :interceptions_gteq, "Interceptações (mínimo)" %>
+    <%= f.number_field :interceptions_gteq, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :yellow_cards_gteq, "Cartões Amarelos (mínimo)" %>
+    <%= f.number_field :yellow_cards_gteq, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :red_cards_gteq, "Cartões Vermelhos (mínimo)" %>
+    <%= f.number_field :red_cards_gteq, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :faults_committed_gteq, "Faltas Cometidas (mínimo)" %>
+    <%= f.number_field :faults_committed_gteq, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :loss_of_possession_gteq, "Perda de Posse (mínimo)" %>
+    <%= f.number_field :loss_of_possession_gteq, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :frequency_in_field_gteq, "Frequência em Campo (mínimo)" %>
+    <%= f.number_field :frequency_in_field_gteq, class: "form-control" %>
+  </div>
+  <%= f.submit "Filtrar", class: "btn btn-primary" %>
 <% end %>
 
-<!-- Lista de Jogadores -->
 <table class="table table-striped">
   <thead>
     <tr>
       <th>Imagem</th>
-      <th>Nome</th>
-      <th>Time Real</th>
-      <th>Rating</th>
-      <th>Preço</th>
+      <th><%= sort_link(@q, :name, "Nome") %></th>
+      <th><%= sort_link(@q, :real_team_name, "Time Real") %></th>
+      <th><%= sort_link(@q, :goals, "Gols") %></th>
+      <th><%= sort_link(@q, :assists, "Assistências") %></th>
+      <th><%= sort_link(@q, :successful_dribbles, "Dribles Bem Sucedidos") %></th>
+      <th><%= sort_link(@q, :interceptions, "Interceptações") %></th>
+      <th><%= sort_link(@q, :yellow_cards, "Cartões Amarelos") %></th>
+      <th><%= sort_link(@q, :red_cards, "Cartões Vermelhos") %></th>
+      <th><%= sort_link(@q, :faults_committed, "Faltas Cometidas") %></th>
+      <th><%= sort_link(@q, :loss_of_possession, "Perda de Posse") %></th>
+      <th><%= sort_link(@q, :frequency_in_field, "Frequência em Campo") %></th>
+      <th><%= sort_link(@q, :rating, "Rating") %></th>
+      <th><%= sort_link(@q, :price, "Preço") %></th>
       <th>Ações</th>
     </tr>
   </thead>
   <tbody>
     <% @players.each do |player| %>
       <tr>
-        <td>
-          <%= image_tag "https://media.api-sports.io/football/players/#{player.api_id}.png", alt: player.name, class: "img-thumbnail", style: "width: 50px; height: 50px;" %>
-        </td>
+        <td><img src="https://via.placeholder.com/50" alt="<%= player.name %>" width="50"></td>
         <td><%= player.name %></td>
         <td><%= player.real_team_name %></td>
+        <td><%= player.goals %></td>
+        <td><%= player.assists %></td>
+        <td><%= player.successful_dribbles %></td>
+        <td><%= player.interceptions %></td>
+        <td><%= player.yellow_cards %></td>
+        <td><%= player.red_cards %></td>
+        <td><%= player.faults_committed %></td>
+        <td><%= player.loss_of_possession %></td>
+        <td><%= player.frequency_in_field %></td>
         <td><%= player.rating %></td>
         <td><%= player.price %></td>
         <td>
-          <%= link_to 'Ver', player, class: "btn btn-sm btn-primary" %>
-          <%# Adicione link para contratar, ex: link_to 'Contratar', new_player_contract_path(player_id: player.id), class: "btn btn-sm btn-success" %>
+          <%= link_to 'Ver', player_path(player), class: "btn btn-sm btn-primary" %>
+          <%#= link_to 'Contratar', new_player_contract_path(player_id: player.id), class: "btn btn-sm btn-success" %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<% if @players.empty? %>
-  <p>Nenhum jogador disponível encontrado.</p>
-<% end %>
 
 <%= paginate @players %>

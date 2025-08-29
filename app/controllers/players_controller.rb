@@ -4,7 +4,7 @@ class PlayersController < ApplicationController
 
   def index
     @q = Player.where(is_on_market: true).ransack(params[:q])  # Filtra apenas disponíveis
-    @players = @q.result(distinct: true).order(name: :asc).page(params[:page]).per(20)
+    @players = @q.result(distinct: true).order(name: :asc).page(params[:page])  # .per(20)
   end
 
   def show

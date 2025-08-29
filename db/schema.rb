@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_08_27_223329) do
+ActiveRecord::Schema[7.1].define(version: 2025_08_29_035519) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -44,7 +44,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_27_223329) do
   end
 
   create_table "players", force: :cascade do |t|
-    t.integer "api_id", null: false
     t.string "name", null: false
     t.integer "rating", null: false
     t.integer "price", null: false
@@ -52,7 +51,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_27_223329) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "real_team_name"
-    t.index ["api_id"], name: "index_players_on_api_id", unique: true
+    t.integer "goals"
+    t.integer "assists"
+    t.integer "successful_dribbles"
+    t.integer "interceptions"
+    t.integer "yellow_cards"
+    t.integer "red_cards"
+    t.integer "faults_committed"
+    t.integer "loss_of_possession"
+    t.integer "frequency_in_field"
     t.index ["is_on_market"], name: "index_players_on_is_on_market"
     t.index ["real_team_name"], name: "index_players_on_real_team_name"
   end
