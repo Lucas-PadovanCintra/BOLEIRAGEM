@@ -1,47 +1,243 @@
-<div class="container mx-auto px-4 py-8">
-  <div class="max-w-md mx-auto">
-    <div class="flex justify-between items-center mb-6">
-      <h1 class="text-3xl font-bold text-gray-800">Create New Team</h1>
-      <%= link_to "Back", teams_path, class: "text-gray-600 hover:text-gray-800" %>
-    </div>
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 fw-bold text-dark">
+          <i class="fas fa-plus-circle me-2 text-success"></i>Criar Novo Time
+        </h1>
+        <div class="btn-group">
+          <%= link_to "Voltar aos Times", teams_path, class: "btn btn-secondary" %>
+        </div>
+      </div>
 
-    <div class="bg-white rounded-lg shadow-md p-6">
-      <%= form_with(model: @team, local: true, class: "space-y-6") do |form| %>
-        <% if @team.errors.any? %>
-          <div class="bg-red-50 border border-red-200 rounded-md p-4">
-            <div class="flex">
-              <div class="ml-3">
-                <h3 class="text-sm font-medium text-red-800">
-                  <%= pluralize(@team.errors.count, "error") %> prohibited this team from being saved:
-                </h3>
-                <div class="mt-2 text-sm text-red-700">
-                  <ul class="list-disc pl-5 space-y-1">
-                    <% @team.errors.full_messages.each do |message| %>
-                      <li><%= message %></li>
-                    <% end %>
-                  </ul>
+      <!-- Progress Steps -->
+      <div class="card mb-4">
+        <div class="card-body py-2">
+          <div class="d-flex justify-content-center">
+            <div class="d-flex align-items-center">
+              <span class="badge bg-primary rounded-pill me-2">1</span>
+              <span class="small fw-medium text-dark me-3">Informações Básicas</span>
+              <i class="fas fa-arrow-right text-muted me-3"></i>
+              <span class="badge bg-secondary rounded-pill me-2">2</span>
+              <span class="small text-muted me-3">Contratar Jogadores</span>
+              <i class="fas fa-arrow-right text-muted me-3"></i>
+              <span class="badge bg-secondary rounded-pill me-2">3</span>
+              <span class="small text-muted">Jogar Partidas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Main Form -->
+        <div class="col-md-7">
+          <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+              <h5 class="card-title mb-0">
+                <i class="fas fa-users me-2"></i>Dados do Time
+              </h5>
+            </div>
+            <div class="card-body">
+              <%= form_with(model: @team, local: true, class: "needs-validation", novalidate: true) do |form| %>
+                <% if @team.errors.any? %>
+                  <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">
+                      <i class="fas fa-exclamation-triangle me-2"></i>
+                      <%= pluralize(@team.errors.count, "erro impediu", "erros impediram") %> que este time fosse criado:
+                    </h4>
+                    <ul class="mb-0">
+                      <% @team.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+                <% end %>
+
+                <div class="row g-3">
+                  <!-- Team Name -->
+                  <div class="col-12">
+                    <%= form.label :name, "Nome do Time", class: "form-label fw-medium required" %>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="fas fa-shield-alt"></i>
+                      </span>
+                      <%= form.text_field :name, 
+                          class: "form-control form-control-lg #{'is-invalid' if @team.errors[:name].any?}",
+                          placeholder: "Ex: Barcelona FC, Real Madrid, Santos...",
+                          required: true,
+                          maxlength: 100,
+                          onkeyup: "updatePreview(this.value)"
+                      %>
+                      <% if @team.errors[:name].any? %>
+                        <div class="invalid-feedback">
+                          <%= @team.errors[:name].first %>
+                        </div>
+                      <% end %>
+                    </div>
+                    <div class="form-text">
+                      <i class="fas fa-lightbulb me-1 text-warning"></i>
+                      Escolha um nome único e marcante para seu time
+                    </div>
+                  </div>
+
+                  <!-- Team Description (Optional) -->
+                  <div class="col-12">
+                    <label class="form-label fw-medium">Descrição (Opcional)</label>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="fas fa-quote-left"></i>
+                      </span>
+                      <textarea class="form-control" 
+                                rows="3" 
+                                placeholder="Conte um pouco sobre a história, estilo de jogo ou filosofia do seu time..."
+                                maxlength="500"></textarea>
+                    </div>
+                    <div class="form-text">Máximo 500 caracteres</div>
+                  </div>
+
+
+                  <!-- Action Buttons -->
+                  <div class="col-12 mt-4 pt-3 border-top">
+                    <div class="d-flex gap-2 justify-content-end">
+                      <%= form.submit "Criar Meu Time", class: "btn btn-success btn-lg" %>
+                      <%= link_to "Cancelar", teams_path, class: "btn btn-outline-secondary" %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar with Preview and Tips -->
+        <div class="col-md-5">
+          <!-- Team Preview -->
+          <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+              <h6 class="card-title mb-0">
+                <i class="fas fa-eye me-2"></i>Pré-visualização
+              </h6>
+            </div>
+            <div class="card-body text-center">
+              <div id="team-preview">
+                <div class="mb-3">
+                  <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center" 
+                       style="width: 80px; height: 80px;">
+                    <i class="fas fa-shield-alt text-white" style="font-size: 2rem;"></i>
+                  </div>
+                </div>
+                <h5 class="fw-bold text-dark" id="preview-name">Meu Time</h5>
+                <p class="text-muted small">Proprietário: <%= current_user.email %></p>
+                <div class="row g-2 mt-3">
+                  <div class="col-4 text-center">
+                    <div class="fw-bold text-primary">0</div>
+                    <div class="small text-muted">Jogadores</div>
+                  </div>
+                  <div class="col-4 text-center">
+                    <div class="fw-bold text-success">0</div>
+                    <div class="small text-muted">Partidas</div>
+                  </div>
+                  <div class="col-4 text-center">
+                    <div class="fw-bold text-warning">0</div>
+                    <div class="small text-muted">Vitórias</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        <% end %>
 
-        <div>
-          <%= form.label :name, class: "block text-sm font-medium text-gray-700 mb-2" %>
-          <%= form.text_field :name, class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500", placeholder: "Enter your team name" %>
+
+          <!-- Quick Stats Card -->
+          <div class="card shadow-sm mt-4">
+            <div class="card-body">
+              <h6 class="card-title">
+                <i class="fas fa-chart-bar me-2 text-info"></i>Estatísticas Iniciais
+              </h6>
+              <div class="row text-center">
+                <div class="col-6">
+                  <div class="border-end">
+                    <div class="h4 mb-0 text-primary">
+                      <%= current_user.wallet&.balance&.round(0) || 0 %>
+                    </div>
+                    <small class="text-muted">Saldo Atual</small>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="h4 mb-0 text-success">
+                    <%= current_user.teams.count %>
+                  </div>
+                  <small class="text-muted">Times Criados</small>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div class="flex items-center justify-between">
-          <%= form.submit "Create Team", class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
-          <%= link_to "Cancel", teams_path, class: "text-gray-600 hover:text-gray-800" %>
-        </div>
-      <% end %>
-    </div>
-
-    <div class="mt-6 text-center">
-      <p class="text-sm text-gray-600">
-        Once you create your team, you'll be able to sign players and compete in matches!
-      </p>
     </div>
   </div>
 </div>
+
+<script>
+  // Preview functionality
+  function updatePreview(name) {
+    const previewName = document.getElementById('preview-name');
+    if (name.trim()) {
+      previewName.textContent = name;
+    } else {
+      previewName.textContent = 'Meu Time';
+    }
+  }
+
+  // Form validation
+  (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+      var forms = document.getElementsByClassName('needs-validation');
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+
+  // Add some interactive feedback
+  document.addEventListener('DOMContentLoaded', function() {
+    const nameInput = document.querySelector('input[name="team[name]"]');
+    const submitBtn = document.querySelector('input[type="submit"]');
+    
+    if (nameInput && submitBtn) {
+      nameInput.addEventListener('input', function() {
+        if (this.value.trim().length > 0) {
+          submitBtn.classList.remove('btn-success');
+          submitBtn.classList.add('btn-success', 'pulse');
+        } else {
+          submitBtn.classList.remove('pulse');
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  .pulse {
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+  }
+
+</style>

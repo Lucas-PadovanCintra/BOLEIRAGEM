@@ -1,106 +1,101 @@
 
-<h1>Jogadores Disponíveis no Mercado</h1>
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2 fw-bold text-dark">Mercado de Jogadores</h1>
+  </div>
 
-<%= search_form_for @q, url: players_path, method: :get do |f| %>
-  <div class="mb-3">
-    <%= f.label :name_cont, "Nome" %>
-    <%= f.search_field :name_cont, class: "form-control" %>
+  <div class="mb-4">
+    <button id="filter-button" class="btn btn-outline-primary">Filtros</button>
+    <%= render partial: 'form-filtros', locals: { q: @q } %>
   </div>
-  <div class="mb-3">
-    <%= f.label :real_team_name_cont, "Time Real" %>
-    <%= f.search_field :real_team_name_cont, class: "form-control" %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :rating_gteq, "Rating (mínimo)" %>
-    <%= f.number_field :rating_gteq, class: "form-control" %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :price_gteq, "Preço (mínimo)" %>
-    <%= f.number_field :price_gteq, class: "form-control" %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :goals_gteq, "Gols (mínimo)" %>
-    <%= f.number_field :goals_gteq, class: "form-control" %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :assists_gteq, "Assistências (mínimo)" %>
-    <%= f.number_field :assists_gteq, class: "form-control" %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :successful_dribbles_gteq, "Dribles Bem Sucedidos (mínimo)" %>
-    <%= f.number_field :successful_dribbles_gteq, class: "form-control" %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :interceptions_gteq, "Interceptações (mínimo)" %>
-    <%= f.number_field :interceptions_gteq, class: "form-control" %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :yellow_cards_gteq, "Cartões Amarelos (mínimo)" %>
-    <%= f.number_field :yellow_cards_gteq, class: "form-control" %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :red_cards_gteq, "Cartões Vermelhos (mínimo)" %>
-    <%= f.number_field :red_cards_gteq, class: "form-control" %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :faults_committed_gteq, "Faltas Cometidas (mínimo)" %>
-    <%= f.number_field :faults_committed_gteq, class: "form-control" %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :loss_of_possession_gteq, "Perda de Posse (mínimo)" %>
-    <%= f.number_field :loss_of_possession_gteq, class: "form-control" %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :frequency_in_field_gteq, "Frequência em Campo (mínimo)" %>
-    <%= f.number_field :frequency_in_field_gteq, class: "form-control" %>
-  </div>
-  <%= f.submit "Filtrar", class: "btn btn-primary" %>
-<% end %>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Imagem</th>
-      <th><%= sort_link(@q, :name, "Nome") %></th>
-      <th><%= sort_link(@q, :real_team_name, "Time Real") %></th>
-      <th><%= sort_link(@q, :goals, "Gols") %></th>
-      <th><%= sort_link(@q, :assists, "Assistências") %></th>
-      <th><%= sort_link(@q, :successful_dribbles, "Dribles Bem Sucedidos") %></th>
-      <th><%= sort_link(@q, :interceptions, "Interceptações") %></th>
-      <th><%= sort_link(@q, :yellow_cards, "Cartões Amarelos") %></th>
-      <th><%= sort_link(@q, :red_cards, "Cartões Vermelhos") %></th>
-      <th><%= sort_link(@q, :faults_committed, "Faltas Cometidas") %></th>
-      <th><%= sort_link(@q, :loss_of_possession, "Perda de Posse") %></th>
-      <th><%= sort_link(@q, :frequency_in_field, "Frequência em Campo") %></th>
-      <th><%= sort_link(@q, :rating, "Rating") %></th>
-      <th><%= sort_link(@q, :price, "Preço") %></th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @players.each do |player| %>
-      <tr>
-        <td><img src="https://escudosfc.com.br/images/<%= I18n.transliterate(team_logo(player.real_team_name)) %>" alt="<%= player.real_team_name %>" width="50"></td>
-        <td><%= player.name %></td>
-        <td><%= player.real_team_name %></td>
-        <td><%= player.goals %></td>
-        <td><%= player.assists %></td>
-        <td><%= player.successful_dribbles %></td>
-        <td><%= player.interceptions %></td>
-        <td><%= player.yellow_cards %></td>
-        <td><%= player.red_cards %></td>
-        <td><%= player.faults_committed %></td>
-        <td><%= player.loss_of_possession %></td>
-        <td><%= player.frequency_in_field %>%</td>
-        <td><%= player.rating %></td>
-        <td><%= player.price %></td>
-        <td>
-          <%= link_to 'Ver', player_path(player), class: "btn btn-sm btn-primary" %>
-          <%#= link_to 'Contratar', new_player_contract_path(player_id: player.id), class: "btn btn-sm btn-success" %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  <div class="card shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th scope="col" class="fw-bold text-muted small text-uppercase">Imagem</th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :name, "Nome") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :real_team_name, "Time Real") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :goals, "Gols") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :assists, "Assistências") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :successful_dribbles, "Dribles Bem Sucedidos") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :interceptions, "Interceptações") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :yellow_cards, "Cartões Amarelos") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :red_cards, "Cartões Vermelhos") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :faults_committed, "Faltas Cometidas") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :loss_of_possession, "Perda de Posse") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :frequency_in_field, "Frequência em Campo") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :rating, "Rating") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :price, "Preço") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @players.each do |player| %>
+            <tr>
+              <td><img src="https://escudosfc.com.br/images/<%= I18n.transliterate(team_logo(player.real_team_name)) %>" alt="<%= player.real_team_name %>" width="50"></td>
+              <td>
+                <div class="fw-medium text-dark"><%= player.name %></div>
+              </td>
+              <td>
+                <div class="fw-medium text-dark"><%= player.real_team_name %></div>
+              </td>
+              <td>
+                <div class="fw-medium text-dark"><%= player.goals %></div>
+              </td>
+              <td>
+                <div class="fw-medium text-dark"><%= player.assists %></div>
+              </td>
+              <td>
+                <div class="fw-medium text-dark"><%= player.successful_dribbles %></div>
+              </td>
+              <td>
+                <div class="fw-medium text-dark"><%= player.interceptions %></div>
+              </td>
+              <td>
+                <div class="fw-medium text-dark"><%= player.yellow_cards %></div>
+              </td>
+              <td>
+                <div class="fw-medium text-dark"><%= player.red_cards %></div>
+              </td>
+              <td>
+                <div class="fw-medium text-dark"><%= player.faults_committed %></div>
+              </td>
+              <td>
+                <div class="fw-medium text-dark"><%= player.loss_of_possession %></div>
+              </td>
+              <td>
+                <div class="fw-medium text-dark"><%= player.frequency_in_field %>%</div>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <span class="fs-5 fw-bold text-primary me-2"><%= player.rating %></span>
+                </div>
+              </td>
+              <td>
+                <span class="fs-5 fw-bold text-success">💰<%= player.price %></span>
+              </td>
+              <td>
+                <%# <div class="btn-group btn-group-sm"> %>
+                <%#= link_to 'Ver', player_path(player), class: "btn btn-sm btn-primary" %>
+                <%#= link_to "Editar", edit_player_path(player), class: "btn btn-outline-warning btn-sm" %>
+                <% if player.is_on_market %>
+                  <span class="badge bg-success">Disponível</span>
+                  <%= link_to 'Contratar', new_player_contract_path(player_id: player.id), class: "btn btn-sm btn-success" %>
+                <% else %>
+                  <span class="badge bg-danger">Contratado por:</span>
+                  <%= player.player_contracts.where(is_expired: false).first.team.name %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-<%= paginate @players %>
+
+  <%= render partial: 'pagination', locals: { players: @players } %>
+
+</div>

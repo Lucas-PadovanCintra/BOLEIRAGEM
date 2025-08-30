@@ -1,4 +1,180 @@
-<div>
-  <h1 class="font-bold text-4xl">Matches#show</h1>
-  <p>Find me in app/views/matches/show.html.erb</p>
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2 fw-bold text-dark">Partida #<%= @match.id %></h1>
+    <div class="btn-group">
+      <%= link_to "Editar Partida", edit_match_path(@match), class: "btn btn-warning" %>
+      <%= link_to "Voltar às Partidas", matches_path, class: "btn btn-secondary" %>
+    </div>
+  </div>
+
+  <!-- Match Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card shadow-sm bg-primary text-white">
+        <div class="card-body text-center">
+          <div class="row align-items-center">
+            <div class="col-md-4">
+              <h3 class="fw-bold mb-1"><%= @match.teams.first&.name || "Team" %></h3>
+              <small class="opacity-75">Time da Casa</small>
+            </div>
+            <div class="col-md-4">
+              <div class="fs-1 fw-bold">VS</div>
+              <div class="mt-2">
+                <% if @match.result.present? %>
+                  <% case @match.result.downcase %>
+                  <% when 'won', 'win' %>
+                    <span class="badge bg-success fs-6">Vitória!</span>
+                  <% when 'lost', 'loss' %>
+                    <span class="badge bg-danger fs-6">Derrota</span>
+                  <% when 'draw', 'tie' %>
+                    <span class="badge bg-warning text-dark fs-6">Empate</span>
+                  <% else %>
+                    <span class="badge bg-light text-dark fs-6"><%= @match.result %></span>
+                  <% end %>
+                <% else %>
+                  <span class="badge bg-secondary fs-6">Pendente</span>
+                <% end %>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <h3 class="fw-bold mb-1">Adversário</h3>
+              <small class="opacity-75">Time Visitante</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Match Details -->
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title fw-bold text-dark mb-3">Informações da Partida</h5>
+          <div class="row g-2">
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">ID da Partida:</span>
+                <span class="fw-medium">#<%= @match.id %></span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Time:</span>
+                <span class="fw-medium"><%= @match.teams.first&.name || "Team" %></span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Data da Partida:</span>
+                <span class="fw-medium"><%= @match.created_at.strftime("%d de %B de %Y") %></span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Horário:</span>
+                <span class="fw-medium"><%= @match.created_at.strftime("%H:%M") %></span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="text-muted">Resultado:</span>
+                <% if @match.result.present? %>
+                  <% case @match.result.downcase %>
+                  <% when 'won', 'win' %>
+                    <span class="badge bg-success">Vitória</span>
+                  <% when 'lost', 'loss' %>
+                    <span class="badge bg-danger">Derrota</span>
+                  <% when 'draw', 'tie' %>
+                    <span class="badge bg-warning text-dark">Empate</span>
+                  <% else %>
+                    <span class="badge bg-primary"><%= @match.result %></span>
+                  <% end %>
+                <% else %>
+                  <span class="badge bg-secondary">Pendente</span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team Squad for this Match -->
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title fw-bold text-dark mb-3">Elenco da Partida</h5>
+          <% active_contracts = @match.teams.first&.player_contracts&.where(is_expired: false) || [] %>
+          <% if active_contracts.any? %>
+            <div class="list-group list-group-flush">
+              <% active_contracts.includes(:player).limit(5).each do |contract| %>
+                <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                  <div>
+                    <div class="fw-medium"><%= contract.player.name %></div>
+                    <small class="text-muted">Avaliação: <%= contract.player.rating %></small>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <% (1..5).each do |i| %>
+                      <% if i <= (contract.player.rating / 20.0).ceil %>
+                        <i class="fas fa-star text-warning small"></i>
+                      <% else %>
+                        <i class="far fa-star text-muted small"></i>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+              <% if active_contracts.count > 5 %>
+                <div class="list-group-item text-center px-0">
+                  <small class="text-muted">... e mais <%= active_contracts.count - 5 %> jogadores</small>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="text-center py-3">
+              <p class="text-muted mb-0">Nenhum jogador ativo para esta partida.</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Match Actions -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card shadow-sm border-info">
+        <div class="card-body">
+          <h5 class="card-title fw-bold text-info mb-3">
+            <i class="fas fa-cog me-2"></i>Ações da Partida
+          </h5>
+          <div class="d-flex gap-2 flex-wrap">
+            <%= link_to "Editar Partida", edit_match_path(@match), class: "btn btn-warning" %>
+            <% unless @match.result.present? %>
+              <button class="btn btn-success" onclick="updateMatchResult('won')">Marcar como Vitória</button>
+              <button class="btn btn-danger" onclick="updateMatchResult('lost')">Marcar como Derrota</button>
+              <button class="btn btn-secondary" onclick="updateMatchResult('draw')">Marcar como Empate</button>
+            <% end %>
+            <%= link_to "Excluir Partida", @match, 
+                data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir esta partida?" }, 
+                class: "btn btn-outline-danger" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<% unless @match.result.present? %>
+<script>
+  function updateMatchResult(result) {
+    // This would normally make an AJAX call to update the match result
+    // For now, it just shows an alert - you can implement the actual update logic
+    if(confirm(`Tem certeza que deseja marcar esta partida como ${result === 'won' ? 'vitória' : result === 'lost' ? 'derrota' : 'empate'}?`)) {
+      alert(`Partida seria marcada como ${result === 'won' ? 'vitória' : result === 'lost' ? 'derrota' : 'empate'}. Implementar a lógica de atualização no controller.`);
+    }
+  }
+</script>
+<% end %>

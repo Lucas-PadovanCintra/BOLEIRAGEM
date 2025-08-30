@@ -1,4 +1,230 @@
-<div>
-  <h1 class="font-bold text-4xl">PlayerContracts#show</h1>
-  <p>Find me in app/views/player_contracts/show.html.erb</p>
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2 fw-bold text-dark">Detalhes do Contrato</h1>
+    <div class="btn-group">
+      <%= link_to "Editar Contrato", edit_player_contract_path(@player_contract), class: "btn btn-warning" %>
+      <%= link_to "Voltar aos Contratos", player_contracts_path, class: "btn btn-secondary" %>
+    </div>
+  </div>
+
+  <!-- Contract Status Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card shadow-sm <%= @player_contract.is_expired ? 'border-danger' : 'border-success' %>">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-md-6">
+              <h3 class="fw-bold text-dark mb-1"><%= @player_contract.player.name %></h3>
+              <p class="text-muted mb-0">Contract with <%= @player_contract.team.name %></p>
+            </div>
+            <div class="col-md-6 text-md-end">
+              <% if @player_contract.is_expired %>
+                <span class="badge bg-danger fs-6 mb-2">Contrato Expirado</span>
+              <% elsif (@player_contract.contract_length - @player_contract.matches_played) <= 2 %>
+                <span class="badge bg-warning text-dark fs-6 mb-2">Expirando em Breve</span>
+              <% else %>
+                <span class="badge bg-success fs-6 mb-2">Contrato Ativo</span>
+              <% end %>
+              <div class="mt-2">
+                <div class="progress" style="height: 20px;">
+                  <div class="progress-bar bg-primary" role="progressbar"
+                       style="width: <%= (@player_contract.matches_played.to_f / @player_contract.contract_length * 100).round(1) %>%"
+                       aria-valuenow="<%= (@player_contract.matches_played.to_f / @player_contract.contract_length * 100).round(1) %>"
+                       aria-valuemin="0" aria-valuemax="100">
+                    <%= (@player_contract.matches_played.to_f / @player_contract.contract_length * 100).round(1) %>%
+                  </div>
+                </div>
+                <small class="text-muted"><%= @player_contract.matches_played %>/<%= @player_contract.contract_length %> matches completed</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Contract Information -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title fw-bold text-dark mb-3">Detalhes do Contrato</h5>
+          <div class="row g-2">
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Contract ID:</span>
+                <span class="fw-medium">#<%= @player_contract.id %></span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Data da Assinatura:</span>
+                <span class="fw-medium"><%= @player_contract.created_at.strftime("%B %d, %Y") %></span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Duração do Contrato:</span>
+                <span class="fw-medium"><%= @player_contract.contract_length %> matches</span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Partidas Jogadas:</span>
+                <span class="fw-medium"><%= @player_contract.matches_played %></span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Partidas Restantes:</span>
+                <span class="fw-medium <%= @player_contract.is_expired ? 'text-danger' : 'text-success' %>">
+                  <%= [@player_contract.contract_length - @player_contract.matches_played, 0].max %>
+                </span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Status:</span>
+                <% if @player_contract.is_expired %>
+                  <span class="badge bg-danger">Expired</span>
+                <% elsif (@player_contract.contract_length - @player_contract.matches_played) <= 2 %>
+                  <span class="badge bg-warning text-dark">Expirando em Breve</span>
+                <% else %>
+                  <span class="badge bg-success">Active</span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Player Information -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title fw-bold text-dark mb-3">Perfil do Jogador</h5>
+          <div class="text-center mb-3">
+            <h4 class="fw-bold text-primary"><%= @player_contract.player.name %></h4>
+            <div class="d-flex justify-content-center align-items-center mb-2">
+              <span class="fs-3 fw-bold text-primary me-2"><%= @player_contract.player.rating %></span>
+              <div class="d-flex">
+                <% (1..5).each do |i| %>
+                  <% if i <= (@player_contract.player.rating / 20.0).ceil %>
+                    <i class="fas fa-star text-warning"></i>
+                  <% else %>
+                    <i class="far fa-star text-muted"></i>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+            <span class="fs-4 fw-bold text-success">💰<%= number_with_delimiter(@player_contract.player.price) %></span>
+          </div>
+          <div class="row g-2">
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">API ID:</span>
+                <span class="fw-medium"><%= @player_contract.player.api_id %></span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Market Status:</span>
+                <% if @player_contract.player.is_on_market %>
+                  <span class="badge bg-success">Available</span>
+                <% else %>
+                  <span class="badge bg-danger">Contracted</span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 text-center">
+            <%= link_to "View Perfil do Jogador", @player_contract.player, class: "btn btn-outline-primary btn-sm w-100" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team Information -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title fw-bold text-dark mb-3">Team Information</h5>
+          <div class="text-center mb-3">
+            <h4 class="fw-bold text-dark"><%= @player_contract.team.name %></h4>
+            <small class="text-muted">Owned by <%= @player_contract.team.user.email.split('@').first.capitalize %></small>
+          </div>
+          <div class="row g-2">
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Total Players:</span>
+                <span class="fw-medium"><%= @player_contract.team.players.count %></span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Contrato Ativos:</span>
+                <span class="fw-medium"><%= @player_contract.team.player_contracts.where(is_expired: false).count %></span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Partidas Jogadas:</span>
+                <span class="fw-medium"><%= @player_contract.team.matches.count %></span>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 text-center">
+            <%= link_to "View Team Profile", @player_contract.team, class: "btn btn-outline-success btn-sm w-100" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ações do Contrato -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card shadow-sm border-info">
+        <div class="card-body">
+          <h5 class="card-title fw-bold text-info mb-3">
+            <i class="fas fa-cog me-2"></i>Ações do Contrato
+          </h5>
+          <div class="d-flex gap-2 flex-wrap">
+            <%= link_to "Editar Contrato", edit_player_contract_path(@player_contract), class: "btn btn-warning" %>
+            <% unless @player_contract.is_expired %>
+              <button class="btn btn-danger" onclick="expireContract(<%= @player_contract.id %>)">
+                Expire Contract
+              </button>
+              <button class="btn btn-success" onclick="renewContract(<%= @player_contract.id %>)">
+                Renew Contract
+              </button>
+            <% else %>
+              <button class="btn btn-success" onclick="renewContract(<%= @player_contract.id %>)">
+                Re-sign Player
+              </button>
+            <% end %>
+            <%= link_to "Delete Contract", @player_contract, 
+                data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this contract?" }, 
+                class: "btn btn-outline-danger" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<script>
+  function expireContract(contractId) {
+    if(confirm('Are you sure you want to expire this contract? The player will become available on the market.')) {
+      alert('Contract expiration logic would be implemented here in the controller.');
+    }
+  }
+
+  function renewContract(contractId) {
+    const newLength = prompt('Enter the new contract length (number of matches):');
+    if(newLength && !isNaN(newLength) && newLength > 0) {
+      alert(`Contract renewal logic would be implemented here. New length: ${newLength} matches.`);
+    }
+  }
+</script>
