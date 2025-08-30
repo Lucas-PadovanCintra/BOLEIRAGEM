@@ -16,7 +16,11 @@ class WalletsController < ApplicationController
   private
 
   def set_wallet
-    @wallet = current_user.wallet || current_user.create_wallet
+    if current_user.wallet.nil?
+      new_wallet = Wallet.create!(user_id: current_user.id, balance: 1000)
+      @wallet = new_wallet
+    else
+      @wallet = current_user.wallet
   end
 
   def wallet_params

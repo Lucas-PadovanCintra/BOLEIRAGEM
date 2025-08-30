@@ -6,6 +6,13 @@ class User < ApplicationRecord
 
   has_many :teams, dependent: :destroy
   has_one :wallet, dependent: :destroy
-  
+  #validates :wallet, presence: true
+  after_create :create_wallet
+
+  private
+
+  def create_wallet
+    Wallet.create!(user: self, balance: 1000)
+  end
 
 end
