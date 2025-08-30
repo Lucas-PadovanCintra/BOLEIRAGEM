@@ -1,0 +1,90 @@
+name,real_team_name,goals,assists,successful_dribbles,interceptions,yellow_cards,red_cards,faults_committed,loss_of_possession,frequency_in_field,rating,price
+Everson,Atlético Mineiro,0,0,0,6,1,0,2,3,95,7.0,91
+Lyanco,Atlético Mineiro,1,0,2,8,6,2,10,5,85,7.2,94
+Rubens,Atlético Mineiro,0,2,5,6,2,0,8,7,80,7.1,92
+Gustavo Scarpa,Atlético Mineiro,2,5,10,3,1,0,5,12,75,7.5,98
+Hulk,Atlético Mineiro,8,3,15,2,3,0,12,20,70,7.8,101
+Paulinho,Atlético Mineiro,6,1,12,2,2,0,8,18,65,7.6,99
+Ronaldo Strada,Bahia,0,0,0,5,1,0,3,2,90,6.8,88
+Everton Ribeiro,Bahia,1,4,8,4,2,0,6,10,75,7.3,95
+Luciano Juba,Bahia,3,2,12,3,2,0,8,15,70,7.4,96
+Willian José,Bahia,5,1,10,2,2,0,7,18,65,7.6,99
+Michel Araújo,Bahia,2,2,14,1,3,0,10,20,60,7.2,94
+Jean Lucas,Bahia,1,3,10,4,2,0,7,12,70,7.1,92
+John,Botafogo,0,0,0,6,1,0,2,3,95,7.4,96
+Alex Telles,Botafogo,2,3,8,5,3,0,9,12,80,7.3,95
+Igor Jesus,Botafogo,5,1,10,2,2,0,7,15,70,7.5,98
+Luiz Henrique,Botafogo,4,2,12,3,2,0,8,18,65,7.4,96
+Thiago Almada,Botafogo,3,4,15,2,1,0,6,20,60,7.6,99
+Isidro Pitta,Red Bull Bragantino,7,1,12,2,2,0,8,18,65,7.6,99
+Eduardo Sasha,Red Bull Bragantino,5,2,10,3,1,0,7,16,70,7.4,96
+Ignacio Laquintana,Red Bull Bragantino,3,1,15,1,2,0,6,20,60,7.2,94
+Helinho,Red Bull Bragantino,4,3,12,2,2,0,8,18,65,7.3,95
+Bruno,Ceará,0,0,0,5,1,0,3,2,90,6.9,90
+Pedro Raúl,Ceará,8,1,8,2,2,0,10,15,70,7.7,100
+Antonio Galeano,Ceará,3,2,12,3,2,0,8,18,65,7.3,95
+Saulo Mineiro,Ceará,5,0,10,2,2,0,7,16,70,7.4,96
+Cássio,Corinthians,0,0,0,5,1,0,2,2,95,7.2,94
+Yuri Alberto,Corinthians,6,2,10,2,2,0,8,16,70,7.6,99
+Memphis Depay,Corinthians,5,1,12,1,2,0,7,20,65,7.4,96
+Angel Romero,Corinthians,3,2,8,3,1,0,6,15,70,7.1,92
+Rodrigo Garro,Corinthians,2,4,10,4,2,0,7,12,75,7.3,95
+Kaio Jorge,Cruzeiro,15,5,15,2,3,0,10,20,75,8.0,104
+Matheus Pereira,Cruzeiro,5,6,12,3,2,0,8,18,70,7.8,101
+Christian,Cruzeiro,2,2,10,4,3,0,9,16,65,7.3,95
+Walace,Cruzeiro,1,3,8,6,2,0,10,12,80,7.2,94
+Agustín Rossi,Flamengo,0,0,0,5,1,0,2,3,95,7.5,98
+Léo Pereira,Flamengo,2,0,2,8,3,0,10,5,85,7.2,94
+Giorgian de Arrascaeta,Flamengo,10,8,15,3,2,0,7,20,75,8.0,104
+Pedro,Flamengo,9,3,12,2,2,0,8,18,70,7.8,101
+Luiz Araújo,Flamengo,5,2,14,1,3,0,9,22,65,7.2,94
+Bruno Henrique,Flamengo,6,2,12,2,2,0,8,18,70,7.6,99
+Fábio,Fluminense,0,0,0,5,1,0,2,3,95,7.0,91
+Germán Cano,Fluminense,6,1,10,2,2,0,8,16,70,7.6,99
+Kevin Serna,Fluminense,4,2,12,3,2,0,7,18,65,7.3,95
+Keno,Fluminense,3,3,15,2,2,0,8,20,60,7.2,94
+João Ricardo,Fortaleza,0,0,0,4,1,0,2,2,95,7.1,92
+Deyverson,Fortaleza,4,1,10,2,3,0,9,16,70,7.4,96
+Juan Martín Lucero,Fortaleza,5,2,12,2,2,0,8,18,65,7.3,95
+Moisés,Fortaleza,3,3,14,1,2,0,7,20,60,7.2,94
+Weverton,Palmeiras,0,0,0,5,1,0,2,3,95,7.2,94
+José López,Palmeiras,7,2,10,2,2,0,8,16,70,7.6,99
+Vitor Roque,Palmeiras,5,1,12,1,2,0,7,18,65,7.4,96
+Joaquín Piquerez,Palmeiras,2,3,8,5,3,0,9,12,80,7.3,95
+Estêvão,Palmeiras,4,4,15,2,2,0,8,20,60,7.5,98
+Gabriel Brazão,Santos,0,0,0,4,1,0,2,2,95,6.9,90
+Álvaro Barreal,Santos,6,2,12,3,2,0,8,18,65,7.4,96
+Guilherme Augusto,Santos,4,1,10,2,2,0,7,16,70,7.2,94
+Julio Furch,Santos,5,0,8,2,2,0,8,15,70,7.3,95
+Rafael,São Paulo,0,0,0,5,1,0,2,3,95,7.0,91
+André Silva,São Paulo,6,1,10,2,2,0,8,16,70,7.6,99
+Luciano,São Paulo,5,2,12,3,2,0,7,18,65,7.4,96
+Wellington Rato,São Paulo,3,3,14,2,2,0,8,20,60,7.2,94
+Caíque França,Sport Recife,0,0,0,4,1,0,2,2,95,6.8,88
+Lucas Lima,Sport Recife,1,3,8,4,2,0,6,12,75,7.1,92
+Gustavo Coutinho,Sport Recife,5,1,10,2,2,0,8,16,70,7.4,96
+Chico Ramos,Sport Recife,2,2,8,5,3,0,9,12,80,7.0,91
+Pablo Vegetti,Vasco da Gama,12,1,10,2,2,0,8,16,70,7.8,101
+Rayan Rocha,Vasco da Gama,6,2,12,3,2,0,7,18,65,7.4,96
+Nuno Moreira,Vasco da Gama,4,1,10,2,2,0,8,16,70,7.2,94
+Philippe Coutinho,Vasco da Gama,3,4,15,2,2,0,8,20,60,7.5,98
+Lucas Arcanjo,Vitória,0,0,0,4,1,0,2,2,95,6.9,90
+Renato Kayzer,Vitória,8,1,10,2,2,0,8,16,70,7.7,100
+Alerrandro,Vitória,5,1,12,2,2,0,7,18,65,7.4,96
+Willean Lepo,Vitória,2,2,8,5,3,0,9,12,80,7.1,92
+Bento,Grêmio,0,0,0,5,1,0,2,3,95,7.0,91
+Nathan Fernandes,Grêmio,4,1,12,2,2,0,8,18,65,7.3,95
+Franco Cristaldo,Grêmio,3,3,10,3,2,0,7,16,70,7.2,94
+Martin Braithwaite,Grêmio,5,1,8,2,2,0,8,15,70,7.4,96
+Weverton,Internacional,0,0,0,4,1,0,2,2,95,6.9,90
+Rafael Santos Borré,Internacional,6,2,10,2,2,0,8,16,70,7.6,99
+Wesley Teixeira,Internacional,2,1,8,5,3,0,9,12,80,7.1,92
+Bruno Tabata,Internacional,3,2,12,2,2,0,7,18,65,7.3,95
+Walter,Mirassol,0,0,0,5,1,0,2,3,95,7.0,91
+Reinaldo,Mirassol,3,2,8,5,2,0,9,12,80,7.7,100
+Chico,Mirassol,4,1,10,2,2,0,8,16,70,7.3,95
+Gabriel,Mirassol,2,3,12,3,2,0,7,18,65,7.2,94
+Igor Formiga,Juventude,2,2,8,5,2,0,9,12,80,8.1,105
+Gabriel Taliari,Juventude,5,1,12,2,2,0,7,18,65,7.4,96
+Enmerson Batalla,Juventude,4,1,10,2,2,0,8,16,70,7.2,94
+Jadson,Juventude,2,3,8,4,2,0,7,12,75,7.1,92
