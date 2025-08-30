@@ -6,4 +6,6 @@ class User < ApplicationRecord
 
   has_many :teams, dependent: :destroy
   has_one :wallet, dependent: :destroy
+  
+
 end
