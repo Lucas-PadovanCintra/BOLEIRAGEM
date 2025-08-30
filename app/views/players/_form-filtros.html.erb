@@ -1,0 +1,46 @@
+<div class="filter-form-container" style="display: none;" data-players-form-target="filterFormContainer">
+  <%= search_form_for q, url: players_path, method: :get, id: "filter-form" do |f| %>
+    <div class="mb-3">
+      <label for="filter_type" class="form-label">Tipo de Filtro</label>
+      <%= select_tag :filter_type,
+                     options_for_select([
+                       ['Todos os Jogadores', 'all'],
+                       ['Disponíveis', 'available'],
+                       ['Contratados', 'contracted'],
+                       ['Nome', 'name'],
+                       ['Time Real', 'real_team_name'],
+                       ['Rating (mínimo)', 'rating'],
+                       ['Preço (mínimo)', 'price'],
+                     ]),
+                     class: "form-select", id: "filter-type-select",
+                     data: { players_form_target: "filterTypeSelect", action: "change->players-form#updateInputs"} %>
+    </div>
+
+    <div class="filter-inputs" style="display: none;" data-players-form-target="filterInputs">
+      <div class="mb-3 filter-input" data-filter="name" data-players-form-target="filterInput">
+        <%= f.label :name_cont, "Nome", class: "form-label" %>
+        <%= f.search_field :name_cont, class: "form-control" %>
+      </div>
+      <div class="mb-3 filter-input" data-filter="real_team_name" data-players-form-target="filterInput">
+        <%= f.label :real_team_name_cont, "Time Real", class: "form-label" %>
+        <%= f.search_field :real_team_name_cont, class: "form-control" %>
+      </div>
+      <div class="mb-3 filter-input" data-filter="rating" data-players-form-target="filterInput">
+        <%= f.label :rating_gteq, "Rating (mínimo)", class: "form-label" %>
+        <%= f.number_field :rating_gteq, class: "form-control", step: "0.1" %>
+      </div>
+      <div class="mb-3 filter-input" data-filter="price" data-players-form-target="filterInput">
+        <%= f.label :price_gteq, "Preço (mínimo)", class: "form-label" %>
+        <%= f.number_field :price_gteq, class: "form-control" %>
+      </div>
+      <div class="mb-3 filter-input" data-filter="contracted">
+        <%= f.hidden_field :is_on_market_eq, value: "" %>
+      </div>
+      <div class="mb-3 filter-input" data-filter="available">
+        <%= f.hidden_field :is_on_market_eq, value: "" %>
+      </div>
+    </div>
+
+    <%= f.submit "Filtrar", class: "btn btn-primary" %>
+  <% end %>
+</div>

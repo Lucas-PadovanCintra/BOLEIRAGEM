@@ -53,7 +53,7 @@ gem "font-awesome-sass", "~> 6.1"
 gem "sassc-rails"
 gem 'ransack'
 gem 'kaminari'
-gem 'will_paginate'
+gem 'will_paginate', '~> 4.0'
 
 group :development, :test do
   gem "dotenv-rails"

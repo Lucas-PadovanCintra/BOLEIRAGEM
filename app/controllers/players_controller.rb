@@ -1,10 +1,26 @@
+require 'will_paginate/active_record'
+
 class PlayersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_player, only: [:show, :edit, :update, :destroy]
 
   def index
-    @q = Player.where(is_on_market: true).ransack(params[:q]) # Filtra apenas disponíveis
-    @players = @q.result(distinct: true).page(params[:page]) # .order(name: :asc) .per(20)
+    q_params = params[:q]&.permit! || {} # garante que q_params sempre seja um hash permitido
+
+    @q = Player.ransack(q_params)
+
+    if params[:filter_type]
+      case params[:filter_type]
+      when 'all'
+        @q = Player.ransack({}) # Remove todos os filtros
+      when 'available'
+        @q = Player.ransack(is_on_market_eq: true)
+      when 'contracted'
+        @q = Player.ransack(is_on_market_eq: false)
+      end
+    end
+
+    @players = @q.result(distinct: true).page(params[:page] || 1)
   end
 
   def show

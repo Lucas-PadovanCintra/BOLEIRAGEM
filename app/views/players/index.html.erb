@@ -4,8 +4,10 @@
     <h1 class="h2 fw-bold text-dark">Mercado de Jogadores</h1>
   </div>
 
-  <div class="mb-4">
-    <button id="filter-button" class="btn btn-outline-primary">Filtros</button>
+  <div class="mb-4" data-controller="players-form">
+    <button id="filter-button" class="btn btn-outline-primary"
+    data-players-form-target="filterButton"
+    data-action="click->players-form#toggleForm">Filtros</button>
     <%= render partial: 'form-filtros', locals: { q: @q } %>
   </div>
 

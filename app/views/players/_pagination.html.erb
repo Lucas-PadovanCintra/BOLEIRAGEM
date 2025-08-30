@@ -1,0 +1,33 @@
+<% if players.present? && players.respond_to?(:total_pages) && players.total_pages > 1 %>
+  <nav aria-label="Paginação de jogadores" class="d-flex justify-content-center mt-4">
+    <ul class="pagination">
+      <!-- Botão "Primeira Página" -->
+      <li class="page-item <%= 'disabled' if players.current_page == 1 %>">
+        <%= link_to_unless players.current_page == 1, raw('<i class="bi bi-chevron-double-left"></i>'), players_path(page: 1, q: params[:q]), class: "page-link btn btn-outline-primary rounded-pill mx-1", title: "Primeira Página" %>
+      </li>
+
+      <!-- Botão "Página Anterior" -->
+      <li class="page-item <%= 'disabled' if players.current_page == 1 %>">
+        <%= link_to_unless players.current_page == 1, raw('<i class="bi bi-chevron-left"></i>'), players_path(page: players.current_page - 1, q: params[:q]) ,class: "page-link btn btn-outline-primary rounded-pill mx-1", title: "Página Anterior" %>
+      </li>
+
+      <!-- Números das Páginas -->
+      <% (players.current_page - 2..players.current_page + 2).each do |page| %>
+        <% next if page < 1 || page > players.total_pages %>
+        <li class="page-item <%= 'active' if page == players.current_page %>">
+          <%= link_to page, players_path(page: page, q: params[:q]), class: "page-link btn btn-outline-primary rounded-pill mx-1" %>
+        </li>
+      <% end %>
+
+      <!-- Botão "Próxima Página" -->
+      <li class="page-item <%= 'disabled' if players.current_page == players.total_pages %>">
+        <%= link_to_next_page players, raw('<i class="bi bi-chevron-right"></i>'), class: "page-link btn btn-outline-primary rounded-pill mx-1", title: "Próxima Página" %>
+      </li>
+
+      <!-- Botão "Última Página" -->
+      <li class="page-item <%= 'disabled' if players.current_page == players.total_pages %>">
+        <%= link_to_unless players.current_page == players.total_pages, raw('<i class="bi bi-chevron-double-right"></i>'), players_path(page: players.total_pages, q: params[:q]), class: "page-link btn btn-outline-primary rounded-pill mx-1", title: "Última Página" %>
+      </li>
+    </ul>
+  </nav>
+<% end %>
