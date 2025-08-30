@@ -10,15 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_08_23_180439) do
+ActiveRecord::Schema[7.1].define(version: 2025_08_29_035519) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "homes", force: :cascade do |t|
-    t.string "index"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "match_teams", force: :cascade do |t|
     t.bigint "match_id", null: false
@@ -50,15 +44,24 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_23_180439) do
   end
 
   create_table "players", force: :cascade do |t|
-    t.integer "api_id", null: false
     t.string "name", null: false
     t.integer "rating", null: false
     t.integer "price", null: false
     t.boolean "is_on_market", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["api_id"], name: "index_players_on_api_id", unique: true
+    t.string "real_team_name"
+    t.integer "goals"
+    t.integer "assists"
+    t.integer "successful_dribbles"
+    t.integer "interceptions"
+    t.integer "yellow_cards"
+    t.integer "red_cards"
+    t.integer "faults_committed"
+    t.integer "loss_of_possession"
+    t.integer "frequency_in_field"
     t.index ["is_on_market"], name: "index_players_on_is_on_market"
+    t.index ["real_team_name"], name: "index_players_on_real_team_name"
   end
 
   create_table "teams", force: :cascade do |t|
