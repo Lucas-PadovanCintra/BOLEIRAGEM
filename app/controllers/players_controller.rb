@@ -3,8 +3,8 @@ class PlayersController < ApplicationController
   before_action :set_player, only: [:show, :edit, :update, :destroy]
 
   def index
-    @q = Player.where(is_on_market: true).ransack(params[:q])  # Filtra apenas disponíveis
-    @players = @q.result(distinct: true).order(name: :asc).page(params[:page])  # .per(20)
+    @q = Player.where(is_on_market: true).ransack(params[:q]) # Filtra apenas disponíveis
+    @players = @q.result(distinct: true).page(params[:page]) # .order(name: :asc) .per(20)
   end
 
   def show
@@ -47,6 +47,6 @@ class PlayersController < ApplicationController
   end
 
   def player_params
-    params.require(:player).permit(:api_id, :name, :rating, :price, :is_on_market)
+    params.require(:player).permit(:assists, :faults_committed, :frequency_in_field, :goals, :interceptions, :is_on_market, :loss_of_possession, :name, :price, :rating, :real_team_name, :red_cards, :successful_dribbles, :yellow_cards)
   end
 end
