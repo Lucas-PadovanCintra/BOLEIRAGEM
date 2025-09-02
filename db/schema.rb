@@ -14,6 +14,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_30_192025) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "homes", force: :cascade do |t|
+    t.string "index"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "match_teams", force: :cascade do |t|
     t.bigint "match_id", null: false
     t.bigint "team_id", null: false
@@ -89,7 +95,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_30_192025) do
     t.integer "balance"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_wallets_on_user_id"
+    t.index ["user_id"], name: "index_wallets_on_user_id", unique: true
   end
 
   add_foreign_key "match_teams", "matches"

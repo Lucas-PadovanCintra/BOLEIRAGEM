@@ -13,7 +13,7 @@
         <% if user_signed_in? %>
           <li class="nav-item">
             <%= link_to "#", class: "nav-link" do %>
-              <i class="fa-solid fa-coins"> <%= current_user.wallet.balance %></i>
+              <i class="fa-solid fa-coins"> <%= current_user.wallet&.balance || 0 %></i>
             <% end %>
           </li>
           <li class="nav-item active">
