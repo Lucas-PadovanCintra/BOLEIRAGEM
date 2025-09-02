@@ -84,10 +84,15 @@
               <td>
                 <% if player.is_on_market %>
                   <span class="badge bg-success">Disponível</span>
-                  <%= link_to 'Contratar', new_player_contract_path(player_id: player.id), class: "btn btn-sm btn-success" %>
+                  <% if current_user.wallet&.balance && current_user.wallet.balance >= player.price %>
+                    <%= button_to 'Contratar', purchase_player_path(player), method: :post, class: "btn btn-sm btn-success", 
+                        confirm: "Confirmar contratação de #{player.name} por $#{player.price}? Seu saldo atual é $#{current_user.wallet&.balance || 0}." %>
+                  <% else %>
+                    <button class="btn btn-sm btn-secondary" disabled>Saldo Insuficiente</button>
+                  <% end %>
                 <% else %>
                   <span class="badge bg-danger">Contratado por:</span>
-                  <%= player.player_contracts.where(is_expired: false).first.team.name %>
+                  <%= player.player_contracts.where(is_expired: false).first&.team&.name || 'Time desconhecido' %>
                 <% end %>
               </td>
             </tr>

@@ -14,6 +14,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_02_213940) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "homes", force: :cascade do |t|
+    t.string "index"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "match_teams", force: :cascade do |t|
     t.bigint "match_id", null: false
     t.bigint "team_id", null: false
