@@ -124,7 +124,6 @@
             <div class="col-12">
               <div class="d-flex justify-content-between">
                 <span class="text-muted">API ID:</span>
-                <span class="fw-medium"><%= @player_contract.player.api_id %></span>
               </div>
             </div>
             <div class="col-12">
@@ -204,8 +203,8 @@
                 Re-sign Player
               </button>
             <% end %>
-            <%= link_to "Delete Contract", @player_contract, 
-                data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this contract?" }, 
+            <%= link_to "Delete Contract", @player_contract,
+                data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this contract?" },
                 class: "btn btn-outline-danger" %>
           </div>
         </div>

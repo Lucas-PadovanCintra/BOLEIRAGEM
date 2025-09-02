@@ -41,7 +41,7 @@
                   <div class="card-body py-2">
                     <strong><%= @player_contract.player.name %></strong>
                     <br>
-                    <small class="text-muted">Rating: <%= @player_contract.player.rating %> | API ID: <%= @player_contract.player.api_id %></small>
+                    <small class="text-muted">Rating: <%= @player_contract.player.rating %></small>
                   </div>
                 </div>
                 <small class="form-text text-muted">Jogador vinculado ao contrato</small>
@@ -70,7 +70,7 @@
               <!-- Matches Played -->
               <div class="col-md-6">
                 <%= form.label :matches_played, "Partidas Jogadas", class: "form-label fw-medium required" %>
-                <%= form.number_field :matches_played, 
+                <%= form.number_field :matches_played,
                     class: "form-control #{'is-invalid' if @player_contract.errors[:matches_played].any?}",
                     placeholder: "0",
                     required: true,
@@ -89,7 +89,7 @@
               <!-- Contract Length -->
               <div class="col-md-6">
                 <%= form.label :contract_length, "Duração do Contrato", class: "form-label fw-medium required" %>
-                <%= form.number_field :contract_length, 
+                <%= form.number_field :contract_length,
                     class: "form-control #{'is-invalid' if @player_contract.errors[:contract_length].any?}",
                     placeholder: "5",
                     required: true,
@@ -110,11 +110,11 @@
                 <label class="form-label fw-medium">Progresso do Contrato</label>
                 <div class="progress mb-2" style="height: 25px;">
                   <% progress = (@player_contract.matches_played.to_f / [@player_contract.contract_length, 1].max * 100).round(1) %>
-                  <div class="progress-bar <%= progress >= 100 ? 'bg-danger' : 'bg-success' %>" 
-                       role="progressbar" 
+                  <div class="progress-bar <%= progress >= 100 ? 'bg-danger' : 'bg-success' %>"
+                       role="progressbar"
                        style="width: <%= [progress, 100].min %>%"
-                       aria-valuenow="<%= progress %>" 
-                       aria-valuemin="0" 
+                       aria-valuenow="<%= progress %>"
+                       aria-valuemin="0"
                        aria-valuemax="100">
                     <%= progress %>%
                   </div>
@@ -136,7 +136,7 @@
 
               <div class="col-12">
                 <div class="form-check form-switch">
-                  <%= form.check_box :is_expired, 
+                  <%= form.check_box :is_expired,
                       class: "form-check-input #{'is-invalid' if @player_contract.errors[:is_expired].any?}",
                       id: "is_expired_switch"
                   %>
@@ -158,7 +158,7 @@
                 <div class="d-flex gap-2 justify-content-end flex-wrap">
                   <%= form.submit "Salvar Alterações", class: "btn btn-success" %>
                   <%= link_to "Cancelar", player_contract_path(@player_contract), class: "btn btn-outline-secondary" %>
-                  <%= link_to "Excluir Contrato", @player_contract, 
+                  <%= link_to "Excluir Contrato", @player_contract,
                       data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir este contrato? Esta ação não pode ser desfeita e liberará o jogador para outros times." },
                       class: "btn btn-outline-danger" %>
                 </div>
@@ -221,7 +221,7 @@
     function checkExpiration() {
       const matches = parseInt(matchesField.value) || 0;
       const length = parseInt(lengthField.value) || 0;
-      
+
       if (matches >= length && length > 0) {
         expiredCheckbox.checked = true;
       }
