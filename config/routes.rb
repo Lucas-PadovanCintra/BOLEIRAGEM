@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   root to: "pages#home"
 
   resources :teams
-  resources :players
+  resources :players do
+    member do
+      post :purchase
+    end
+  end
   resources :matches
   resources :player_contracts
   resources :wallets, only: [:show, :update]

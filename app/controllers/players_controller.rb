@@ -2,7 +2,7 @@ require 'will_paginate/active_record'
 
 class PlayersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_player, only: [:show, :edit, :update, :destroy]
+  before_action :set_player, only: [:show, :edit, :update, :destroy, :purchase]
 
   def index
     q_params = params[:q]&.permit! || {} # garante que q_params sempre seja um hash permitido
@@ -54,6 +54,43 @@ class PlayersController < ApplicationController
   def destroy
     @player.destroy
     redirect_to players_url, notice: 'Player was successfully deleted.'
+  end
+
+  def purchase
+    unless @player.is_on_market?
+      redirect_to players_path, alert: 'Este jogador não está disponível no mercado.'
+      return
+    end
+
+    user_team = current_user.teams.first
+    unless user_team
+      redirect_to players_path, alert: 'Você precisa ter um time para contratar jogadores.'
+      return
+    end
+
+    user_wallet = current_user.wallet
+    unless user_wallet&.balance && user_wallet.balance >= @player.price
+      redirect_to players_path, alert: 'Saldo insuficiente para contratar este jogador.'
+      return
+    end
+
+    ActiveRecord::Base.transaction do
+      user_wallet.update!(balance: user_wallet.balance - @player.price)
+      
+      PlayerContract.create!(
+        player: @player,
+        team: user_team,
+        matches_played: 0,
+        contract_length: 5,
+        is_expired: false
+      )
+      
+      @player.update!(is_on_market: false)
+    end
+
+    redirect_to players_path, notice: "#{@player.name} foi contratado com sucesso!"
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_to players_path, alert: "Erro ao contratar jogador: #{e.message}"
   end
 
   private
