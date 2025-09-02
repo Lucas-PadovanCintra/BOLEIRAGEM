@@ -11,15 +11,14 @@
 require 'csv'
 
 puts "Deleting players..."
-
 Player.destroy_all
 
 puts "Creating players..."
-
 CSV.foreach(Rails.root.join('db/players.csv'), headers: true) do |row|
   Player.create!(
     name: row['name'],
     real_team_name: row['real_team_name'],
+    position: row['position'],
     goals: row['goals'].to_i,
     assists: row['assists'].to_i,
     successful_dribbles: row['successful_dribbles'].to_i,

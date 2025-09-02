@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_08_30_192025) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_02_213940) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -60,6 +60,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_30_192025) do
     t.integer "faults_committed"
     t.integer "loss_of_possession"
     t.integer "frequency_in_field"
+    t.string "position"
     t.index ["is_on_market"], name: "index_players_on_is_on_market"
     t.index ["real_team_name"], name: "index_players_on_real_team_name"
   end
@@ -89,7 +90,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_30_192025) do
     t.integer "balance"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_wallets_on_user_id"
+    t.index ["user_id"], name: "index_wallets_on_user_id", unique: true
   end
 
   add_foreign_key "match_teams", "matches"

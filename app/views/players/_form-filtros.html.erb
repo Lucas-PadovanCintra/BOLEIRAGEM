@@ -9,6 +9,7 @@
                        ['Contratados', 'contracted'],
                        ['Nome', 'name'],
                        ['Time Real', 'real_team_name'],
+                       ['Posição', 'position'],
                        ['Rating (mínimo)', 'rating'],
                        ['Preço (mínimo)', 'price'],
                      ]),
@@ -24,6 +25,10 @@
       <div class="mb-3 filter-input" data-filter="real_team_name" data-players-form-target="filterInput">
         <%= f.label :real_team_name_cont, "Time Real", class: "form-label" %>
         <%= f.search_field :real_team_name_cont, class: "form-control" %>
+      </div>
+      <div class="mb-3 filter-input" data-filter="position" data-players-form-target="filterInput">
+        <%= f.label :position_cont, "Posição", class: "form-label" %>
+        <%= f.search_field :position_cont, class: "form-control" %>
       </div>
       <div class="mb-3 filter-input" data-filter="rating" data-players-form-target="filterInput">
         <%= f.label :rating_gteq, "Rating (mínimo)", class: "form-label" %>

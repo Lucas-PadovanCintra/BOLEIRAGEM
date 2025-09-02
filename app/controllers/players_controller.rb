@@ -63,6 +63,6 @@ class PlayersController < ApplicationController
   end
 
   def player_params
-    params.require(:player).permit(:assists, :faults_committed, :frequency_in_field, :goals, :interceptions, :is_on_market, :loss_of_possession, :name, :price, :rating, :real_team_name, :red_cards, :successful_dribbles, :yellow_cards)
+    params.require(:player).permit(:assists, :faults_committed, :frequency_in_field, :goals, :interceptions, :is_on_market, :loss_of_possession, :name, :position, :price, :rating, :real_team_name, :red_cards, :successful_dribbles, :yellow_cards)
   end
 end
