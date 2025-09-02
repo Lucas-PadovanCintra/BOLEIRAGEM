@@ -21,6 +21,7 @@ class WalletsController < ApplicationController
       @wallet = new_wallet
     else
       @wallet = current_user.wallet
+    end
   end
 
   def wallet_params
