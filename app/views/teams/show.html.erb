@@ -64,7 +64,7 @@
                 <%= link_to "Contratar Jogador", new_player_contract_path, class: "btn btn-success btn-sm" %>
               </div>
             </div>
-            
+
             <div class="col-12">
               <% if @team.player_contracts.where(is_expired: false).any? %>
                 <div class="table-responsive">
@@ -83,7 +83,6 @@
                         <tr>
                           <td>
                             <div class="fw-bold text-dark"><%= contract.player.name %></div>
-                            <small class="text-muted">ID: <%= contract.player.api_id %></small>
                           </td>
                           <td class="text-dark">
                             <%= contract.player.rating %>
@@ -137,7 +136,7 @@
                 <%= link_to "Nova Partida", new_match_path, class: "btn btn-success btn-sm" %>
               </div>
             </div>
-            
+
             <div class="col-12">
               <% if @team.matches.any? %>
                 <% recent_matches = @team.matches.order(created_at: :desc).limit(5) %>
@@ -170,7 +169,7 @@
                     </div>
                   <% end %>
                 </div>
-                
+
                 <div class="text-center mt-3">
                   <%= link_to "Ver Todas as Partidas", matches_path, class: "btn btn-outline-primary" %>
                 </div>
