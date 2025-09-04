@@ -8,7 +8,15 @@ Rails.application.routes.draw do
       post :purchase
     end
   end
-  resources :matches
+  resources :matches do
+    member do
+      post :simulate
+    end
+    collection do
+      get :new_simulation
+      post :create_simulation
+    end
+  end
   resources :player_contracts
   resources :wallets, only: [:show, :update]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

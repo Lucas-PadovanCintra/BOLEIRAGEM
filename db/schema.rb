@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_02_213940) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_04_210432) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -34,6 +34,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_02_213940) do
     t.string "result"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "team1_score"
+    t.integer "team2_score"
+    t.bigint "winner_team_id"
+    t.boolean "is_simulated", default: false
+    t.json "simulation_stats"
+    t.index ["winner_team_id"], name: "index_matches_on_winner_team_id"
   end
 
   create_table "player_contracts", force: :cascade do |t|
@@ -101,6 +107,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_02_213940) do
 
   add_foreign_key "match_teams", "matches"
   add_foreign_key "match_teams", "teams"
+  add_foreign_key "matches", "teams", column: "winner_team_id"
   add_foreign_key "player_contracts", "players"
   add_foreign_key "player_contracts", "teams"
   add_foreign_key "teams", "users"
