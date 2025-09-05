@@ -5,6 +5,7 @@ Rubens,Atlético Mineiro,lateral-esquerdo,0,2,5,6,2,0,8,7,80,7.1,92
 Gustavo Scarpa,Atlético Mineiro,meia,2,5,10,3,1,0,5,12,75,7.5,98
 Hulk,Atlético Mineiro,atacante,8,3,15,2,3,0,12,20,70,7.8,101
 Paulinho,Atlético Mineiro,atacante,6,1,12,2,2,0,8,18,65,7.6,99
+Marcos Felipe,Bahia,goleiro,0,0,0,5,1,0,2,3,95,7.1,92
 Ronaldo Strada,Bahia,meia,0,0,0,5,1,0,3,2,90,6.8,88
 Everton Ribeiro,Bahia,meia,1,4,8,4,2,0,6,10,75,7.3,95
 Luciano Juba,Bahia,lateral-esquerdo,3,2,12,3,2,0,8,15,70,7.4,96
@@ -16,54 +17,65 @@ Alex Telles,Botafogo,lateral-esquerdo,2,3,8,5,3,0,9,12,80,7.3,95
 Igor Jesus,Botafogo,atacante,5,1,10,2,2,0,7,15,70,7.5,98
 Luiz Henrique,Botafogo,atacante,4,2,12,3,2,0,8,18,65,7.4,96
 Thiago Almada,Botafogo,meia,3,4,15,2,1,0,6,20,60,7.6,99
+Gabriel Paulista,Botafogo,zagueiro,0,1,1,7,4,0,8,4,80,7.1,91
+Caio Mello,Botafogo,volante,2,2,7,5,3,0,9,11,70,7.4,96
 Isidro Pitta,Red Bull Bragantino,atacante,7,1,12,2,2,0,8,18,65,7.6,99
 Eduardo Sasha,Red Bull Bragantino,atacante,5,2,10,3,1,0,7,16,70,7.4,96
 Ignacio Laquintana,Red Bull Bragantino,meia,3,1,15,1,2,0,6,20,60,7.2,94
 Helinho,Red Bull Bragantino,atacante,4,3,12,2,2,0,8,18,65,7.3,95
-Bruno,Ceará,zagueiro,0,0,0,5,1,0,3,2,90,6.9,90
+Giva,Red Bull Bragantino,volante,1,1,6,7,2,0,8,10,75,7.2,94
+João Ricardo,Ceará,goleiro,0,0,0,4,1,0,2,2,95,7.1,92
 Pedro Raúl,Ceará,atacante,8,1,8,2,2,0,10,15,70,7.7,100
 Antonio Galeano,Ceará,atacante,3,2,12,3,2,0,8,18,65,7.3,95
 Saulo Mineiro,Ceará,atacante,5,0,10,2,2,0,7,16,70,7.4,96
+Mateus Sarará,Ceará,volante,1,2,6,7,3,0,9,10,75,7.3,95
 Cássio,Corinthians,goleiro,0,0,0,5,1,0,2,2,95,7.2,94
 Yuri Alberto,Corinthians,atacante,6,2,10,2,2,0,8,16,70,7.6,99
 Memphis Depay,Corinthians,atacante,5,1,12,1,2,0,7,20,65,7.4,96
 Angel Romero,Corinthians,atacante,3,2,8,3,1,0,6,15,70,7.1,92
 Rodrigo Garro,Corinthians,meia,2,4,10,4,2,0,7,12,75,7.3,95
-Kaio Jorge,Cruzeiro,atacante,15,5,15,2,3,0,10,20,75,8.0,104
-Matheus Pereira,Cruzeiro,meia,5,6,12,3,2,0,8,18,70,7.8,101
-Christian,Cruzeiro,meia,2,2,10,4,3,0,9,16,65,7.3,95
-Walace,Cruzeiro,volante,1,3,8,6,2,0,10,12,80,7.2,94
+Nathan,Corinthians,volante,1,3,4,6,2,0,7,8,75,7.1,93
 Agustín Rossi,Flamengo,goleiro,0,0,0,5,1,0,2,3,95,7.5,98
 Léo Pereira,Flamengo,zagueiro,2,0,2,8,3,0,10,5,85,7.2,94
 Giorgian de Arrascaeta,Flamengo,meia,10,8,15,3,2,0,7,20,75,8.0,104
 Pedro,Flamengo,atacante,9,3,12,2,2,0,8,18,70,7.8,101
 Luiz Araújo,Flamengo,atacante,5,2,14,1,3,0,9,22,65,7.2,94
 Bruno Henrique,Flamengo,atacante,6,2,12,2,2,0,8,18,70,7.6,99
+Gabigol,Flamengo,atacante,10,2,12,2,3,0,10,20,70,7.8,102
 Fábio,Fluminense,goleiro,0,0,0,5,1,0,2,3,95,7.0,91
 Germán Cano,Fluminense,atacante,6,1,10,2,2,0,8,16,70,7.6,99
 Kevin Serna,Fluminense,atacante,4,2,12,3,2,0,7,18,65,7.3,95
 Keno,Fluminense,atacante,3,3,15,2,2,0,8,20,60,7.2,94
-João Ricardo,Fortaleza,goleiro,0,0,0,4,1,0,2,2,95,7.1,92
-Deyverson,Fortaleza,atacante,4,1,10,2,3,0,9,16,70,7.4,96
-Juan Martín Lucero,Fortaleza,atacante,5,2,12,2,2,0,8,18,65,7.3,95
-Moisés,Fortaleza,atacante,3,3,14,1,2,0,7,20,60,7.2,94
 Weverton,Palmeiras,goleiro,0,0,0,5,1,0,2,3,95,7.2,94
 José López,Palmeiras,atacante,7,2,10,2,2,0,8,16,70,7.6,99
 Vitor Roque,Palmeiras,atacante,5,1,12,1,2,0,7,18,65,7.4,96
 Joaquín Piquerez,Palmeiras,lateral-esquerdo,2,3,8,5,3,0,9,12,80,7.3,95
 Estêvão,Palmeiras,atacante,4,4,15,2,2,0,8,20,60,7.5,98
+Michel,Palmeiras,zagueiro,0,1,1,7,4,0,8,4,80,7.0,90
+Danilo,Palmeiras,volante,2,3,8,6,2,0,10,12,80,7.5,98
+Caio Paulista,Palmeiras,lateral-esquerdo,2,3,8,5,3,0,9,12,80,7.3,95
 Gabriel Brazão,Santos,goleiro,0,0,0,4,1,0,2,2,95,6.9,90
 Álvaro Barreal,Santos,meia,6,2,12,3,2,0,8,18,65,7.4,96
 Guilherme Augusto,Santos,atacante,4,1,10,2,2,0,7,16,70,7.2,94
 Julio Furch,Santos,atacante,5,0,8,2,2,0,8,15,70,7.3,95
+Alexis Duarte,Santos,zagueiro,1,0,2,6,3,0,7,5,85,7.2,92
+Tomás Rincón,Santos,volante,0,1,4,8,4,1,10,8,70,7.2,94
 Rafael,São Paulo,goleiro,0,0,0,5,1,0,2,3,95,7.0,91
 André Silva,São Paulo,atacante,6,1,10,2,2,0,8,16,70,7.6,99
 Luciano,São Paulo,atacante,5,2,12,3,2,0,7,18,65,7.4,96
 Wellington Rato,São Paulo,meia,3,3,14,2,2,0,8,20,60,7.2,94
+Arboleda,São Paulo,zagueiro,1,0,2,8,5,0,9,5,85,7.3,93
+Luiz Gustavo,São Paulo,volante,1,2,6,7,3,0,9,10,75,7.3,95
+Raí Ramos,São Paulo,lateral-direito,2,3,8,5,3,0,9,12,80,7.3,95
 Caíque França,Sport Recife,goleiro,0,0,0,4,1,0,2,2,95,6.8,88
 Lucas Lima,Sport Recife,meia,1,3,8,4,2,0,6,12,75,7.1,92
 Gustavo Coutinho,Sport Recife,atacante,5,1,10,2,2,0,8,16,70,7.4,96
-Chico Ramos,Sport Recife,meia,2,2,8,5,3,0,9,12,80,7.0,91
+Chico Ramos,Sport Recife,volante,2,2,8,5,3,0,9,12,80,7.0,91
+Rafael Thyere,Sport Recife,zagueiro,1,0,2,7,4,0,8,4,85,7.0,90
+João Silva,Sport Recife,zagueiro,0,0,3,8,5,1,9,5,80,7.1,91
+Lucas Cunha,Sport Recife,zagueiro,1,1,2,6,3,0,7,4,85,7.2,92
+Renzo,Sport Recife,zagueiro,0,0,1,7,4,0,8,5,80,7.0,90
+Ramon,Sport Recife,zagueiro,1,0,2,6,3,0,7,5,85,7.2,92
 Pablo Vegetti,Vasco da Gama,atacante,12,1,10,2,2,0,8,16,70,7.8,101
 Rayan Rocha,Vasco da Gama,atacante,6,2,12,3,2,0,7,18,65,7.4,96
 Nuno Moreira,Vasco da Gama,atacante,4,1,10,2,2,0,8,16,70,7.2,94
@@ -76,6 +88,7 @@ Bento,Grêmio,goleiro,0,0,0,5,1,0,2,3,95,7.0,91
 Nathan Fernandes,Grêmio,atacante,4,1,12,2,2,0,8,18,65,7.3,95
 Franco Cristaldo,Grêmio,meia,3,3,10,3,2,0,7,16,70,7.2,94
 Martin Braithwaite,Grêmio,atacante,5,1,8,2,2,0,8,15,70,7.4,96
+Diego Costa,Grêmio,atacante,7,1,8,2,4,1,12,18,65,7.5,98
 Weverton,Internacional,goleiro,0,0,0,4,1,0,2,2,95,6.9,90
 Rafael Santos Borré,Internacional,atacante,6,2,10,2,2,0,8,16,70,7.6,99
 Wesley Teixeira,Internacional,atacante,2,1,8,5,3,0,9,12,80,7.1,92
@@ -84,7 +97,79 @@ Walter,Mirassol,goleiro,0,0,0,5,1,0,2,3,95,7.0,91
 Reinaldo,Mirassol,lateral-esquerdo,3,2,8,5,2,0,9,12,80,7.7,100
 Chico,Mirassol,meia,4,1,10,2,2,0,8,16,70,7.3,95
 Gabriel,Mirassol,meia,2,3,12,3,2,0,7,18,65,7.2,94
+Jemmes,Mirassol,zagueiro,1,0,2,6,3,0,7,4,85,7.1,91
+Gabriel K,Mirassol,zagueiro,0,0,1,7,4,0,8,5,80,7.2,92
 Igor Formiga,Juventude,lateral-direito,2,2,8,5,2,0,9,12,80,8.1,105
 Gabriel Taliari,Juventude,atacante,5,1,12,2,2,0,7,18,65,7.4,96
 Enmerson Batalla,Juventude,meia,4,1,10,2,2,0,8,16,70,7.2,94
 Jadson,Juventude,volante,2,3,8,4,2,0,7,12,75,7.1,92
+Kaio Jorge,Cruzeiro,atacante,15,5,15,2,3,0,10,20,75,8.0,104
+Matheus Pereira,Cruzeiro,meia,5,6,12,3,2,0,8,18,70,7.8,101
+Christian,Cruzeiro,meia,2,2,10,4,3,0,9,16,65,7.3,95
+Walace,Cruzeiro,volante,1,3,8,6,2,0,10,12,80,7.2,94
+Léo Ortiz,Flamengo,zagueiro,0,0,1,8,5,0,9,4,80,7.3,93
+Cleiton,Flamengo,zagueiro,1,0,2,6,3,0,7,5,85,7.1,91
+Marlon,América,lateral-esquerdo,1,2,8,5,2,0,9,12,80,7.3,95
+Samuel Alves,América,lateral-direito,2,2,8,5,2,0,9,12,80,8.1,105
+Mariano,América,lateral-direito,2,2,8,5,2,0,9,12,80,7.3,95
+Juninho,Bahia,zagueiro,1,0,2,7,3,0,8,5,85,7.2,93
+Gil,Bahia,zagueiro,0,1,1,8,4,0,9,4,80,7.1,91
+Marcos Victor,Bahia,lateral-esquerdo,2,2,7,5,2,0,8,10,80,7.3,94
+Santiago Arias,Bahia,lateral-direito,2,3,8,5,3,0,9,12,80,7.4,96
+Gregore,Botafogo,volante,1,2,6,7,3,0,9,10,75,7.2,94
+Marlon Gomes,Botafogo,lateral-esquerdo,2,2,8,5,2,0,9,12,80,7.3,95
+Vitinho,Red Bull Bragantino,atacante,5,2,10,2,2,0,7,16,70,7.5,98
+Ramires,Red Bull Bragantino,volante,1,3,6,6,2,0,8,10,75,7.2,94
+Jhon Jhon,Ceará,meia,2,3,10,3,2,0,7,12,75,7.3,95
+Erick,Ceará,lateral-esquerdo,2,2,8,5,2,0,9,12,80,7.3,94
+Ramon Menezes,Ceará,zagueiro,1,0,2,7,3,0,8,5,85,7.2,92
+Charles,Corinthians,volante,1,2,6,7,3,0,9,10,75,7.3,94
+André Ramalho,Corinthians,zagueiro,0,1,1,8,4,0,9,4,80,7.1,91
+Guilherme Arana,Atlético Mineiro,lateral-esquerdo,2,3,8,5,3,0,9,12,80,7.4,96
+Mariano Ferreira,Atlético Mineiro,lateral-direito,2,2,8,5,2,0,9,12,80,7.3,95
+Otávio,Atlético Mineiro,volante,1,2,6,7,3,0,9,10,75,7.2,94
+William,Cruzeiro,zagueiro,1,0,2,7,3,0,8,5,85,7.2,92
+Lucas Villalba,Cruzeiro,lateral-esquerdo,2,2,8,5,2,0,9,12,80,7.3,94
+Lucas Romero,Cruzeiro,volante,1,3,6,6,2,0,8,10,75,7.2,94
+Wesley,Flamengo,lateral-direito,2,2,8,5,2,0,9,12,80,7.3,95
+Gerson,Flamengo,volante,2,3,8,6,2,0,10,12,80,7.5,98
+Thiago Mendes,Fluminense,volante,1,2,6,7,3,0,9,10,75,7.3,94
+Diogo Barbosa,Fluminense,lateral-esquerdo,2,2,8,5,2,0,9,12,80,7.3,94
+Marquinhos Gabriel,Fortaleza,meia,3,2,10,3,2,0,7,12,75,7.3,95
+Tinga,Fortaleza,lateral-direito,2,3,8,5,3,0,9,12,80,7.4,96
+Pochettino,Fortaleza,meia,2,3,10,3,2,0,7,12,75,7.3,95
+Murilo,Palmeiras,zagueiro,1,0,2,7,3,0,8,5,85,7.2,92
+Marcos Rocha,Palmeiras,lateral-direito,2,2,8,5,2,0,9,12,80,7.3,95
+Zé Rafael,Palmeiras,volante,1,3,6,6,2,0,8,10,75,7.2,94
+João Pedro,Santos,lateral-direito,2,2,8,5,2,0,9,12,80,7.3,94
+Gil,Santos,zagueiro,0,1,1,8,4,0,9,4,80,7.1,91
+Soteldo,Santos,atacante,4,3,12,2,2,0,8,18,65,7.4,96
+Robert Renan,São Paulo,zagueiro,1,0,2,7,3,0,8,5,85,7.2,92
+Alisson,São Paulo,volante,1,2,6,7,3,0,9,10,75,7.3,94
+Vinicius Balieiro,Santos,volante,1,2,6,7,3,0,9,10,75,7.2,94
+Patryck,São Paulo,lateral-esquerdo,2,2,8,5,2,0,9,12,80,7.3,94
+Chrystian Barletta,Sport Recife,atacante,4,2,10,2,2,0,7,16,70,7.3,95
+Zé Roberto,Sport Recife,lateral-direito,2,2,8,5,2,0,9,12,80,7.3,94
+Lucas Sasha,Sport Recife,volante,1,3,6,6,2,0,8,10,75,7.2,94
+Maicon,Vasco da Gama,zagueiro,1,0,2,7,3,0,8,5,85,7.2,92
+Lucas Piton,Vasco da Gama,lateral-esquerdo,2,3,8,5,3,0,9,12,80,7.4,96
+Dimitri Payet,Vasco da Gama,meia,3,4,12,3,2,0,8,18,70,7.5,98
+Hugo Souza,Vasco da Gama,goleiro,0,0,0,5,1,0,2,3,95,7.0,91
+Juan,Vitória,lateral-esquerdo,2,2,8,5,2,0,9,12,80,7.3,94
+Eduardo,Vitória,zagueiro,1,0,2,7,3,0,8,5,85,7.2,92
+Raúl Cáceres,Vitória,lateral-direito,2,2,8,5,2,0,9,12,80,7.3,94
+Osvaldo,Vitória,atacante,4,2,10,2,2,0,7,16,70,7.3,95
+Geromel,Grêmio,zagueiro,1,0,2,7,3,0,8,5,85,7.2,92
+João Pedro,Grêmio,lateral-direito,2,2,8,5,2,0,9,12,80,7.3,94
+Rodrigo Ely,Grêmio,zagueiro,0,1,1,8,4,0,9,4,80,7.1,91
+Edenilson,Grêmio,volante,1,3,6,6,2,0,8,10,75,7.2,94
+Alan Franco,Internacional,zagueiro,1,0,2,7,3,0,8,5,85,7.2,92
+Vitao,Internacional,zagueiro,0,1,1,8,4,0,9,4,80,7.1,91
+Renê,Internacional,lateral-esquerdo,2,2,8,5,2,0,9,12,80,7.3,94
+Bruno Méndez,Internacional,lateral-direito,2,2,8,5,2,0,9,12,80,7.3,94
+Hyoran,Internacional,meia,3,2,10,3,2,0,7,12,75,7.3,95
+Thiago Maia,Internacional,volante,1,3,6,6,2,0,8,10,75,7.2,94
+Neto,Mirassol,lateral-direito,2,2,8,5,2,0,9,12,80,7.3,94
+Luiz Otávio,Mirassol,zagueiro,1,0,2,7,3,0,8,5,85,7.2,92
+João Victor,Juventude,zagueiro,0,1,1,8,4,0,9,4,80,7.1,91
+Alan Empereur,Juventude,lateral-esquerdo,2,2,8,5,2,0,9,12,80,7.3,94

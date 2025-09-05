@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_04_024041) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_05_180339) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -73,7 +73,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_04_024041) do
 
   create_table "players", force: :cascade do |t|
     t.string "name", null: false
-    t.integer "rating", null: false
+    t.float "rating", null: false
     t.integer "price", null: false
     t.boolean "is_on_market", default: true
     t.datetime "created_at", null: false
