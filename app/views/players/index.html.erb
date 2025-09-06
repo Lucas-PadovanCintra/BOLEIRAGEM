@@ -75,7 +75,7 @@
               </td>
               <td>
                 <div class="d-flex align-items-center">
-                  <span class="fs-5 fw-bold text-primary me-2"><%= player.rating %></span>
+                  <span class="fs-5 fw-bold text-primary me-2"><%= number_with_precision(player.rating, precision: 1) %></span>
                 </div>
               </td>
               <td>
@@ -85,7 +85,7 @@
                 <% if player.is_on_market %>
                   <span class="badge bg-success">Disponível</span>
                   <% if current_user.wallet&.balance && current_user.wallet.balance >= player.price %>
-                    <%= button_to 'Contratar', purchase_player_path(player), method: :post, class: "btn btn-sm btn-success", 
+                    <%= button_to 'Contratar', purchase_player_path(player), method: :post, class: "btn btn-sm btn-success",
                         confirm: "Confirmar contratação de #{player.name} por $#{player.price}? Seu saldo atual é $#{current_user.wallet&.balance || 0}." %>
                   <% else %>
                     <button class="btn btn-sm btn-secondary" disabled>Saldo Insuficiente</button>

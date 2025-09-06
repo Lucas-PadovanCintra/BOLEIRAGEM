@@ -1,5 +1,5 @@
 <!-- Hero Section -->
-<div class="bg-primary text-white py-5 mb-4">
+<div class="hero-banner" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path 'hero-stadium', height: 600, crop: :fill, quality: :auto %>');">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 mx-auto text-center">
@@ -65,55 +65,60 @@
     <div class="col-12 mb-4">
       <h2 class="text-center fw-bold text-dark">Explore a Plataforma</h2>
     </div>
-    
-    <div class="col-md-6 col-lg-3 mb-4">
-      <div class="card h-100 shadow-sm border-0">
-        <div class="card-body text-center p-4">
-          <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-            <i class="fas fa-users fs-4"></i>
+
+    <div class="cards-grid">
+
+      <div class="col-md-6 col-lg-3 mb-4 card-category" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path 'teams-management', height: 300, crop: :fill, quality: :auto %>');">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body text-center p-4" >
+            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+              <i class="fas fa-users fs-4"></i>
+            </div>
+            <h5 class="card-title fw-bold">Times</h5>
+            <p class="card-text">Gerencie seus times, veja detalhes do elenco e acompanhe o desempenho</p>
+            <%= link_to "Ver Times", teams_path, class: "btn btn-primary btn-sm" %>
           </div>
-          <h5 class="card-title fw-bold">Times</h5>
-          <p class="card-text text-muted">Gerencie seus times, veja detalhes do elenco e acompanhe o desempenho</p>
-          <%= link_to "Ver Times", teams_path, class: "btn btn-primary btn-sm" %>
         </div>
       </div>
-    </div>
 
-    <div class="col-md-6 col-lg-3 mb-4">
-      <div class="card h-100 shadow-sm border-0">
-        <div class="card-body text-center p-4">
-          <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-            <i class="fas fa-running fs-4"></i>
+
+
+      <div class="col-md-6 col-lg-3 mb-4 card-category zigzag-down" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path 'players-action', height: 300, crop: :fill, quality: :auto %>');">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body text-center p-4">
+            <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+              <i class="fas fa-running fs-4"></i>
+            </div>
+            <h5 class="card-title fw-bold">Jogadores</h5>
+            <p class="card-text">Navegue pelos jogadores disponíveis, confira avaliações e monte seu elenco</p>
+            <%= link_to "Ver Jogadores", players_path, class: "btn btn-success btn-sm" %>
           </div>
-          <h5 class="card-title fw-bold">Jogadores</h5>
-          <p class="card-text text-muted">Navegue pelos jogadores disponíveis, confira avaliações e monte seu elenco</p>
-          <%= link_to "Ver Jogadores", players_path, class: "btn btn-success btn-sm" %>
         </div>
       </div>
-    </div>
 
-    <div class="col-md-6 col-lg-3 mb-4">
-      <div class="card h-100 shadow-sm border-0">
-        <div class="card-body text-center p-4">
-          <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-            <i class="fas fa-trophy fs-4"></i>
+      <div class="col-md-6 col-lg-3 mb-4 card-category" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path 'matches-stadium', height: 300, crop: :fill, quality: :auto %>');">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body text-center p-4">
+            <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+              <i class="fas fa-trophy fs-4"></i>
+            </div>
+            <h5 class="card-title fw-bold">Partidas</h5>
+            <p class="card-text">Veja resultados das partidas, agende novos jogos e acompanhe seu histórico</p>
+            <%= link_to "Ver Partidas", matches_path, class: "btn btn-warning btn-sm" %>
           </div>
-          <h5 class="card-title fw-bold">Partidas</h5>
-          <p class="card-text text-muted">Veja resultados das partidas, agende novos jogos e acompanhe seu histórico</p>
-          <%= link_to "Ver Partidas", matches_path, class: "btn btn-warning btn-sm" %>
         </div>
       </div>
-    </div>
 
-    <div class="col-md-6 col-lg-3 mb-4">
-      <div class="card h-100 shadow-sm border-0">
-        <div class="card-body text-center p-4">
-          <div class="bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-            <i class="fas fa-file-contract fs-4"></i>
+      <div class="col-md-6 col-lg-3 mb-4 card-category zigzag-down" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path 'contracts-signing', height: 300, crop: :fill, quality: :auto %>');">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body text-center p-4">
+            <div class="bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+              <i class="fas fa-file-contract fs-4"></i>
+            </div>
+            <h5 class="card-title fw-bold">Contratos</h5>
+            <p class="card-text">Gerencie contratos de jogadores, acompanhe datas de vencimento e renovações</p>
+            <%= link_to "Ver Contratos", player_contracts_path, class: "btn btn-info btn-sm" %>
           </div>
-          <h5 class="card-title fw-bold">Contratos</h5>
-          <p class="card-text text-muted">Gerencie contratos de jogadores, acompanhe datas de vencimento e renovações</p>
-          <%= link_to "Ver Contratos", player_contracts_path, class: "btn btn-info btn-sm" %>
         </div>
       </div>
     </div>
@@ -169,7 +174,7 @@
     <!-- Call to Action -->
     <div class="row">
       <div class="col-lg-8 mx-auto text-center">
-        <div class="card bg-light border-0 p-4">
+        <div class="card call-to-action border-0 p-4">
           <div class="card-body">
             <h3 class="fw-bold mb-3">Pronto para Começar sua Jornada no Futebol Fantasy?</h3>
             <p class="mb-4">Junte-se a milhares de técnicos construindo seus times dos sonhos e competindo pela glória!</p>
