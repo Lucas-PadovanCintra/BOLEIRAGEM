@@ -1,0 +1,47 @@
+<div class="container mt-4">
+  <h1>Simular Partida</h1>
+  
+  <%= form_with url: create_simulation_matches_path, method: :post, local: true do |form| %>
+    <div class="row">
+      <div class="col-md-5">
+        <div class="form-group">
+          <%= form.label :team1_id, "Time 1", class: "form-label" %>
+          <%= form.select :team1_id, options_for_select(@teams.map { |t| [t.name, t.id] }), 
+              { prompt: "Selecione o primeiro time" }, 
+              class: "form-select", required: true %>
+        </div>
+      </div>
+      
+      <div class="col-md-2 text-center align-self-center">
+        <h3>VS</h3>
+      </div>
+      
+      <div class="col-md-5">
+        <div class="form-group">
+          <%= form.label :team2_id, "Time 2", class: "form-label" %>
+          <%= form.select :team2_id, options_for_select(@teams.map { |t| [t.name, t.id] }), 
+              { prompt: "Selecione o segundo time" }, 
+              class: "form-select", required: true %>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row mt-4">
+      <div class="col-md-12 text-center">
+        <%= form.submit "Iniciar Simulação", class: "btn btn-primary btn-lg" %>
+        <%= link_to "Cancelar", matches_path, class: "btn btn-secondary btn-lg ms-2" %>
+      </div>
+    </div>
+  <% end %>
+  
+  <div class="mt-5">
+    <h3>Como funciona a simulação?</h3>
+    <ul>
+      <li>A força de cada time é calculada com base nos atributos dos jogadores</li>
+      <li>Ataque: Baseado em gols, assistências e dribles bem-sucedidos</li>
+      <li>Defesa: Baseado em interceptações e posse de bola</li>
+      <li>Meio-campo: Baseado na frequência em campo e rating geral</li>
+      <li>Um fator aleatório é aplicado para tornar o resultado mais realista</li>
+    </ul>
+  </div>
+</div>
