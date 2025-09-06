@@ -5,6 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :teams, dependent: :destroy
+  has_many :match_teams, through: :teams
+  has_many :matches, through: :match_teams
   has_one :wallet, dependent: :destroy
   has_one_attached :profile_photo
   #validates :wallet, presence: true
