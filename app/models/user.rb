@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_many :teams, dependent: :destroy
   has_one :wallet, dependent: :destroy
+  has_one_attached :profile_photo
   #validates :wallet, presence: true
   after_create :create_wallet
 

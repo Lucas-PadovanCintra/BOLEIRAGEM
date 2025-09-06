@@ -13,8 +13,8 @@
         <% if user_signed_in? %>
           <li class="nav-item">
             <%= link_to "#", class: "nav-link" do %>
-              <i class="fa-solid fa-coins"> <%= current_user.wallet&.balance || 0 %></i>
-            <% end %>
+              <i class="fa-solid fa-coins"></i> <%= current_user.wallet&.balance || 0 %>
+              <% end %>
           </li>
           <li class="nav-item active">
             <%= link_to "Início", root_path, class: "nav-link" %>
@@ -33,7 +33,13 @@
           </li>
           <li class="nav-item dropdown">
           <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <%= image_tag "https://kitt.lewagon.com/placeholder/users/ssaunier", class: "avatar", alt: "dropdown menu" %>
+          <% if current_user.profile_photo.attached? %>
+            <%= cl_image_tag current_user.profile_photo.key, height: 80, width: 80, crop: :fill, class: "avatar", alt: "dropdown menu" %>
+          <% else %>
+            <div class="avatar d-flex align-items-center justify-content-center bg-secondary text-white" alt="dropdown menu">
+              <i class="fa-solid fa-user"></i>
+            </div>
+          <% end %>
           </a>
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
               <%= link_to "Perfil", edit_user_registration_path, class: "dropdown-item" %>
