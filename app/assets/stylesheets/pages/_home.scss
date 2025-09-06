@@ -1,1 +1,120 @@
 // Specific CSS for your home-page
+body {
+  background: linear-gradient(to bottom, #F5F5F5 0%, #03611a 100%); // Gradiente cinza claro para vermelho
+}
+
+// Hero Banner
+.hero-banner {
+  background-size: cover;
+  background-position: center;
+  padding: 150px 0;
+  color: white;
+  width: 100vw; // Ocupa toda a largura da tela
+  margin: 0; // Remove margens para garantir largura total
+
+  h1 {
+    margin: 0;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    font-size: 32px;
+    font-weight: bold;
+  }
+
+  .lead, p.mb-4 {
+    font-size: 20px;
+    color: #FFFFFF;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+  }
+}
+
+// Cards Grid
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 24px;
+  justify-content: center; // Centraliza os cards horizontalmente
+
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .card-category {
+    background-size: cover;
+    background-position: center;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    overflow: hidden;
+
+    .card {
+      background-color: transparent; // Remove fundo cinza claro do Bootstrap
+      height: 100%;
+      width: 100%;
+    }
+
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: transparent;
+      color: white;
+      padding: 25px; // Ajustado para caber com ícone 60x60px
+      height: 100%;
+      box-sizing: border-box;
+
+      .rounded-circle {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem; // Ajusta ícone para caber
+        margin-bottom: 6px;
+      }
+
+      h5 {
+        color: white;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        font-size: calc(0.9rem + 0.3vw); // Ajustado para legibilidade
+        margin-bottom: 6px;
+      }
+
+      p.card-text {
+        color: #FFFFFF;
+        justify-content: center;
+        text-align: center;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        font-size: calc(0.7rem + 0.3vw); // Ajustado para caber
+        max-width: 85%; // Evita tocar bordas
+        white-space: normal; // Texto corrido
+        overflow-wrap: break-word; // Quebra palavras
+        line-height: 1.3; // 2-3 linhas
+        margin-bottom: 6px;
+      }
+
+      .btn {
+        font-size: calc(0.6rem + 0.3vw); // Ajusta botão
+        padding: 3px 6px; // Menor para caber
+      }
+    }
+  }
+
+  .zigzag-down {
+    margin-top: 80px; // Aumentado para descer mais
+  }
+}
+
+// Call to Action
+.call-to-action {
+  background-color: #03611a; // Mesmo verde do gradiente
+  color: white;
+
+  h3, p {
+    color: white; // Texto branco para consistência
+  }
+}

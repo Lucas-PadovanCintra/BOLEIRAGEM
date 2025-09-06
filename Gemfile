@@ -56,6 +56,7 @@ gem "sassc-rails"
 gem 'ransack'
 gem 'kaminari'
 gem 'will_paginate', '~> 4.0'
+gem 'cloudinary'
 
 group :development, :test do
   gem "dotenv-rails"

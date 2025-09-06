@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_04_151628) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_05_180339) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -56,6 +56,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_04_151628) do
     t.string "result"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "team1_score"
+    t.integer "team2_score"
+    t.bigint "winner_team_id"
+    t.boolean "is_simulated", default: false
+    t.json "simulation_stats"
+    t.index ["winner_team_id"], name: "index_matches_on_winner_team_id"
   end
 
   create_table "player_contracts", force: :cascade do |t|
@@ -73,7 +79,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_04_151628) do
 
   create_table "players", force: :cascade do |t|
     t.string "name", null: false
-    t.integer "rating", null: false
+    t.float "rating", null: false
     t.integer "price", null: false
     t.boolean "is_on_market", default: true
     t.datetime "created_at", null: false
@@ -118,13 +124,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_04_151628) do
     t.integer "balance"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_wallets_on_user_id"
+    t.index ["user_id"], name: "index_wallets_on_user_id", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "match_teams", "matches"
   add_foreign_key "match_teams", "teams"
+  add_foreign_key "matches", "teams", column: "winner_team_id"
   add_foreign_key "player_contracts", "players"
   add_foreign_key "player_contracts", "teams"
   add_foreign_key "teams", "users"
