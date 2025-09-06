@@ -1,0 +1,5 @@
+<% if @user.profile_photo.attached? %>
+  <%= image_tag @user.profile_photo, alt: 'Foto de perfil', style: 'max-width: 200px;' %>
+<% else %>
+  <p>Sem foto de perfil.</p>
+<% end %>

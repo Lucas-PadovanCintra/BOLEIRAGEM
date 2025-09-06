@@ -79,8 +79,8 @@
                       <i class="fas fa-edit me-2"></i>Editar Time
                     <% end %></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><%= link_to team, 
-                        data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir #{team.name}? Esta ação não pode ser desfeita." }, 
+                    <li><%= link_to team,
+                        data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir #{team.name}? Esta ação não pode ser desfeita." },
                         class: "dropdown-item text-danger" do %>
                       <i class="fas fa-trash me-2"></i>Excluir Time
                     <% end %></li>
@@ -121,7 +121,7 @@
                     <span class="badge bg-warning">Sem Jogadores</span>
                   <% end %>
                 </div>
-                
+
                 <% active_contracts = team.player_contracts.where(is_expired: false).count %>
                 <% if active_contracts > 0 %>
                   <div class="progress" style="height: 6px;">
@@ -164,7 +164,7 @@
                   <% end %>
                 </div>
                 <div class="col-6">
-                  <%= link_to new_player_contract_path, class: "btn btn-success w-100 btn-sm" do %>
+                  <%= link_to players_path, class: "btn btn-success w-100 btn-sm" do %>
                     <i class="fas fa-user-plus me-1"></i>Contratar
                   <% end %>
                 </div>
@@ -184,7 +184,7 @@
       </div>
       <h3 class="h4 fw-medium text-dark mb-2">Nenhum time ainda</h3>
       <p class="text-muted mb-4 lead">Comece sua jornada no futebol fantasy criando seu primeiro time!</p>
-      
+
       <div class="row justify-content-center">
         <div class="col-md-6">
           <div class="card border-primary">
@@ -212,12 +212,12 @@
     transition: all 0.3s ease;
     cursor: pointer;
   }
-  
+
   .team-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
   }
-  
+
   .bg-gradient {
     background: linear-gradient(135deg, #0d6efd 0%, #0056b3 100%) !important;
   }
