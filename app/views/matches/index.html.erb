@@ -1,7 +1,10 @@
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="h2 fw-bold text-dark">Histórico de Partidas</h1>
-    <%= link_to "Agendar Nova Partida", new_match_path, class: "btn btn-primary" %>
+    <div>
+      <%= link_to "Nova Simulação", new_simulation_matches_path, class: "btn btn-success" %>
+      <%= link_to "Agendar Nova Partida", new_match_path, class: "btn btn-primary ms-2" %>
+    </div>
   </div>
 
   <!-- Match Filters -->
@@ -22,7 +25,9 @@
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-start mb-3">
                 <h5 class="card-title fw-bold text-dark">Partida #<%= match.id %></h5>
-                <% if match.result.present? %>
+                <% if match.is_simulated %>
+                  <span class="badge bg-info">Simulada</span>
+                <% elsif match.result.present? %>
                   <% case match.result.downcase %>
                   <% when 'won', 'win' %>
                     <span class="badge bg-success">Vitória</span>
@@ -41,17 +46,34 @@
               <div class="mb-3">
                 <div class="row text-center">
                   <div class="col-5">
-                    <div class="fw-bold text-dark"><%= match.teams.first&.name || "Team" %></div>
-                    <small class="text-muted">Time da Casa</small>
+                    <div class="fw-bold text-dark"><%= match.team1&.name || "Time 1" %></div>
+                    <% if match.is_simulated %>
+                      <div class="h4 mt-1 text-primary"><%= match.team1_score || 0 %></div>
+                    <% else %>
+                      <small class="text-muted">Time da Casa</small>
+                    <% end %>
                   </div>
                   <div class="col-2">
-                    <i class="fas fa-vs text-muted"></i>
+                    <div class="mt-2">VS</div>
                   </div>
                   <div class="col-5">
-                    <div class="fw-bold text-dark">Adversário</div>
-                    <small class="text-muted">Time Visitante</small>
+                    <div class="fw-bold text-dark"><%= match.team2&.name || "Time 2" %></div>
+                    <% if match.is_simulated %>
+                      <div class="h4 mt-1 text-primary"><%= match.team2_score || 0 %></div>
+                    <% else %>
+                      <small class="text-muted">Time Visitante</small>
+                    <% end %>
                   </div>
                 </div>
+                <% if match.is_simulated && match.winner_team %>
+                  <div class="text-center mt-2">
+                    <small class="text-success fw-bold">Vencedor: <%= match.winner_team.name %></small>
+                  </div>
+                <% elsif match.is_simulated && match.draw? %>
+                  <div class="text-center mt-2">
+                    <small class="text-warning fw-bold">Empate</small>
+                  </div>
+                <% end %>
               </div>
 
               <div class="d-flex justify-content-between align-items-center text-muted small">
