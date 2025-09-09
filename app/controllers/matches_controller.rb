@@ -3,7 +3,8 @@ class MatchesController < ApplicationController
   before_action :set_match, only: [:show, :edit, :update, :destroy, :simulate]
 
   def index
-    @matches = Match.all
+    #@matches = Match.all
+    @matches = current_user.matches.includes(match_teams: :team)
   end
 
   def show
@@ -15,7 +16,7 @@ class MatchesController < ApplicationController
 
   def create
     @match = Match.new(match_params)
-    
+
     if @match.save
       redirect_to @match, notice: 'Match was successfully created.'
     else
@@ -54,7 +55,7 @@ class MatchesController < ApplicationController
     end
 
     @match = Match.create!
-    
+
     @match.match_teams.create!(team: team1, is_team1: true)
     @match.match_teams.create!(team: team2, is_team1: false)
 

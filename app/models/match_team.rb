@@ -4,3 +4,4 @@ class MatchTeam < ApplicationRecord
 
   validates :is_team1, inclusion: { in: [true, false] }
 end
+
