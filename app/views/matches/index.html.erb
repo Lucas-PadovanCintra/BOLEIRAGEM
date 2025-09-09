@@ -42,7 +42,7 @@
                   <span class="badge bg-secondary">Pendente</span>
                 <% end %>
               </div>
-              
+
               <div class="mb-3">
                 <div class="row text-center">
                   <div class="col-5">
@@ -84,9 +84,9 @@
             <div class="card-footer bg-transparent">
               <div class="btn-group w-100">
                 <%= link_to "Ver Detalhes", match, class: "btn btn-outline-primary btn-sm" %>
-                <%= link_to "Editar", edit_match_path(match), class: "btn btn-outline-warning btn-sm" %>
-                <%= link_to "Excluir", match, 
-                    data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir esta partida?" }, 
+                <%# link_to "Editar", edit_match_path(match), class: "btn btn-outline-warning btn-sm" %>
+                <%# link_to "Excluir", match,
+                    data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir esta partida?" },
                     class: "btn btn-outline-danger btn-sm" %>
               </div>
             </div>

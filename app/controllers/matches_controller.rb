@@ -3,7 +3,8 @@ class MatchesController < ApplicationController
   before_action :set_match, only: [:show, :edit, :update, :destroy, :simulate]
 
   def index
-    @matches = Match.all
+    #@matches = Match.all
+    @matches = current_user.matches.includes(match_teams: :team)
   end
 
   def show
