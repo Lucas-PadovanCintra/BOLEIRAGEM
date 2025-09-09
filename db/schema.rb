@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_05_180339) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_07_003044) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -77,6 +77,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_05_180339) do
     t.index ["team_id"], name: "index_player_contracts_on_team_id"
   end
 
+  create_table "player_cooldowns", force: :cascade do |t|
+    t.bigint "player_id", null: false
+    t.bigint "team_id", null: false
+    t.integer "matches_remaining", default: 5, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["player_id", "team_id"], name: "index_player_cooldowns_on_player_id_and_team_id", unique: true
+    t.index ["player_id"], name: "index_player_cooldowns_on_player_id"
+    t.index ["team_id"], name: "index_player_cooldowns_on_team_id"
+  end
+
   create_table "players", force: :cascade do |t|
     t.string "name", null: false
     t.float "rating", null: false
@@ -134,6 +145,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_05_180339) do
   add_foreign_key "matches", "teams", column: "winner_team_id"
   add_foreign_key "player_contracts", "players"
   add_foreign_key "player_contracts", "teams"
+  add_foreign_key "player_cooldowns", "players"
+  add_foreign_key "player_cooldowns", "teams"
   add_foreign_key "teams", "users"
   add_foreign_key "wallets", "users"
 end

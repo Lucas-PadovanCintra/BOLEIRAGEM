@@ -15,9 +15,9 @@ class MatchesController < ApplicationController
 
   def create
     @match = Match.new(match_params)
-    
+
     if @match.save
-      redirect_to @match, notice: 'Match was successfully created.'
+      redirect_to @match, notice: 'Partida criada com sucesso.'
     else
       render :new
     end
@@ -28,7 +28,7 @@ class MatchesController < ApplicationController
 
   def update
     if @match.update(match_params)
-      redirect_to @match, notice: 'Match was successfully updated.'
+      redirect_to @match, notice: 'Partida atualizada com sucesso.'
     else
       render :edit
     end
@@ -36,7 +36,7 @@ class MatchesController < ApplicationController
 
   def destroy
     @match.destroy
-    redirect_to matches_url, notice: 'Match was successfully deleted.'
+    redirect_to matches_url, notice: 'Partida deletada com sucesso.'
   end
 
   def new_simulation
@@ -53,21 +53,40 @@ class MatchesController < ApplicationController
       return
     end
 
-    @match = Match.create!
-    
-    @match.match_teams.create!(team: team1, is_team1: true)
-    @match.match_teams.create!(team: team2, is_team1: false)
+    ActiveRecord::Base.transaction do
+      @match = Match.create!
+      @match.match_teams.create!(team: team1, is_team1: true)
+      @match.match_teams.create!(team: team2, is_team1: false)
 
-    simulator = MatchSimulator.new(team1, team2)
-    result = simulator.simulate
+      simulator = MatchSimulator.new(team1, team2)
+      result = simulator.simulate
 
-    @match.update!(
-      team1_score: result[:team1_score],
-      team2_score: result[:team2_score],
-      winner_team: result[:winner],
-      is_simulated: true,
-      simulation_stats: result[:stats]
-    )
+      @match.update!(
+        team1_score: result[:team1_score],
+        team2_score: result[:team2_score],
+        winner_team: result[:winner],
+        is_simulated: true,
+        simulation_stats: result[:stats]
+      )
+
+      # Incrementar matches_played e gerenciar expirações
+      [team1, team2].each do |team|
+        team.player_contracts.where(is_expired: false).each do |contract|
+          contract.increment!(:matches_played)
+          if contract.matches_played >= contract.contract_length
+            contract.update!(is_expired: true)
+            contract.player.update!(is_on_market: true)
+            user_wallet = team.user.wallet
+            user_wallet.update!(balance: user_wallet.balance + contract.player.price)
+            PlayerCooldown.create!(player: contract.player, team: team, matches_remaining: 5)
+          end
+        end
+        # Decrementar cooldowns
+        team.player_cooldowns.each do |cooldown|
+          cooldown.decrement!(:matches_remaining)
+        end
+      end
+    end
 
     redirect_to @match, notice: 'Simulação realizada com sucesso!'
   rescue => e
@@ -88,16 +107,36 @@ class MatchesController < ApplicationController
       return
     end
 
-    simulator = MatchSimulator.new(team1, team2)
-    result = simulator.simulate
+    ActiveRecord::Base.transaction do
+      simulator = MatchSimulator.new(team1, team2)
+      result = simulator.simulate
 
-    @match.update!(
-      team1_score: result[:team1_score],
-      team2_score: result[:team2_score],
-      winner_team: result[:winner],
-      is_simulated: true,
-      simulation_stats: result[:stats]
-    )
+      @match.update!(
+        team1_score: result[:team1_score],
+        team2_score: result[:team2_score],
+        winner_team: result[:winner],
+        is_simulated: true,
+        simulation_stats: result[:stats]
+      )
+
+      # Incrementar matches_played e gerenciar expirações
+      [team1, team2].each do |team|
+        team.player_contracts.where(is_expired: false).each do |contract|
+          contract.increment!(:matches_played)
+          if contract.matches_played >= contract.contract_length
+            contract.update!(is_expired: true)
+            contract.player.update!(is_on_market: true)
+            user_wallet = team.user.wallet
+            user_wallet.update!(balance: user_wallet.balance + contract.player.price)
+            PlayerCooldown.create!(player: contract.player, team: team, matches_remaining: 5)
+          end
+        end
+        # Decrementar cooldowns
+        team.player_cooldowns.each do |cooldown|
+          cooldown.decrement!(:matches_remaining)
+        end
+      end
+    end
 
     redirect_to @match, notice: 'Simulação realizada com sucesso!'
   rescue => e

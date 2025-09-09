@@ -74,9 +74,14 @@ class PlayersController < ApplicationController
       return
     end
 
+    cooldown = PlayerCooldown.find_by(player: @player, team: user_team)
+    if cooldown
+      redirect_to players_path, alert: "Este jogador está indisponível por #{cooldown.matches_remaining} partidas."
+      return
+    end
+
     ActiveRecord::Base.transaction do
       user_wallet.update!(balance: user_wallet.balance - @player.price)
-      
       PlayerContract.create!(
         player: @player,
         team: user_team,
@@ -84,7 +89,6 @@ class PlayersController < ApplicationController
         contract_length: 5,
         is_expired: false
       )
-      
       @player.update!(is_on_market: false)
     end
 

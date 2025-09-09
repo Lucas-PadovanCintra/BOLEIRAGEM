@@ -17,7 +17,11 @@ Rails.application.routes.draw do
       post :create_simulation
     end
   end
-  resources :player_contracts
+  resources :player_contracts do
+    member do
+      post :expire
+    end
+  end
   resources :wallets, only: [:show, :update]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
