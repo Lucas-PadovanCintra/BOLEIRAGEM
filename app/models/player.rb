@@ -1,6 +1,7 @@
 class Player < ApplicationRecord
   has_many :player_contracts, dependent: :destroy
   has_many :teams, through: :player_contracts
+  has_many :player_cooldowns, dependent: :destroy # Adicionada associação
 
   validates :name, presence: true
   validates :rating, presence: true, numericality: { greater_than: 0 }
@@ -12,6 +13,6 @@ class Player < ApplicationRecord
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["player_contracts", "teams"]
+    ["player_contracts", "player_cooldowns", "teams"] # Adicionada player_cooldowns
   end
 end

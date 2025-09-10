@@ -1,0 +1,18 @@
+one:
+  name: Jogador Teste
+  rating: 80.0
+  price: 1000
+  is_on_market: true
+  position: atacante
+  real_team_name: Time Real
+  goals: 5
+  assists: 3
+  successful_dribbles: 10
+  interceptions: 2
+  yellow_cards: 1
+  red_cards: 0
+  faults_committed: 4
+  loss_of_possession: 5
+  frequency_in_field: 90
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

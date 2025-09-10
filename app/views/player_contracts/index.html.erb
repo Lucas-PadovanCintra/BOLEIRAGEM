@@ -16,8 +16,8 @@
 
   <% if @player_contracts.any? %>
     <!-- Stats Cards -->
-    <div class="row g-3 mb-4">
-      <div class="col-md-3">
+    <div class="row g-3 mb-3">
+      <div class="col-md-4">
         <div class="card bg-success text-white">
           <div class="card-body text-center">
             <h4 class="fw-bold"><%= @player_contracts.where(is_expired: false).count %></h4>
@@ -25,6 +25,7 @@
           </div>
         </div>
       </div>
+      <!--
       <div class="col-md-3">
         <div class="card bg-danger text-white">
           <div class="card-body text-center">
@@ -33,7 +34,8 @@
           </div>
         </div>
       </div>
-      <div class="col-md-3">
+      -->
+      <div class="col-md-4">
         <div class="card bg-warning text-white">
           <div class="card-body text-center">
             <h4 class="fw-bold"><%= @player_contracts.where(is_expired: false).select { |c| (c.contract_length - c.matches_played) <= 2 }.count %></h4>
@@ -41,7 +43,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="card bg-info text-white">
           <div class="card-body text-center">
             <h4 class="fw-bold"><%= @player_contracts.count %></h4>
@@ -92,7 +94,7 @@
                   <div class="d-flex align-items-center">
                     <div class="me-2" style="min-width: 100px;">
                       <div class="progress" style="height: 6px;">
-                        <div class="progress-bar bg-primary" role="progressbar" 
+                        <div class="progress-bar bg-primary" role="progressbar"
                              style="width: <%= (contract.matches_played.to_f / contract.contract_length * 100).round(1) %>%"
                              aria-valuenow="<%= (contract.matches_played.to_f / contract.contract_length * 100).round(1) %>"
                              aria-valuemin="0" aria-valuemax="100">
@@ -103,9 +105,7 @@
                   </div>
                 </td>
                 <td>
-                  <% if contract.is_expired %>
-                    <span class="badge bg-danger">Expired</span>
-                  <% elsif (contract.contract_length - contract.matches_played) <= 2 %>
+                  <% if (contract.contract_length - contract.matches_played) <= 2 %>
                     <span class="badge bg-warning text-dark">Expirando em Breve</span>
                   <% else %>
                     <span class="badge bg-success">Active</span>
@@ -116,13 +116,14 @@
                 </td>
                 <td>
                   <div class="btn-group btn-group-sm">
-                    <%= link_to "View", contract, class: "btn btn-outline-primary btn-sm" %>
-                    <%= link_to "Edit", edit_player_contract_path(contract), class: "btn btn-outline-warning btn-sm" %>
-                    <% unless contract.is_expired %>
-                      <button class="btn btn-outline-danger btn-sm" onclick="expireContract(<%= contract.id %>)">
-                        Expire
+                    <%= link_to "Ver Contrato", contract, class: "btn btn-outline-primary btn-sm" %>
+                    <%#= link_to "Edit", edit_player_contract_path(contract), class: "btn btn-outline-warning btn-sm" %>
+
+                      <button class="btn btn-danger expire-contract-btn" data-contract-id="<%= contract.id %>" data-action="click->contracts#expire"
+                      data-contract-redirect-url-value="/player_contracts" data-controller="contracts">
+                        Expirar
                       </button>
-                    <% end %>
+
                   </div>
                 </td>
               </tr>
@@ -142,12 +143,3 @@
     </div>
   <% end %>
 </div>
-
-<script>
-  function expireContract(contractId) {
-    if(confirm('Tem certeza que deseja expirar este contrato? Esta ação não pode ser desfeita.')) {
-      // This would normally make an AJAX call to expire the contract
-      alert('Lógica de expiração do contrato seria implementada aqui no controller.');
-    }
-  }
-</script>

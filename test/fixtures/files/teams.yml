@@ -1,0 +1,12 @@
+one:
+  name: Time 1
+  user: one
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+two:
+  name: Time 2
+  user: one
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+

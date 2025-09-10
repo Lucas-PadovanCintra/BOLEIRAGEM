@@ -36,7 +36,7 @@
         <tbody>
           <% @players.each do |player| %>
             <tr>
-              <td><img src="https://escudosfc.com.br/images/<%= I18n.transliterate(team_logo(player.real_team_name)) %>" alt="<%= player.real_team_name %>" width="50"></td>
+              <td><img src="https://escudosfc.com.br/images/<%= I18n.transliterate(player.real_team_name) %>" alt="<%= player.real_team_name %>" width="50"></td>
               <td>
                 <div class="fw-medium text-dark"><%= player.name %></div>
               </td>
@@ -82,11 +82,14 @@
                 <span class="fs-5 fw-bold text-success">💰<%= player.price %></span>
               </td>
               <td>
-                <% if player.is_on_market %>
+                <% cooldown = player.player_cooldowns.find_by(team: current_user.teams.first) %>
+                <% if cooldown %>
+                  <span class="badge bg-warning text-dark">Indisponível por: <%= cooldown.matches_remaining %> partidas</span>
+                <% elsif player.is_on_market %>
                   <span class="badge bg-success">Disponível</span>
                   <% if current_user.wallet&.balance && current_user.wallet.balance >= player.price %>
                     <%= button_to 'Contratar', purchase_player_path(player), method: :post, class: "btn btn-sm btn-success",
-                        confirm: "Confirmar contratação de #{player.name} por $#{player.price}? Seu saldo atual é $#{current_user.wallet&.balance || 0}." %>
+                        data: { turbo_confirm: "Confirmar contratação de #{player.name} por $#{player.price}? Seu saldo atual é $#{current_user.wallet&.balance || 0}." } %>
                   <% else %>
                     <button class="btn btn-sm btn-secondary" disabled>Saldo Insuficiente</button>
                   <% end %>
