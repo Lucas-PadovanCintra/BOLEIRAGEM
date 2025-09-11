@@ -36,7 +36,7 @@
         <tbody>
           <% @players.each do |player| %>
             <tr>
-              <td><img src="https://escudosfc.com.br/images/<%= I18n.transliterate(player.real_team_name) %>" alt="<%= player.real_team_name %>" width="50"></td>
+              <td><img src="https://escudosfc.com.br/images/<%= team_logo(player.real_team_name) %>" alt="<%= player.real_team_name %>" width="50"></td>
               <td>
                 <div class="fw-medium text-dark"><%= player.name %></div>
               </td>
