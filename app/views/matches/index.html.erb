@@ -11,9 +11,13 @@
   <div class="mb-4">
     <div class="btn-group" role="group">
       <button type="button" class="btn btn-success btn-sm">Todas as Partidas</button>
+      #<% if @matches.any? %>
       <button type="button" class="btn btn-outline-secondary btn-sm">Vitórias</button>
+     # @matches.where(result: 'win')
       <button type="button" class="btn btn-outline-secondary btn-sm">Derrotas</button>
-      <button type="button" class="btn btn-outline-secondary btn-sm">Pendentes</button>
+      # @matches.where(result: 'loss')
+      <button type="button" class="btn btn-outline-secondary btn-sm">Empate</button>
+      # @matches.where(result: 'draw')
     </div>
   </div>
 
@@ -39,9 +43,12 @@
                     <span class="badge bg-primary"><%= match.result %></span>
                   <% end %>
                 <% else %>
-                  <span class="badge bg-secondary">Pendente</span>
+                  <span class="badge bg-secondary">Empate</span>
                 <% end %>
               </div>
+              # transforma essa lista de times numa partial e chama a partial aqui
+              #
+
 
               <div class="mb-3">
                 <div class="row text-center">

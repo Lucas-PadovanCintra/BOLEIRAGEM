@@ -61,13 +61,25 @@ class MatchesController < ApplicationController
 
       simulator = MatchSimulator.new(team1, team2)
       result = simulator.simulate
+      # if result [:winner] == meu time vencedor = "win"
+      # else if result [:winner] != meu time vencedor = "loss"
+      # else vencedor = "draw"
+      if result[:winner] == team1
+        vencedor = "win"
+      elsif result[:winner] == team2
+        vencedor = "loss"
+      else
+        vencedor = "draw"
+      end
+
 
       @match.update!(
         team1_score: result[:team1_score],
         team2_score: result[:team2_score],
         winner_team: result[:winner],
         is_simulated: true,
-        simulation_stats: result[:stats]
+        simulation_stats: result[:stats],
+        result: vencedor
       )
 
       # Incrementar matches_played e gerenciar expirações
