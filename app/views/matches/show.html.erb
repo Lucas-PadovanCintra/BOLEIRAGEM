@@ -142,11 +142,11 @@
                 <div class="mt-2">
                   <% if @match.result.present? %>
                     <% case @match.result.downcase %>
-                    <% when 'won', 'win' %>
+                    <% when  'win' %>
                       <span class="badge bg-success fs-6">Vitória!</span>
-                    <% when 'lost', 'loss' %>
+                    <% when  'loss' %>
                       <span class="badge bg-danger fs-6">Derrota</span>
-                    <% when 'draw', 'tie' %>
+                    <% when 'draw' %>
                       <span class="badge bg-warning text-dark fs-6">Empate</span>
                     <% else %>
                       <span class="badge bg-light text-dark fs-6"><%= @match.result %></span>
@@ -226,7 +226,7 @@
       <div class="card shadow-sm">
         <div class="card-body">
           <h5 class="card-title fw-bold text-dark mb-3">Elencos</h5>
-          
+
           <% if @match.team1 %>
             <h6 class="text-muted"><%= @match.team1.name %></h6>
             <% active_contracts = @match.team1.player_contracts.where(is_expired: false) %>
@@ -286,7 +286,7 @@
           <div class="d-flex gap-2 flex-wrap">
             <%= link_to "Editar Partida", edit_match_path(@match), class: "btn btn-warning" %>
             <% if !@match.is_simulated && @match.team1 && @match.team2 %>
-              <%= button_to "Simular Partida", simulate_match_path(@match), 
+              <%= button_to "Simular Partida", simulate_match_path(@match),
                   method: :post,
                   class: "btn btn-success",
                   data: { turbo_confirm: "Deseja simular esta partida agora?" } %>
@@ -296,8 +296,8 @@
               </button>
             <% end %>
             <%= link_to "Nova Simulação", new_simulation_matches_path, class: "btn btn-primary" %>
-            <%= link_to "Excluir Partida", @match, 
-                data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir esta partida?" }, 
+            <%= link_to "Excluir Partida", @match,
+                data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir esta partida?" },
                 class: "btn btn-outline-danger" %>
           </div>
         </div>

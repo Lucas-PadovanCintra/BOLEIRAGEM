@@ -4,7 +4,8 @@ class MatchesController < ApplicationController
 
   def index
     #@matches = Match.all
-    @matches = current_user.matches.includes(match_teams: :team)
+    @matches = current_user.matches.includes(match_teams: :team).order(created_at: :desc)
+    @matches = @matches.where(result: params[:status]) if params[:status].present?
   end
 
   def show
@@ -61,18 +62,7 @@ class MatchesController < ApplicationController
 
       simulator = MatchSimulator.new(team1, team2)
       result = simulator.simulate
-      # if result [:winner] == meu time vencedor = "win"
-      # else if result [:winner] != meu time vencedor = "loss"
-      # else vencedor = "draw"
-      if result[:winner] == team1
-        vencedor = "win"
-      elsif result[:winner] == team2
-        vencedor = "loss"
-      else
-        vencedor = "draw"
-      end
-
-
+     
       @match.update!(
         team1_score: result[:team1_score],
         team2_score: result[:team2_score],
