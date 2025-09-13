@@ -7,6 +7,13 @@ class TeamsController < ApplicationController
   end
 
   def show
+    active_contracts = @team.player_contracts.where(is_expired: false)
+    all_rating = active_contracts.map do |contract|
+      contract.player.rating
+    end
+    @avarege_rating = all_rating.sum / active_contracts.length
+    @avarege_rating = sprintf('%.1f', @avarege_rating)
+    @team.player_contracts.includes(:player)
   end
 
   def new
@@ -15,7 +22,7 @@ class TeamsController < ApplicationController
 
   def create
     @team = current_user.teams.build(team_params)
-    
+
     if @team.save
       redirect_to @team, notice: 'Team was successfully created.'
     else
@@ -46,6 +53,6 @@ class TeamsController < ApplicationController
   end
 
   def team_params
-    params.require(:team).permit(:name)
+    params.require(:team).permit(:name, :description)
   end
 end

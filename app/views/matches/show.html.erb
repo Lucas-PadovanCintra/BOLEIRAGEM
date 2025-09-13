@@ -223,7 +223,7 @@
       <div class="card shadow-sm">
         <div class="card-body">
           <h5 class="card-title fw-bold text-dark mb-3">Elencos</h5>
-          
+
           <% if @match.team1 %>
             <h6 class="text-muted"><%= @match.team1.name %></h6>
             <% active_contracts = @match.team1.player_contracts.where(is_expired: false) %>
