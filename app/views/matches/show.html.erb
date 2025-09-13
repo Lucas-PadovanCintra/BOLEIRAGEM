@@ -229,18 +229,18 @@
 
           <% if @match.team1 %>
             <h6 class="text-muted"><%= @match.team1.name %></h6>
-            <% active_contracts = @match.team1.player_contracts.where(is_expired: false) %>
-            <% if active_contracts.any? %>
+            <% active_players = @match.team1.active_players %>
+            <% if active_players.any? %>
               <div class="list-group list-group-flush mb-3">
-                <% active_contracts.includes(:player).limit(3).each do |contract| %>
+                <% active_players.limit(3).each do |player| %>
                   <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-1">
-                    <small><%= contract.player.name %></small>
-                    <small class="text-muted">Rating: <%= contract.player.rating %></small>
+                    <small><%= player.name %></small>
+                    <small class="text-muted">Rating: <%= player.rating %></small>
                   </div>
                 <% end %>
-                <% if active_contracts.count > 3 %>
+                <% if active_players.count > 3 %>
                   <div class="list-group-item px-0 py-1">
-                    <small class="text-muted">... e mais <%= active_contracts.count - 3 %> jogadores</small>
+                    <small class="text-muted">... e mais <%= active_players.count - 3 %> jogadores</small>
                   </div>
                 <% end %>
               </div>
@@ -251,18 +251,18 @@
 
           <% if @match.team2 %>
             <h6 class="text-muted"><%= @match.team2.name %></h6>
-            <% active_contracts = @match.team2.player_contracts.where(is_expired: false) %>
-            <% if active_contracts.any? %>
+            <% active_players = @match.team2.active_players %>
+            <% if active_players.any? %>
               <div class="list-group list-group-flush">
-                <% active_contracts.includes(:player).limit(3).each do |contract| %>
+                <% active_players.limit(3).each do |player| %>
                   <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-1">
-                    <small><%= contract.player.name %></small>
-                    <small class="text-muted">Rating: <%= contract.player.rating %></small>
+                    <small><%= player.name %></small>
+                    <small class="text-muted">Rating: <%= player.rating %></small>
                   </div>
                 <% end %>
-                <% if active_contracts.count > 3 %>
+                <% if active_players.count > 3 %>
                   <div class="list-group-item px-0 py-1">
-                    <small class="text-muted">... e mais <%= active_contracts.count - 3 %> jogadores</small>
+                    <small class="text-muted">... e mais <%= active_players.count - 3 %> jogadores</small>
                   </div>
                 <% end %>
               </div>

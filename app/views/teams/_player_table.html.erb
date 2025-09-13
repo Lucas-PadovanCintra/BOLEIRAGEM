@@ -1,0 +1,47 @@
+<table class="table table-hover">
+  <thead class="table-light">
+    <tr>
+      <th class="fw-bold text-dark">Jogador</th>
+      <th class="fw-bold text-dark">Posição</th>
+      <th class="fw-bold text-dark">Rating</th>
+      <th class="fw-bold text-dark">Progresso do Contrato</th>
+      <th class="fw-bold text-dark">Status</th>
+      <th class="fw-bold text-dark">Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @team.player_contracts.where(is_expired: false).includes(:player).each do |contract| %>
+      <tr>
+        <td>
+          <div class="fw-bold text-dark"><%= contract.player.name %></div>
+        </td>
+        <td class="text-dark">
+          <%= contract.player.position %>
+        </td>
+        <td class="text-dark">
+          <%= contract.player.rating %>
+        </td>
+        <td>
+          <div class="progress mb-1" style="height: 6px;">
+            <div class="progress-bar bg-primary" style="width: <%= (contract.matches_played.to_f / contract.contract_length * 100).round(1) %>%"></div>
+          </div>
+          <small class="text-muted"><%= contract.matches_played %>/<%= contract.contract_length %> partidas</small>
+        </td>
+        <td>
+          <% if contract.is_expired %>
+            <span class="badge bg-danger">Expirado</span>
+          <% elsif (contract.contract_length - contract.matches_played) <= 2 %>
+            <span class="badge bg-warning text-dark">Expirando</span>
+          <% else %>
+            <span class="badge bg-success">Ativo</span>
+          <% end %>
+        </td>
+        <td>
+          <div class="btn-group btn-group-sm">
+            <%= link_to "Ver", contract, class: "btn btn-outline-primary btn-sm" %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

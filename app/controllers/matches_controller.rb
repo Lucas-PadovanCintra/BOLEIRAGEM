@@ -8,6 +8,12 @@ class MatchesController < ApplicationController
     @matches = @matches.where(result: params[:status]) if params[:status].present?
   end
 
+  #gostaria que fosse assim, mas n ta funcionando
+  #def index
+  #@matches = current_user.matches.includes(match_teams: :team).recent
+  #@matches = @matches.by_status(params[:status])
+#end
+
   def show
   end
 
@@ -42,7 +48,8 @@ class MatchesController < ApplicationController
   end
 
   def new_simulation
-    @teams = Team.includes(:players)
+    @user_teams = current_user.teams
+    @other_teams = Team.where.not(user: current_user)
     @match = Match.new
   end
 
@@ -62,15 +69,21 @@ class MatchesController < ApplicationController
 
       simulator = MatchSimulator.new(team1, team2)
       result = simulator.simulate
-     
+
+
       @match.update!(
+        result: result[:status],
         team1_score: result[:team1_score],
         team2_score: result[:team2_score],
         winner_team: result[:winner],
         is_simulated: true,
         simulation_stats: result[:stats],
-        result: vencedor
       )
+
+      # Aqui adicionamos a lógica para atualizar o saldo
+      if result[:winner]
+        update_wallet_winner(result[:winner])
+      end
 
       # Incrementar matches_played e gerenciar expirações
       [team1, team2].each do |team|
@@ -94,6 +107,12 @@ class MatchesController < ApplicationController
     redirect_to @match, notice: 'Simulação realizada com sucesso!'
   rescue => e
     redirect_to new_simulation_matches_path, alert: "Erro na simulação: #{e.message}"
+  end
+
+  def update_wallet_winner(winner_team)
+    wallet = winner_team.user.wallet
+    reward_amount = 100  # Defina o valor da recompensa
+    wallet.update!(balance: wallet.balance + reward_amount)
   end
 
   def simulate
@@ -121,6 +140,8 @@ class MatchesController < ApplicationController
         is_simulated: true,
         simulation_stats: result[:stats]
       )
+
+
 
       # Incrementar matches_played e gerenciar expirações
       [team1, team2].each do |team|

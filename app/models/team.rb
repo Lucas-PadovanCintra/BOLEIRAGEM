@@ -5,6 +5,14 @@ class Team < ApplicationRecord
   has_many :match_teams, dependent: :destroy
   has_many :matches, through: :match_teams
   has_many :player_cooldowns, dependent: :destroy # Adicionada associação
+  has_many :active_player_contracts,
+  -> { active },
+  class_name: 'PlayerContract'
+
+  has_many :active_players,
+  -> { distinct },
+  through: :active_player_contracts,
+  source: :player
 
   validates :name, presence: true
 
