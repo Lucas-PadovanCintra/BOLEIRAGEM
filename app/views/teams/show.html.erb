@@ -26,12 +26,14 @@
                       <div class="border-end border-2">
                         <h4 class="fw-bold text-primary mb-0"><%= @team.player_contracts.where(is_expired: false).count %></h4>
                         <small class="text-muted">Jogadores Ativos</small>
+                        <%= link_to "Ver Elenco", "#elenco", class: "btn btn-link btn-sm" %>
                       </div>
                     </div>
                     <div class="col-md-3">
                       <div class="border-end border-2">
                         <h4 class="fw-bold text-success mb-0"><%= @team.matches.count %></h4>
                         <small class="text-muted">Partidas Jogadas</small>
+                        <%= link_to "Ver Partidas", "#partidas", class: "btn btn-link btn-sm" %>
                       </div>
                     </div>
                     <div class="col-md-3">
@@ -43,6 +45,7 @@
                     <div class="col-md-3">
                       <h4 class="fw-bold text-warning mb-0"><%= @team.player_contracts.count %></h4>
                       <small class="text-muted">Total de Contratos</small>
+                      <%= link_to "Ver Contratos", player_contracts_path, class: "btn btn-link btn-sm" %>
                     </div>
                   </div>
                 </div>
@@ -53,7 +56,7 @@
       </div>
 
       <!-- Squad Management -->
-      <div class="card shadow-sm mb-4">
+      <div class="card shadow-sm mb-4" id="elenco">
         <div class="card-body">
           <div class="row g-3">
             <div class="col-12">
@@ -69,6 +72,9 @@
               <% if @team.player_contracts.where(is_expired: false).any? %>
                 <%= render 'player_table' %>
                 </div>
+                <div class="mt-3">
+                  <p class="text-muted">Média de Rating do Elenco: <strong><%= @avarege_rating %></strong></p>
+                </div>
               <% else %>
                 <div class="text-center py-4">
                   <p class="text-muted mb-3">Nenhum jogador no seu elenco ainda.</p>
@@ -81,7 +87,7 @@
       </div>
 
       <!-- Recent Matches -->
-      <div class="card shadow-sm mb-4">
+      <div class="card shadow-sm mb-4" id="partidas">
         <div class="card-body">
           <div class="row g-3">
             <div class="col-12">
@@ -89,7 +95,6 @@
                 <h5 class="fw-bold text-dark mb-0">
                   <i class="fas fa-futbol me-2"></i>Partidas Recentes
                 </h5>
-                <%= link_to "Nova Partida", new_match_path, class: "btn btn-success btn-sm" %>
               </div>
             </div>
 
@@ -132,7 +137,7 @@
               <% else %>
                 <div class="text-center py-4">
                   <p class="text-muted mb-3">Nenhuma partida jogada ainda.</p>
-                  <%= link_to "Criar Primeira Partida", new_match_path, class: "btn btn-primary" %>
+                  <%= link_to "Ver Partidas", matches_path, class: "btn btn-primary" %>
                 </div>
               <% end %>
             </div>
@@ -152,8 +157,7 @@
               <p class="mb-1"><strong>Criado em:</strong> <%= @team.created_at.strftime("%d de %B de %Y às %H:%M") %></p>
             </div>
             <div class="col-md-6">
-              <p class="mb-1"><strong>Total de Jogadores:</strong> <%= @team.player_contracts.count %></p>
-              <p class="mb-1"><strong>Jogadores Ativos:</strong> <%= @team.player_contracts.where(is_expired: false).count %></p>
+              <p class="mb-1"><strong>Descrição:</strong> <%= @team.description || 'Sem descrição' %></p>
             </div>
           </div>
         </div>

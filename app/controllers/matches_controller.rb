@@ -1,11 +1,33 @@
 class MatchesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_match, only: [:show, :edit, :update, :destroy, :simulate]
+  before_action :set_match, only: [:show, :destroy]
+  before_action :set_user_teams, only: [:index]
 
   def index
-    #@matches = Match.all
+
+
+
+
     @matches = current_user.matches.includes(match_teams: :team).order(created_at: :desc)
     @matches = @matches.where(result: params[:status]) if params[:status].present?
+
+    # Find team in queue first, then fallback to param or first team
+    team_in_queue = current_user.teams.joins(:team_matchmaking_queues)
+                                      .where(team_matchmaking_queues: { status: 'waiting' })
+                                      .first
+
+    if team_in_queue
+      @selected_team = team_in_queue
+    elsif params[:team_id].present?
+      @selected_team = current_user.teams.find_by(id: params[:team_id])
+    else
+      @selected_team = current_user.teams.first
+    end
+
+    @in_queue = @selected_team&.in_matchmaking_queue?
+
+    Rails.logger.info "MatchesController#index - Selected team: #{@selected_team&.name}, In queue: #{@in_queue}"
+
   end
 
   #gostaria que fosse assim, mas n ta funcionando
@@ -17,49 +39,32 @@ class MatchesController < ApplicationController
   def show
   end
 
-  def new
-    @match = Match.new
-  end
-
-  def create
-    @match = Match.new(match_params)
-
-    if @match.save
-      redirect_to @match, notice: 'Partida criada com sucesso.'
-    else
-      render :new
-    end
-  end
-
-  def edit
-  end
-
-  def update
-    if @match.update(match_params)
-      redirect_to @match, notice: 'Partida atualizada com sucesso.'
-    else
-      render :edit
-    end
-  end
-
   def destroy
     @match.destroy
     redirect_to matches_url, notice: 'Partida deletada com sucesso.'
   end
 
-  def new_simulation
-    @user_teams = current_user.teams
-    @other_teams = Team.where.not(user: current_user)
-    @match = Match.new
+  def make_available
+    team = current_user.teams.find(params[:team_id])
+    result = MatchmakingService.add_to_queue(team, current_user)
+
+    if result[:error]
+      redirect_to matches_path(team_id: team.id), alert: result[:error]
+    elsif result[:matched]
+      redirect_to result[:match], notice: 'Partida encontrada e simulada automaticamente!'
+    else
+      redirect_to matches_path(team_id: team.id), notice: 'Time adicionado à fila de espera. Você será notificado quando uma partida for encontrada.'
+    end
   end
 
-  def create_simulation
-    team1 = Team.find(params[:team1_id])
-    team2 = Team.find(params[:team2_id])
+  def remove_from_queue
+    team = current_user.teams.find(params[:team_id])
+    result = MatchmakingService.remove_from_queue(team)
 
-    if team1 == team2
-      redirect_to new_simulation_matches_path, alert: 'Selecione dois times diferentes.'
-      return
+    if result[:error]
+      redirect_to matches_path(team_id: team.id), alert: result[:error]
+    else
+      redirect_to matches_path(team_id: team.id), notice: 'Time removido da fila de espera.'
     end
 
     ActiveRecord::Base.transaction do
@@ -173,7 +178,8 @@ class MatchesController < ApplicationController
     @match = Match.find(params[:id])
   end
 
-  def match_params
-    params.require(:match).permit(:result)
+  def set_user_teams
+    @user_teams = current_user.teams.includes(:players)
   end
+
 end

@@ -3,7 +3,13 @@ class PlayerContractsController < ApplicationController
   before_action :set_player_contract, only: [:show, :edit, :update, :destroy, :expire]
 
   def index
-    @player_contracts = PlayerContract.joins(:team).where(teams: { user: current_user }, is_expired: false)
+    @player_contracts = PlayerContract.joins(:team).where(teams: { user: current_user }, is_expired: false).includes(:player, :team)
+    case params[:status]
+    when "active"
+      @player_contracts = @player_contracts.where("contract_length - matches_played > 2")
+    when "expiring_soon"
+      @player_contracts = @player_contracts.where("contract_length - matches_played <= 2")
+    end
   end
 
   def show
@@ -69,7 +75,7 @@ class PlayerContractsController < ApplicationController
   private
 
   def set_player_contract
-    @player_contract = PlayerContract.joins(:team).where(teams: { user: current_user }).find(params[:id])
+    @player_contract = PlayerContract.joins(:team).where(teams: { user: current_user }).includes(:player, :team).find(params[:id])
   end
 
   def player_contract_params
