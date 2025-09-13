@@ -8,13 +8,10 @@ Rails.application.routes.draw do
       post :purchase
     end
   end
-  resources :matches do
-    member do
-      post :simulate
-    end
+  resources :matches, only: [:index, :show, :destroy] do
     collection do
-      get :new_simulation
-      post :create_simulation
+      post :make_available
+      delete :remove_from_queue
     end
   end
   resources :player_contracts do
@@ -23,6 +20,9 @@ Rails.application.routes.draw do
     end
   end
   resources :wallets, only: [:show, :update]
+  
+  post 'mark_notifications_viewed', to: 'pages#mark_notifications_viewed'
+  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

@@ -42,6 +42,24 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_11_231118) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "homes", force: :cascade do |t|
+    t.string "index"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "match_notifications", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "match_id", null: false
+    t.boolean "viewed", default: false, null: false
+    t.text "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["match_id"], name: "index_match_notifications_on_match_id"
+    t.index ["user_id", "viewed"], name: "index_match_notifications_on_user_id_and_viewed"
+    t.index ["user_id"], name: "index_match_notifications_on_user_id"
+  end
+
   create_table "match_teams", force: :cascade do |t|
     t.bigint "match_id", null: false
     t.bigint "team_id", null: false
@@ -110,6 +128,21 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_11_231118) do
     t.index ["real_team_name"], name: "index_players_on_real_team_name"
   end
 
+  create_table "team_matchmaking_queues", force: :cascade do |t|
+    t.bigint "team_id", null: false
+    t.bigint "user_id", null: false
+    t.string "status", default: "waiting", null: false
+    t.datetime "matched_at"
+    t.bigint "match_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["match_id"], name: "index_team_matchmaking_queues_on_match_id"
+    t.index ["status"], name: "index_team_matchmaking_queues_on_status"
+    t.index ["team_id", "status"], name: "index_team_matchmaking_queues_on_team_id_and_status", unique: true, where: "((status)::text = 'waiting'::text)"
+    t.index ["team_id"], name: "index_team_matchmaking_queues_on_team_id"
+    t.index ["user_id"], name: "index_team_matchmaking_queues_on_user_id"
+  end
+
   create_table "teams", force: :cascade do |t|
     t.string "name", null: false
     t.bigint "user_id", null: false
@@ -141,6 +174,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_11_231118) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "match_notifications", "matches"
+  add_foreign_key "match_notifications", "users"
   add_foreign_key "match_teams", "matches"
   add_foreign_key "match_teams", "teams"
   add_foreign_key "matches", "teams", column: "winner_team_id"
@@ -148,6 +183,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_11_231118) do
   add_foreign_key "player_contracts", "teams"
   add_foreign_key "player_cooldowns", "players"
   add_foreign_key "player_cooldowns", "teams"
+  add_foreign_key "team_matchmaking_queues", "matches"
+  add_foreign_key "team_matchmaking_queues", "teams"
+  add_foreign_key "team_matchmaking_queues", "users"
   add_foreign_key "teams", "users"
   add_foreign_key "wallets", "users"
 end

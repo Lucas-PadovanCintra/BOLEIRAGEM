@@ -2,6 +2,8 @@ class Match < ApplicationRecord
   has_many :match_teams, dependent: :destroy
   has_many :teams, through: :match_teams
   belongs_to :winner_team, class_name: 'Team', optional: true
+  has_many :team_matchmaking_queues
+  has_many :match_notifications, dependent: :destroy
 
   scope :simulated, -> { where(is_simulated: true) }
   scope :not_simulated, -> { where(is_simulated: false) }

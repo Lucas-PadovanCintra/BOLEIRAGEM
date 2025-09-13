@@ -1,10 +1,7 @@
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="h2 fw-bold text-dark">Partida #<%= @match.id %></h1>
-    <div class="btn-group">
-      <%#= link_to "Editar Partida", edit_match_path(@match), class: "btn btn-warning" %>
-      <%= link_to "Voltar às Partidas", matches_path, class: "btn btn-secondary" %>
-    </div>
+    <%= link_to "Voltar às Partidas", matches_path, class: "btn btn-secondary" %>
   </div>
 
   <% if @match.is_simulated %>
@@ -275,33 +272,4 @@
     </div>
   </div>
 
-  <!-- Match Actions -->
-  <div class="row mt-4">
-    <div class="col-12">
-      <div class="card shadow-sm border-info">
-        <div class="card-body">
-          <h5 class="card-title fw-bold text-info mb-3">
-            <i class="fas fa-cog me-2"></i>Ações da Partida
-          </h5>
-          <div class="d-flex gap-2 flex-wrap">
-            <%#= link_to "Editar Partida", edit_match_path(@match), class: "btn btn-warning" %>
-            <% if !@match.is_simulated && @match.team1 && @match.team2 %>
-              <%= button_to "Simular Partida", simulate_match_path(@match),
-                  method: :post,
-                  class: "btn btn-success",
-                  data: { turbo_confirm: "Deseja simular esta partida agora?" } %>
-            <% elsif !@match.team1 || !@match.team2 %>
-              <button class="btn btn-secondary" disabled>
-                Adicione dois times para simular
-              </button>
-            <% end %>
-            <%= link_to "Nova Simulação", new_simulation_matches_path, class: "btn btn-primary" %>
-            <%#= link_to "Excluir Partida", @match,
-                data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir esta partida?" },
-                class: "btn btn-outline-danger" %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>

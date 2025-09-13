@@ -9,8 +9,14 @@ class User < ApplicationRecord
   has_many :matches, through: :match_teams
   has_one :wallet, dependent: :destroy
   has_one_attached :profile_photo
+  has_many :team_matchmaking_queues, dependent: :destroy
+  has_many :match_notifications, dependent: :destroy
   #validates :wallet, presence: true
   after_create :create_wallet
+
+  def unviewed_notifications
+    match_notifications.unviewed
+  end
 
   private
 

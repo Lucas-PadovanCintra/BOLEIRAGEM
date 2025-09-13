@@ -32,23 +32,27 @@
             <%= link_to "Contratos", player_contracts_path, class: "nav-link" %>
           </li>
           <li class="nav-item dropdown">
-          <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <% if current_user.profile_photo.attached? %>
-            <%= cl_image_tag current_user.profile_photo.key, height: 80, width: 80, crop: :fill, class: "avatar", alt: "dropdown menu" %>
-          <% else %>
-            <div class="avatar d-flex align-items-center justify-content-center bg-secondary text-white" alt="dropdown menu">
-              <i class="fa-solid fa-user"></i>
-            </div>
-          <% end %>
-          </a>
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <%= link_to "Perfil", edit_user_registration_path, class: "dropdown-item" %>
-              <% if current_user.wallet %>
-                <%= link_to "Carteira", wallet_path(current_user.wallet), class: "dropdown-item" %>
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <% if current_user.profile_photo.attached? %>
+                <%= image_tag current_user.profile_photo, 
+                    class: "rounded-circle", 
+                    style: "width: 32px; height: 32px; object-fit: cover;",
+                    alt: "Profile" %>
+              <% else %>
+                <div class="rounded-circle d-flex align-items-center justify-content-center bg-secondary text-white" 
+                     style="width: 32px; height: 32px;">
+                  <i class="fa-solid fa-user" style="font-size: 14px;"></i>
+                </div>
               <% end %>
-              <div class="dropdown-divider"></div>
-              <%= link_to "Sair", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
-            </div>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <li><%= link_to "Perfil", edit_user_registration_path, class: "dropdown-item" %></li>
+              <% if current_user.wallet %>
+                <li><%= link_to "Carteira", wallet_path(current_user.wallet), class: "dropdown-item" %></li>
+              <% end %>
+              <li><hr class="dropdown-divider"></li>
+              <li><%= link_to "Sair", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %></li>
+            </ul>
           </li>
         <% else %>
           <li class="nav-item">
