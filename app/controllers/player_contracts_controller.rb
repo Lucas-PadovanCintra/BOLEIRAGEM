@@ -82,3 +82,16 @@ class PlayerContractsController < ApplicationController
     params.require(:player_contract).permit(:player_id, :team_id, :matches_played, :contract_length, :is_expired)
   end
 end
+
+  #Considere mover a lógica complexa, como a expiração de contratos, para métodos privados para clareza
+  #def expire_contract
+  #@player_contract.update!(is_expired: true)
+  #@player_contract.player.update!(is_on_market: true)
+  #update_wallet_and_cooldowns
+  #end
+
+#def update_wallet_and_cooldowns
+  #user_wallet = @player_contract.team.user.wallet
+  #user_wallet.update!(balance: user_wallet.balance + @player_contract.player.price)
+  #PlayerCooldown.create!(player: @player_contract.player, team: @player_contract.team, matches_remaining: 5)
+#end

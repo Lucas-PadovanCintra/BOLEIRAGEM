@@ -70,39 +70,7 @@
 
             <div class="col-12">
               <% if @team.player_contracts.where(is_expired: false).any? %>
-                <div class="table-responsive">
-                  <table class="table table-hover">
-                    <thead class="table-light">
-                      <tr>
-                        <th class="fw-bold text-dark">Jogador</th>
-                        <th class="fw-bold text-dark">Status</th>
-                        <th class="fw-bold text-dark">Ações</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <% @team.player_contracts.where(is_expired: false).includes(:player).each do |contract| %>
-                        <tr>
-                          <td>
-                            <%= link_to contract.player.name, player_path(contract.player), class: "fw-bold text-dark" %>
-                          </td>
-                          <td>
-                            <% if contract.is_expired %>
-                              <span class="badge bg-secondary">Expirado</span>
-                            <% elsif (contract.contract_length - contract.matches_played) <= 2 %>
-                              <span class="badge bg-warning text-dark">Expirando</span>
-                            <% else %>
-                              <span class="badge bg-success">Ativo</span>
-                            <% end %>
-                          </td>
-                          <td>
-                            <div class="btn-group btn-group-sm">
-                              <%= link_to "Ver Contrato", player_contract_path(contract), class: "btn btn-outline-primary btn-sm" %>
-                            </div>
-                          </td>
-                        </tr>
-                      <% end %>
-                    </tbody>
-                  </table>
+                <%= render 'player_table' %>
                 </div>
                 <div class="mt-3">
                   <p class="text-muted">Média de Rating do Elenco: <strong><%= @avarege_rating %></strong></p>

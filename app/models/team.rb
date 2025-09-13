@@ -7,6 +7,7 @@ class Team < ApplicationRecord
   has_many :match_teams, dependent: :destroy
   has_many :matches, through: :match_teams
   has_many :player_cooldowns, dependent: :destroy # Adicionada associação
+  
   has_many :team_matchmaking_queues, dependent: :destroy
 
   validates :name, presence: true

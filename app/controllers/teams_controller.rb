@@ -11,8 +11,12 @@ class TeamsController < ApplicationController
     all_rating = active_contracts.map do |contract|
       contract.player.rating
     end
-    @avarege_rating = all_rating.sum / active_contracts.length
-    @avarege_rating = sprintf('%.1f', @avarege_rating)
+    if active_contracts.length.positive?
+      @avarege_rating = all_rating.sum / active_contracts.length
+      @avarege_rating = sprintf('%.1f', @avarege_rating)
+    else
+      @avarege_rating = '0.0'
+    end
     @team.player_contracts.includes(:player)
   end
 

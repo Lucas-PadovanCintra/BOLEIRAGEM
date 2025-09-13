@@ -42,12 +42,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_11_231118) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "homes", force: :cascade do |t|
-    t.string "index"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "match_notifications", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "match_id", null: false

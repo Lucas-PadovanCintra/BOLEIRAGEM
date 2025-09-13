@@ -10,18 +10,18 @@
         <h5 class="card-title fw-bold mb-3">
           <i class="fas fa-gamepad me-2"></i>Competição Automática
         </h5>
-        
+
         <% if Rails.env.development? %>
           <!-- Debug info -->
           <div class="small text-muted mb-2">
-            Debug: Teams count: <%= @user_teams.count %> | 
-            Selected: <%= @selected_team&.name %> | 
+            Debug: Teams count: <%= @user_teams.count %> |
+            Selected: <%= @selected_team&.name %> |
             In Queue: <%= @in_queue %> |
             Active players: <%= @selected_team&.active_players&.count %> |
             Total players: <%= @selected_team&.players&.count %>
           </div>
         <% end %>
-        
+
         <% if @user_teams.any? { |team| team.active_players.count > 0 } %>
           <% if @in_queue && @selected_team %>
             <div class="alert alert-info mb-0">
@@ -32,7 +32,7 @@
                 </div>
                 <%= form_with url: remove_from_queue_matches_path, method: :delete, local: true, class: "d-inline" do |f| %>
                   <%= f.hidden_field :team_id, value: @selected_team.id %>
-                  <%= f.submit "Remover da Fila", 
+                  <%= f.submit "Remover da Fila",
                       class: "btn btn-danger btn-sm",
                       data: { turbo_confirm: "Tem certeza que deseja remover o time da fila?" } %>
                 <% end %>
@@ -44,11 +44,11 @@
                 <%= form_with url: matches_path, method: :get, local: true, class: "d-flex align-items-end gap-3" do |f| %>
                   <div class="flex-grow-1">
                     <%= f.label :team_id, "Selecione seu time:", class: "form-label fw-bold" %>
-                    <%= f.select :team_id, 
+                    <%= f.select :team_id,
                         options_for_select(
-                          @user_teams.select { |t| t.active_players.count > 0 }.map { |t| 
-                            ["#{t.name} (#{t.active_players.count} jogadores)", t.id] 
-                          }, 
+                          @user_teams.select { |t| t.active_players.count > 0 }.map { |t|
+                            ["#{t.name} (#{t.active_players.count} jogadores)", t.id]
+                          },
                           @selected_team&.id
                         ),
                         { prompt: @user_teams.none? { |t| t.active_players.count > 0 } ? "Nenhum time com jogadores ativos" : nil },
@@ -61,14 +61,14 @@
                 <% if @selected_team && @selected_team.active_players.count > 0 %>
                   <%= form_with url: make_available_matches_path, method: :post, local: true do |f| %>
                     <%= f.hidden_field :team_id, value: @selected_team.id %>
-                    <%= f.submit "Disponibilizar para Competir", 
+                    <%= f.submit "Disponibilizar para Competir",
                         class: "btn btn-success w-100",
                         data: { turbo_confirm: "Seu time será adicionado à fila de espera para competir automaticamente. Continuar?" } %>
                   <% end %>
                 <% end %>
               </div>
             </div>
-            
+
             <% if @selected_team && @selected_team.active_players.count == 0 %>
               <div class="alert alert-warning mt-3 mb-0">
                 <i class="fas fa-exclamation-triangle me-2"></i>

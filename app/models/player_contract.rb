@@ -9,6 +9,7 @@ class PlayerContract < ApplicationRecord
 
   after_create :mark_player_as_unavailable
   after_update :update_player_market_status
+  scope :active, -> { where(is_expired: false) }
 
   private
 
