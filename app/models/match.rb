@@ -22,4 +22,15 @@ class Match < ApplicationRecord
     return "Empate" if draw?
     winner_team&.name
   end
+
+  def calculate_result!
+    self.result = if team1_score > team2_score
+                    'win'
+                  elsif team2_score > team1_score
+                    'loss'
+                  else
+                    'draw'
+                  end
+    save!
+  end
 end

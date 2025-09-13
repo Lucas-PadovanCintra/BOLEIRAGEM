@@ -3,17 +3,16 @@
     <h1 class="h2 fw-bold text-dark">Histórico de Partidas</h1>
     <div>
       <%= link_to "Nova Simulação", new_simulation_matches_path, class: "btn btn-success" %>
-      <%= link_to "Agendar Nova Partida", new_match_path, class: "btn btn-primary ms-2" %>
     </div>
   </div>
-
   <!-- Match Filters -->
+
   <div class="mb-4">
     <div class="btn-group" role="group">
-      <button type="button" class="btn btn-success btn-sm">Todas as Partidas</button>
-      <button type="button" class="btn btn-outline-secondary btn-sm">Vitórias</button>
-      <button type="button" class="btn btn-outline-secondary btn-sm">Derrotas</button>
-      <button type="button" class="btn btn-outline-secondary btn-sm">Pendentes</button>
+      <%= link_to "Todas as Partidas", matches_path, class: "btn btn-success btn-sm" %>
+      <%= link_to "Vitórias", matches_path(status: "win"), class: "btn btn-outline-secondary btn-sm" %>
+      <%= link_to "Derrotas", matches_path(status: "loss"), class: "btn btn-outline-secondary btn-sm" %>
+      <%= link_to "Empate", matches_path(status: "draw"), class: "btn btn-outline-secondary btn-sm" %>
     </div>
   </div>
 
@@ -29,17 +28,17 @@
                   <span class="badge bg-info">Simulada</span>
                 <% elsif match.result.present? %>
                   <% case match.result.downcase %>
-                  <% when 'won', 'win' %>
+                  <% when 'win' %>
                     <span class="badge bg-success">Vitória</span>
-                  <% when 'lost', 'loss' %>
+                  <% when 'loss' %>
                     <span class="badge bg-danger">Derrota</span>
-                  <% when 'draw', 'tie' %>
+                  <% when 'draw' %>
                     <span class="badge bg-warning text-dark">Empate</span>
                   <% else %>
                     <span class="badge bg-primary"><%= match.result %></span>
                   <% end %>
                 <% else %>
-                  <span class="badge bg-secondary">Pendente</span>
+                  <span class="badge bg-secondary">Empate</span>
                 <% end %>
               </div>
 

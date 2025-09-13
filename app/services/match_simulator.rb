@@ -12,13 +12,14 @@ class MatchSimulator
     team2_final_strength = team2_strength * random_factor
 
     scores = calculate_scores(team1_final_strength, team2_final_strength)
-    
+
     winner = determine_winner(scores[:team1_score], scores[:team2_score])
 
     {
       team1_score: scores[:team1_score],
       team2_score: scores[:team2_score],
       winner: winner,
+      status: calculate_status(scores[:team1_score], scores[:team2_score]),
       stats: {
         team1_strength: team1_strength.round(2),
         team2_strength: team2_strength.round(2),
@@ -38,7 +39,7 @@ class MatchSimulator
 
   def calculate_team_strength(team)
     players = team.players.includes(:player_contracts).where(player_contracts: { is_expired: false })
-    
+
     return 50.0 if players.empty?
 
     attack_power = calculate_attack_power(team)
@@ -93,6 +94,17 @@ class MatchSimulator
       team1_score: team1_score,
       team2_score: team2_score
     }
+  end
+
+  def calculate_status(team1_score, team2_score)
+    if team1_score > team2_score
+      'win'
+    elsif team2_score > team1_score
+      'loss'
+    else
+      'draw'
+    end
+
   end
 
   def determine_winner(team1_score, team2_score)
