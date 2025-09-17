@@ -1,16 +1,19 @@
 <div class="py-4">
-  <div class="d-flex justify-content-between align-items-center mb-4 container">
-    <h1 class="h2 fw-bold text-dark">Mercado de Jogadores</h1>
+  <div class="mb-4 container">
+    <h1 class="h2 fw-bold text-dark">
+      <i class="fas fa-users me-2 text-primary"></i>Mercado de Jogadores
+    </h1>
+    <p class="text-muted mb-0">Conheça o mercado da bola e monte seu time</p>
   </div>
 
-  <div class="mb-4 container" data-controller="players-form">
-    <button id="filter-button" class="btn btn-outline-primary"
+  <div class="mb-4 mx-5" data-controller="players-form">
+    <button id="filter-button" class="btn btn-outline-primary mb-2"
     data-players-form-target="filterButton"
     data-action="click->players-form#toggleForm">Filtros</button>
     <%= render partial: 'form-filtros', locals: { q: @q } %>
   </div>
 
-  <div class="card shadow-sm">
+  <div class="mx-5 px-2 card shadow-sm" data-controller="tooltip">
     <div class="table-responsive">
       <table class="table table-striped table-hover mb-0">
         <thead class="table-light">
@@ -20,14 +23,15 @@
             <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :real_team_name, "Time Real") %></th>
             <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :position, "Posição") %></th>
             <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :goals, "Gols") %></th>
-            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :assists, "Assistências") %></th>
-            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :successful_dribbles, "Dribles Bem Sucedidos") %></th>
-            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :interceptions, "Interceptações") %></th>
-            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :yellow_cards, "Cartões Amarelos") %></th>
-            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :red_cards, "Cartões Vermelhos") %></th>
-            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :faults_committed, "Faltas Cometidas") %></th>
-            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :loss_of_possession, "Perda de Posse") %></th>
-            <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :frequency_in_field, "Frequência em Campo") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase" data-bs-toggle="tooltip" data-bs-title="Assistências" data-bs-placement="top">
+            <%= sort_link(@q, :assists, "SS") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase" data-bs-toggle="tooltip" data-bs-title="Dribles bem Sucedidos" data-bs-placement="top"><%= sort_link(@q, :successful_dribbles, "DBS") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase" data-bs-toggle="tooltip" data-bs-title="Interceptações" data-bs-placement="top"><%= sort_link(@q, :interceptions, "Int") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase" data-bs-toggle="tooltip" data-bs-title="Cartões Amarelos" data-bs-placement="top"><%= sort_link(@q, :yellow_cards, "CA") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase" data-bs-toggle="tooltip" data-bs-title="Cartões Vermelhos" data-bs-placement="top"><%= sort_link(@q, :red_cards, "CV") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase" data-bs-toggle="tooltip" data-bs-title="Faltas Cometidas" data-bs-placement="top"><%= sort_link(@q, :faults_committed, "FC") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase" data-bs-toggle="tooltip" data-bs-title="Perda de Posse de Bola" data-bs-placement="top"><%= sort_link(@q, :loss_of_possession, "PPB") %></th>
+            <th scope="col" class="fw-bold text-muted small text-uppercase" data-bs-toggle="tooltip" data-bs-title="Frequência em Campo" data-bs-placement="top"><%= sort_link(@q, :frequency_in_field, "FCamp") %></th>
             <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :rating, "Rating") %></th>
             <th scope="col" class="fw-bold text-muted small text-uppercase"><%= sort_link(@q, :price, "Preço") %></th>
             <th scope="col" class="fw-bold text-muted small text-uppercase">Ações</th>
@@ -84,9 +88,10 @@
               <td>
                 <% cooldown = player.player_cooldowns.find_by(team: current_user.teams.first) %>
                 <% if cooldown %>
-                  <span class="badge bg-warning text-dark">Indisponível por: <%= cooldown.matches_remaining %> partidas</span>
+                  <p class="badge bg-danger text-light mb-0 mt-3">Indisponível por:</p>
+                  <p class="my-0"><%= cooldown.matches_remaining %> partidas</p>
                 <% elsif player.is_on_market %>
-                  <span class="badge bg-success">Disponível</span>
+                  <p class="badge bg-success bg-opacity-50 text-dark">Disponível</p>
                   <% if current_user.wallet&.balance && current_user.wallet.balance >= player.price %>
                     <%= button_to 'Contratar', purchase_player_path(player), method: :post, class: "btn btn-sm btn-success",
                         data: { turbo_confirm: "Confirmar contratação de #{player.name} por $#{player.price}? Seu saldo atual é $#{current_user.wallet&.balance || 0}." } %>
@@ -94,8 +99,8 @@
                     <button class="btn btn-sm btn-secondary" disabled>Saldo Insuficiente</button>
                   <% end %>
                 <% else %>
-                  <span class="badge bg-danger">Contratado por:</span>
-                  <%= player.player_contracts.where(is_expired: false).first&.team&.name || 'Time desconhecido' %>
+                  <p class="badge bg-warning text-dark mb-0 mt-2">Contratado por:</p>
+                  <p class="my-0"><%= player.player_contracts.where(is_expired: false).first&.team&.name || 'Time desconhecido' %></p>
                 <% end %>
               </td>
             </tr>

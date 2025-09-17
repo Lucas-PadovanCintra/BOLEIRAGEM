@@ -2,5 +2,14 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import "@popperjs/core";
-import "bootstrap";
+// import "bootstrap";
 import "fontawesome"
+import * as bootstrap from "bootstrap"
+document.addEventListener('turbo:load', () => {
+  const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+  const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+})
+
+window.bootstrap = bootstrap;
