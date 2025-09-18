@@ -85,10 +85,9 @@ class MatchesController < ApplicationController
         simulation_stats: result[:stats],
       )
 
-      # Aqui adicionamos a lógica para atualizar o saldo
-      if result[:winner]
-        update_wallet_winner(result[:winner])
-      end
+      # Processar ELO e recompensas
+      elo_changes = EloService.update_ratings(team1, team2, result)
+      reward_amount = RewardService.process_match_rewards(@match, team1, team2, result)
 
       # Incrementar matches_played e gerenciar expirações
       [team1, team2].each do |team|
@@ -114,11 +113,6 @@ class MatchesController < ApplicationController
     redirect_to new_simulation_matches_path, alert: "Erro na simulação: #{e.message}"
   end
 
-  def update_wallet_winner(winner_team)
-    wallet = winner_team.user.wallet
-    reward_amount = 100  # Defina o valor da recompensa
-    wallet.update!(balance: wallet.balance + reward_amount)
-  end
 
   def simulate
     if @match.is_simulated
@@ -135,18 +129,31 @@ class MatchesController < ApplicationController
     end
 
     ActiveRecord::Base.transaction do
+      # Armazenar ELO antes da partida
+      team1_elo_before = team1.elo_rating
+      team2_elo_before = team2.elo_rating
+
       simulator = MatchSimulator.new(team1, team2)
       result = simulator.simulate
+
+      # Processar mudanças de ELO
+      elo_changes = EloService.update_ratings(team1, team2, result)
+
+      # Processar recompensas
+      reward_amount = RewardService.process_match_rewards(@match, team1, team2, result)
 
       @match.update!(
         team1_score: result[:team1_score],
         team2_score: result[:team2_score],
         winner_team: result[:winner],
         is_simulated: true,
-        simulation_stats: result[:stats]
+        simulation_stats: result[:stats],
+        team1_elo_before: team1_elo_before,
+        team2_elo_before: team2_elo_before,
+        team1_elo_change: elo_changes[:team1_elo_change],
+        team2_elo_change: elo_changes[:team2_elo_change],
+        reward_amount: reward_amount
       )
-
-
 
       # Incrementar matches_played e gerenciar expirações
       [team1, team2].each do |team|

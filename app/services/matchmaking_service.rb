@@ -34,17 +34,51 @@ class MatchmakingService
   private
 
   def self.find_opponent(queue_entry)
-    TeamMatchmakingQueue
+    team = queue_entry.team
+    search_start_time = queue_entry.created_at
+    time_waiting = Time.current - search_start_time
+
+    # Calcular range de ELO baseado no tempo de espera
+    elo_range = EloService.matchmaking_range(team.elo_rating, time_waiting.to_i)
+
+    # Buscar oponente dentro do range de ELO
+    potential_opponents = TeamMatchmakingQueue
       .waiting
       .not_from_team(queue_entry.team_id)
       .where.not(user_id: queue_entry.user_id)
-      .oldest_first
-      .first
+      .joins(:team)
+      .where(teams: { elo_rating: (team.elo_rating - elo_range)..(team.elo_rating + elo_range) })
+      .order(Arel.sql("ABS(teams.elo_rating - #{team.elo_rating})"))
+
+    opponent = potential_opponents.first
+
+    # Se não encontrar dentro do range, expandir busca gradualmente
+    if opponent.nil? && time_waiting > 60
+      Rails.logger.info "Expanding search for team #{team.name} (ELO: #{team.elo_rating}) - no opponents in ±#{elo_range} range"
+
+      # Buscar qualquer oponente disponível
+      opponent = TeamMatchmakingQueue
+        .waiting
+        .not_from_team(queue_entry.team_id)
+        .where.not(user_id: queue_entry.user_id)
+        .oldest_first
+        .first
+    end
+
+    if opponent
+      Rails.logger.info "Match found: #{team.name} (#{team.elo_rating}) vs #{opponent.team.name} (#{opponent.team.elo_rating})"
+    end
+
+    opponent
   end
 
   def self.create_and_simulate_match(queue_entry1, queue_entry2)
     team1 = queue_entry1.team
     team2 = queue_entry2.team
+
+    # Armazenar ELO antes da partida
+    team1_elo_before = team1.elo_rating
+    team2_elo_before = team2.elo_rating
 
     match = Match.create!
     match.match_teams.create!(team: team1, is_team1: true)
@@ -53,12 +87,23 @@ class MatchmakingService
     simulator = MatchSimulator.new(team1, team2)
     result = simulator.simulate
 
+    # Processar mudanças de ELO
+    elo_changes = EloService.update_ratings(team1, team2, result)
+
+    # Processar recompensas
+    reward_amount = RewardService.process_match_rewards(match, team1, team2, result)
+
     match.update!(
       team1_score: result[:team1_score],
       team2_score: result[:team2_score],
       winner_team: result[:winner],
       is_simulated: true,
-      simulation_stats: result[:stats]
+      simulation_stats: result[:stats],
+      team1_elo_before: team1_elo_before,
+      team2_elo_before: team2_elo_before,
+      team1_elo_change: elo_changes[:team1_elo_change],
+      team2_elo_change: elo_changes[:team2_elo_change],
+      reward_amount: reward_amount
     )
 
     queue_entry1.update!(status: 'matched', matched_at: Time.current, match: match)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_11_231118) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_18_210434) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -73,6 +73,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_11_231118) do
     t.bigint "winner_team_id"
     t.boolean "is_simulated", default: false
     t.json "simulation_stats"
+    t.integer "team1_elo_before"
+    t.integer "team2_elo_before"
+    t.integer "team1_elo_change"
+    t.integer "team2_elo_change"
+    t.integer "reward_amount"
     t.index ["winner_team_id"], name: "index_matches_on_winner_team_id"
   end
 
@@ -143,6 +148,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_11_231118) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "description"
+    t.integer "elo_rating", default: 1000, null: false
+    t.integer "matches_won", default: 0, null: false
+    t.integer "matches_lost", default: 0, null: false
+    t.integer "matches_drawn", default: 0, null: false
+    t.integer "highest_elo", default: 1000, null: false
+    t.index ["elo_rating"], name: "index_teams_on_elo_rating"
     t.index ["user_id"], name: "index_teams_on_user_id"
   end
 
