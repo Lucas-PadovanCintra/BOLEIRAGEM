@@ -83,10 +83,34 @@ class RewardService
 
       winning_wallet.update!(balance: winning_wallet.balance + reward_amount)
 
+      # Registrar transação de recompensa
+      winning_wallet.transactions.create!(
+        amount: reward_amount,
+        transaction_type: 'match_reward',
+        category: 'match',
+        description: "Vitória contra #{losing_team.name} (#{match_result[:team1_score]}x#{match_result[:team2_score]})",
+        match: match,
+        team: winning_team,
+        balance_after: winning_wallet.balance
+      )
+
       # Aplicar penalidade para perdedor (opcional)
       penalty = calculate_loss_penalty(losing_team)
-      new_balance = [losing_wallet.balance - penalty, 0].max
-      losing_wallet.update!(balance: new_balance)
+      if penalty > 0
+        new_balance = [losing_wallet.balance - penalty, 0].max
+        losing_wallet.update!(balance: new_balance)
+
+        # Registrar transação de penalidade
+        losing_wallet.transactions.create!(
+          amount: -penalty,
+          transaction_type: 'match_penalty',
+          category: 'match',
+          description: "Derrota para #{winning_team.name} (#{match_result[:team1_score]}x#{match_result[:team2_score]})",
+          match: match,
+          team: losing_team,
+          balance_after: losing_wallet.balance
+        )
+      end
 
       Rails.logger.info "Reward processed: Winner #{winning_team.name} received #{reward_amount}, Loser #{losing_team.name} lost #{penalty}"
     else
@@ -94,6 +118,28 @@ class RewardService
       draw_reward = calculate_draw_reward(team1, team2)
       team1_wallet.update!(balance: team1_wallet.balance + draw_reward)
       team2_wallet.update!(balance: team2_wallet.balance + draw_reward)
+
+      # Registrar transações de empate
+      team1_wallet.transactions.create!(
+        amount: draw_reward,
+        transaction_type: 'match_reward',
+        category: 'match',
+        description: "Empate contra #{team2.name} (#{match_result[:team1_score]}x#{match_result[:team2_score]})",
+        match: match,
+        team: team1,
+        balance_after: team1_wallet.balance
+      )
+
+      team2_wallet.transactions.create!(
+        amount: draw_reward,
+        transaction_type: 'match_reward',
+        category: 'match',
+        description: "Empate contra #{team1.name} (#{match_result[:team1_score]}x#{match_result[:team2_score]})",
+        match: match,
+        team: team2,
+        balance_after: team2_wallet.balance
+      )
+
       reward_amount = draw_reward
 
       Rails.logger.info "Draw reward: Both teams received #{draw_reward}"

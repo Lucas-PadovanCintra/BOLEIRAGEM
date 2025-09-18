@@ -82,6 +82,18 @@ class PlayersController < ApplicationController
 
     ActiveRecord::Base.transaction do
       user_wallet.update!(balance: user_wallet.balance - @player.price)
+
+      # Registrar transação de compra
+      user_wallet.transactions.create!(
+        amount: -@player.price,
+        transaction_type: 'player_purchase',
+        category: 'player',
+        description: "Contratação de #{@player.name} (#{@player.position})",
+        player: @player,
+        team: user_team,
+        balance_after: user_wallet.balance
+      )
+
       PlayerContract.create!(
         player: @player,
         team: user_team,

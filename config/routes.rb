@@ -19,7 +19,11 @@ Rails.application.routes.draw do
       post :expire
     end
   end
-  resources :wallets, only: [:show, :update]
+  resources :wallets, only: [:update] do
+    member do
+      get :financial_report
+    end
+  end
   
   post 'mark_notifications_viewed', to: 'pages#mark_notifications_viewed'
   
