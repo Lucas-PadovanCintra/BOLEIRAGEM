@@ -112,16 +112,13 @@
                     <small class="text-muted"><%= match.created_at.strftime("%d de %B de %Y") %></small>
                   </div>
                   <div>
-                    <% if match.result.present? %>
-                      <% case match.result %>
-                      <% when 'Vitória' %>
-                        <span class="badge bg-success"><%= match.result %></span>
-                      <% when 'Derrota' %>
-                        <span class="badge bg-danger"><%= match.result %></span>
-                      <% when 'Empate' %>
-                        <span class="badge bg-warning text-dark"><%= match.result %></span>
+                    <% if match.is_simulated %>
+                      <% if match.draw? %>
+                        <span class="badge bg-warning text-dark">Empate</span>
+                      <% elsif match.winner_team && match.winner_team.user_id == current_user.id %>
+                        <span class="badge bg-success">Vitória</span>
                       <% else %>
-                        <span class="badge bg-primary"><%= match.result %></span>
+                        <span class="badge bg-danger">Derrota</span>
                       <% end %>
                     <% else %>
                       <span class="badge bg-secondary">Pendente</span>

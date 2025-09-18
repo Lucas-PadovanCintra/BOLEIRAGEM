@@ -21,6 +21,8 @@ module ApplicationHelper
     when "Botafogo"
       team = "botafogo"
       extension = "gif"
+    when "Vasco da Gama"
+      team = "vasco"
     else
       team = I18n.transliterate(real_team_name.downcase).gsub(/[^a-z0-9]+/, '-')
     end

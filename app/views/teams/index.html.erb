@@ -4,8 +4,8 @@
     <div class="col">
       <h1 class="h2 fw-bold text-dark mb-1">
         <i class="fas fa-users me-2 text-primary"></i>Meus Times
-      </h1>
-      <p class="text-muted mb-0">Gerencie seus times, jogadores e partidas</p>
+      </h1><p class="text-muted mb-0">Gerencie
+       seus times, jogadores e partidas</p>
     </div>
     <div class="col-auto">
       <%= link_to new_team_path, class: "btn btn-primary btn-lg" do %>
@@ -144,9 +144,15 @@
                   <small class="text-muted fw-medium d-block mb-2">Última Partida</small>
                   <% last_match = team.matches.order(created_at: :desc).first %>
                   <div class="d-flex justify-content-between align-items-center">
-                    <span class="small">Match #<%= last_match.id %></span>
-                    <% if last_match.result.present? %>
-                      <span class="badge bg-primary"><%= last_match.result %></span>
+                    <span class="small">Partida #<%= last_match.id %></span>
+                    <% if last_match.is_simulated %>
+                      <% if last_match.draw? %>
+                        <span class="badge bg-warning text-dark">Empate</span>
+                      <% elsif last_match.winner_team && last_match.winner_team.user_id == current_user.id %>
+                        <span class="badge bg-success">Vitória</span>
+                      <% else %>
+                        <span class="badge bg-danger">Derrota</span>
+                      <% end %>
                     <% else %>
                       <span class="badge bg-secondary">Pendente</span>
                     <% end %>

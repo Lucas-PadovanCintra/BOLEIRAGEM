@@ -39,7 +39,7 @@
                   <span class="fs-5 fw-bold text-primary me-2"><%= number_with_precision(@player.rating, precision: 1) %></span>
                   <div class="d-flex">
                     <% (1..5).each do |i| %>
-                      <% if i <= (@player.rating / 20.0).ceil %>
+                      <% if i <= (@player.rating / 2.0).ceil %>
                         <i class="fas fa-star text-warning"></i>
                       <% else %>
                         <i class="far fa-star text-muted"></i>

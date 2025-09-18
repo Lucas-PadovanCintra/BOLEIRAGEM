@@ -1,7 +1,14 @@
 <div class="container py-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h2 fw-bold text-dark">Gerenciamento de Contratos</h1>
-    <%= link_to "Contratar Novo Jogador", players_path, class: "btn btn-primary" %>
+  <div class="row align-items-center mb-4">
+    <div class="col">
+      <h1 class="h2 fw-bold text-dark">
+        <i class="fas fa-users me-2 text-primary"></i>Gerenciamento de Contratos
+      </h1>
+      <p class="text-muted mb-0">Analise seus contratos e organize suas escolhas</p>
+    </div>
+    <div class="col-auto">
+      <%= link_to "Contratar Novo Jogador", players_path, class: "btn btn-primary" %>
+    </div>
   </div>
 
   <!-- Contract Status Filters -->
