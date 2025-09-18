@@ -8,6 +8,11 @@ class MatchSimulator
     team1_strength = calculate_team_strength(@team1)
     team2_strength = calculate_team_strength(@team2)
 
+    # Aplicar ajuste baseado em ELO
+    elo_adjustment = calculate_elo_adjustment(@team1, @team2)
+    team1_strength *= (1 + elo_adjustment[:team1_modifier])
+    team2_strength *= (1 + elo_adjustment[:team2_modifier])
+
     team1_final_strength = team1_strength * random_factor
     team2_final_strength = team2_strength * random_factor
 
@@ -30,7 +35,10 @@ class MatchSimulator
         team1_defense: calculate_defense_power(@team1).round(2),
         team2_defense: calculate_defense_power(@team2).round(2),
         team1_midfield: calculate_midfield_control(@team1).round(2),
-        team2_midfield: calculate_midfield_control(@team2).round(2)
+        team2_midfield: calculate_midfield_control(@team2).round(2),
+        team1_elo: @team1.elo_rating,
+        team2_elo: @team2.elo_rating,
+        elo_adjustment: elo_adjustment
       }
     }
   end
@@ -115,5 +123,21 @@ class MatchSimulator
     else
       nil
     end
+  end
+
+  def calculate_elo_adjustment(team1, team2)
+    # Calcular ajuste baseado na diferença de ELO
+    # Times com maior ELO têm pequena vantagem, mas não determinante
+    elo_diff = team1.elo_rating - team2.elo_rating
+    max_adjustment = 0.15 # Máximo de 15% de ajuste
+
+    # Suavizar a diferença para não ser muito drástica
+    adjustment_factor = Math.tanh(elo_diff / 500.0) * max_adjustment
+
+    {
+      team1_modifier: adjustment_factor,
+      team2_modifier: -adjustment_factor,
+      elo_difference: elo_diff
+    }
   end
 end

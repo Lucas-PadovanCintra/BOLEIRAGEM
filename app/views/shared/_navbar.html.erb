@@ -12,9 +12,15 @@
       <ul class="navbar-nav me-auto">
         <% if user_signed_in? %>
           <li class="nav-item">
-            <%= link_to "#", class: "nav-link" do %>
-              <i class="fa-solid fa-coins"></i> <%= current_user.wallet&.balance || 0 %>
+            <% if current_user.wallet %>
+              <%= link_to financial_report_wallet_path(current_user.wallet), class: "nav-link", title: "Relatório Financeiro" do %>
+                <i class="fa-solid fa-coins"></i> <%= current_user.wallet.balance || 0 %>
               <% end %>
+            <% else %>
+              <%= link_to "#", class: "nav-link" do %>
+                <i class="fa-solid fa-coins"></i> 0
+              <% end %>
+            <% end %>
           </li>
           <li class="nav-item active">
             <%= link_to "Início", root_path, class: "nav-link" %>
@@ -48,7 +54,7 @@
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
               <li><%= link_to "Perfil", edit_user_registration_path, class: "dropdown-item" %></li>
               <% if current_user.wallet %>
-                <li><%= link_to "Carteira", wallet_path(current_user.wallet), class: "dropdown-item" %></li>
+                <li><%= link_to "Relatório Financeiro", financial_report_wallet_path(current_user.wallet), class: "dropdown-item" %></li>
               <% end %>
               <li><hr class="dropdown-divider"></li>
               <li><%= link_to "Sair", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %></li>

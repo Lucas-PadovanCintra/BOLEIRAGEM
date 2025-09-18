@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_11_231118) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_18_211956) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -73,6 +73,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_11_231118) do
     t.bigint "winner_team_id"
     t.boolean "is_simulated", default: false
     t.json "simulation_stats"
+    t.integer "team1_elo_before"
+    t.integer "team2_elo_before"
+    t.integer "team1_elo_change"
+    t.integer "team2_elo_change"
+    t.integer "reward_amount"
     t.index ["winner_team_id"], name: "index_matches_on_winner_team_id"
   end
 
@@ -143,7 +148,34 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_11_231118) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "description"
+    t.integer "elo_rating", default: 1000, null: false
+    t.integer "matches_won", default: 0, null: false
+    t.integer "matches_lost", default: 0, null: false
+    t.integer "matches_drawn", default: 0, null: false
+    t.integer "highest_elo", default: 1000, null: false
+    t.index ["elo_rating"], name: "index_teams_on_elo_rating"
     t.index ["user_id"], name: "index_teams_on_user_id"
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.bigint "wallet_id", null: false
+    t.integer "amount", null: false
+    t.string "transaction_type", null: false
+    t.text "description"
+    t.string "category", null: false
+    t.bigint "match_id"
+    t.integer "balance_after"
+    t.bigint "team_id"
+    t.bigint "player_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category"], name: "index_transactions_on_category"
+    t.index ["match_id"], name: "index_transactions_on_match_id"
+    t.index ["player_id"], name: "index_transactions_on_player_id"
+    t.index ["team_id"], name: "index_transactions_on_team_id"
+    t.index ["transaction_type"], name: "index_transactions_on_transaction_type"
+    t.index ["wallet_id", "created_at"], name: "index_transactions_on_wallet_id_and_created_at"
+    t.index ["wallet_id"], name: "index_transactions_on_wallet_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -181,5 +213,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_11_231118) do
   add_foreign_key "team_matchmaking_queues", "teams"
   add_foreign_key "team_matchmaking_queues", "users"
   add_foreign_key "teams", "users"
+  add_foreign_key "transactions", "matches"
+  add_foreign_key "transactions", "players"
+  add_foreign_key "transactions", "teams"
+  add_foreign_key "transactions", "wallets"
   add_foreign_key "wallets", "users"
 end

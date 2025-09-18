@@ -164,6 +164,113 @@
     </div>
   <% end %>
 
+  <!-- Financial and ELO Information (only for simulated matches) -->
+  <% if @match.is_simulated && (@match.team1_elo_before || @match.reward_amount) %>
+    <div class="row g-4 mb-4">
+      <!-- ELO Changes -->
+      <% if @match.team1_elo_before %>
+        <div class="col-md-6">
+          <div class="card shadow-sm border-primary">
+            <div class="card-header bg-primary text-white">
+              <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Mudanças de ELO</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-6">
+                  <h6 class="text-muted"><%= @match.team1&.name %></h6>
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="text-muted me-2">Antes:</span>
+                    <span class="fw-bold"><%= @match.team1_elo_before || '-' %></span>
+                  </div>
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="text-muted me-2">Mudança:</span>
+                    <% if @match.team1_elo_change %>
+                      <span class="fw-bold text-<%= @match.team1_elo_change >= 0 ? 'success' : 'danger' %>">
+                        <%= @match.team1_elo_change >= 0 ? '+' : '' %><%= @match.team1_elo_change %>
+                      </span>
+                    <% else %>
+                      <span>-</span>
+                    <% end %>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <span class="text-muted me-2">Depois:</span>
+                    <span class="fw-bold text-primary">
+                      <%= (@match.team1_elo_before + (@match.team1_elo_change || 0)) if @match.team1_elo_before %>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <h6 class="text-muted"><%= @match.team2&.name %></h6>
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="text-muted me-2">Antes:</span>
+                    <span class="fw-bold"><%= @match.team2_elo_before || '-' %></span>
+                  </div>
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="text-muted me-2">Mudança:</span>
+                    <% if @match.team2_elo_change %>
+                      <span class="fw-bold text-<%= @match.team2_elo_change >= 0 ? 'success' : 'danger' %>">
+                        <%= @match.team2_elo_change >= 0 ? '+' : '' %><%= @match.team2_elo_change %>
+                      </span>
+                    <% else %>
+                      <span>-</span>
+                    <% end %>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <span class="text-muted me-2">Depois:</span>
+                    <span class="fw-bold text-primary">
+                      <%= (@match.team2_elo_before + (@match.team2_elo_change || 0)) if @match.team2_elo_before %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Financial Result -->
+      <% if @match.reward_amount %>
+        <div class="col-md-6">
+          <div class="card shadow-sm border-success">
+            <div class="card-header bg-success text-white">
+              <h5 class="mb-0"><i class="fas fa-coins me-2"></i>Resultado Financeiro</h5>
+            </div>
+            <div class="card-body">
+              <% if @match.winner_team %>
+                <div class="mb-3">
+                  <h6 class="text-muted">Vencedor: <%= @match.winner_team.name %></h6>
+                  <div class="d-flex align-items-center justify-content-between">
+                    <span class="text-muted">Recompensa:</span>
+                    <span class="h4 fw-bold text-success mb-0">+<%= number_with_delimiter(@match.reward_amount) %></span>
+                  </div>
+                </div>
+
+                <hr>
+
+                <div class="small text-muted">
+                  <p class="mb-1"><i class="fas fa-info-circle me-1"></i>Cálculo da Recompensa:</p>
+                  <ul class="mb-0">
+                    <li>Base: 50 + diferença ELO/10</li>
+                    <li>Multiplicador de divisão aplicado</li>
+                    <% if (@match.team1_score - @match.team2_score).abs >= 3 %>
+                      <li class="text-success">Bônus de goleada (+20%)</li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% else %>
+                <div class="text-center">
+                  <h6 class="text-muted">Empate</h6>
+                  <p class="mb-2">Ambos os times receberam:</p>
+                  <span class="h4 fw-bold text-info">+<%= number_with_delimiter(@match.reward_amount) %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
   <!-- Match Details -->
   <div class="row g-4">
     <div class="col-md-6">
